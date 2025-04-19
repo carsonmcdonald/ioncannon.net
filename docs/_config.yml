@@ -29,6 +29,8 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
 github_username: carsonmcdonald
 
+remote_theme: stakes/minimal-mistakes@4.26.2
+
 permalink: pretty
 
 paginate: 10
