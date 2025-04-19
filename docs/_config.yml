@@ -29,15 +29,14 @@ url: "" # the base hostname & protocol for your site, e.g. http://example.com
 #twitter_username: jekyllrb
 github_username: carsonmcdonald
 
-remote_theme: stakes/minimal-mistakes@4.26.2
-
 permalink: pretty
 
 paginate: 10
 
 # Build settings
 #theme: minima
-theme: minimal-mistakes-jekyll
+#theme: minimal-mistakes-jekyll
+remote_theme: stakes/minimal-mistakes@4.26.2
 plugins:
   - jekyll-feed
   - jekyll-include-cache
