@@ -36,7 +36,7 @@ paginate: 10
 # Build settings
 #theme: minima
 #theme: minimal-mistakes-jekyll
-remote_theme: stakes/minimal-mistakes@4.27.0
+remote_theme: mmistakes/minimal-mistakes
 plugins:
   - jekyll-feed
   - jekyll-include-cache
