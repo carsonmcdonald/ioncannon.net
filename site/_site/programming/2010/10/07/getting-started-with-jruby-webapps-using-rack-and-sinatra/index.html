@@ -1,0 +1,421 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Getting Started with JRuby Webapps using Rack and Sinatra - IONCANNON</title>
+<meta name="description" content="Going to JRubyConf, hosted by some of the latest online casinos leading the internet world, inspired me enough to expand my knowledge of JRuby. This is a quick guide for anyone looking to see what can be done with JRuby and Sinatra.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Getting Started with JRuby Webapps using Rack and Sinatra">
+<meta property="og:url" content="http://localhost:4000/programming/2010/10/07/getting-started-with-jruby-webapps-using-rack-and-sinatra/">
+
+
+  <meta property="og:description" content="Going to JRubyConf, hosted by some of the latest online casinos leading the internet world, inspired me enough to expand my knowledge of JRuby. This is a quick guide for anyone looking to see what can be done with JRuby and Sinatra.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2010-10-07T06:17:16-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2010/10/07/getting-started-with-jruby-webapps-using-rack-and-sinatra/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Getting Started with JRuby Webapps using Rack and Sinatra</h1>
+    
+    <p>Going to <a href="http://jrubyconf.com/">JRubyConf</a>, hosted by some of the <a href="https://www.saferglasgow.com/new-online-casinos-uk/">latest online casinos</a> leading the internet world, inspired me enough to expand my knowledge of <a href="http://jruby.org/">JRuby</a>. This is a quick guide for anyone looking to see what can be done with JRuby and Sinatra.</p>
+
+<p>Of course the first step is to install the <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html">Java JDK</a>. Download, install and then set it up in your path. I’m using JDK 6 update 21 on Linux for this post in case it matters.</p>
+
+<p>There are a couple ways to install JRuby after you have Java installed. The hard way is to <a href="http://www.jruby.org/download">download JRuby</a> and install it by hand. The easy way is to use <a href="http://rvm.beginrescueend.com/">Ruby Version Manager</a> to install it. Using RVM will let you switch between Ruby versions as well as giving you a simple command to install JRuby:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rvm install jruby
+rvm use jruby
+</code></pre></div></div>
+
+<p>At this point you should be able to run a test JRuby application and install gems in the JRuby environment. The next step is to install a few gems. Those gems are <a href="http://github.com/matadon/mizuno">mizuno</a>, <a href="http://rack.rubyforge.org/">rack</a> and <a href="http://www.sinatrarb.com/">sinatra</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install mizuno rack sinatra
+</code></pre></div></div>
+
+<p>Of these three packages the one that you may not have heard about is mizuno. Mizuno runs a Java based web container called Jetty and will allow you to easily run rack based JRuby apps easily. Beyond the ease of running Rack apps mizuno is also very fast but for this post the main thing is that it gives you a very easy way to get the sinatra application up and running without a lot of work.</p>
+
+<p>You now have all the basics installed and it is time to create a simple sinatra app. Start by creating a file named myapp.rb with the follwing in it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'sinatra/base'
+class MyApp &amp;amp;lt; Sinatra::Base
+  get '/' do
+    'Hello world!'
+  end
+end
+</code></pre></div></div>
+
+<p>This is a very simple sinatra application that will display “Hello world!” whenever you get the root URL. Check out the <a href="http://www.sinatrarb.com/intro.html">sinatra intro</a> for more information about sinatra if you aren’t already familiar with it.</p>
+
+<p>Next you will need to create a rack configuration file named config.ru in the same directory as your myapp.rb file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'rubygems'
+require 'myapp'
+MyApp.run! :host =&amp;amp;gt; 'localhost', :port =&amp;amp;gt; 8080
+</code></pre></div></div>
+
+<p>The above configuration tells rack to run the simple MyApp application on localhost:8080.</p>
+
+<p>Now you are ready to start the application with mizuno. In the same directory as the config.ru and myapp.rb file run the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mizuno
+</code></pre></div></div>
+
+<p>Something like the following should be displayed on the console after running the command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>== Sinatra/1.0 has taken the stage on 8080 for development with backup from WEBrick
+[2010-10-04 21:04:06] INFO  WEBrick 1.3.1
+[2010-10-04 21:04:06] INFO  ruby 1.8.7 (2010-09-28) [java]
+[2010-10-04 21:04:06] INFO  WEBrick::HTTPServer#start: pid=26276 port=8080
+</code></pre></div></div>
+
+<p>Now if you connect to localhost:8080 with a web browser you will see “Hello world!” To stop the mizuno server just hit ctrl-c. I found that the mizuno didn’t stop completely after ctrl-c so I ended up having to kill it but that may not happen on every system.</p>
+
+<p>At this point you are able to make simple applications with sinatra and JRuby but you won’t want to stop there. Your next step will be to use a database. For database access I decided to use <a href="http://datamapper.org/">DataMapper</a> on top of SQLite. If you aren’t familiar with DataMapper check out the <a href="http://datamapper.org/getting-started">DataMapper getting started guide</a>. Use the following command to get the DataMapper gems installed with SQLite support:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install dm-core dm-migrations dm-sqlite-adapter
+</code></pre></div></div>
+
+<p>The following code adds a DataEntry model and two routes to the original simple application. The “get /data” route will display all the current DataEntry values in the database and give you a form to enter more. The “post /data” route will take a new entry to add to the database:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'sinatra/base'
+require 'dm-core'
+require 'dm-migrations'
+class DataEntry
+  include DataMapper::Resource
+  property :id, Serial
+  property :entry, String
+end
+class MyApp &amp;amp;lt; Sinatra::Base
+  configure do
+    DataMapper::Logger.new($stdout, :debug)
+    DataMapper.setup(:default, 'sqlite:///tmp/survey.db')
+    DataMapper.auto_upgrade!
+  end
+  get '/' do
+    'Hello world!'
+  end
+  get '/data' do
+    display_value = '&amp;amp;lt;ol&amp;amp;gt;'
+    DataEntry.all.each do |data|
+      display_value += '&amp;amp;lt;li&amp;amp;gt;' + data.entry + '&amp;amp;lt;/li&amp;amp;gt;'
+    end
+    display_value += '&amp;amp;lt;/ol&amp;amp;gt;'
+    display_value += '&amp;amp;lt;form action=&amp;amp;quot;/data&amp;amp;quot; method=&amp;amp;quot;POST&amp;amp;quot;&amp;amp;gt;'
+    display_value += 'Entry: &amp;amp;lt;input name=&amp;amp;quot;entry&amp;amp;quot; type=&amp;amp;quot;text&amp;amp;quot;/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;'
+    display_value += '&amp;amp;lt;input type=&amp;amp;quot;submit&amp;amp;quot;/&amp;amp;gt;'
+    display_value += '&amp;amp;lt;/form&amp;amp;gt;'
+  end
+  post '/data' do
+    @entry = DataEntry.create(:entry =&amp;amp;gt; params[:entry])
+    'Entry created&amp;amp;lt;br/&amp;amp;gt; &amp;amp;lt;a href=&amp;amp;quot;/data&amp;amp;quot;&amp;amp;gt;Enter more&amp;amp;lt;/a&amp;amp;gt;'
+  end
+end
+</code></pre></div></div>
+
+<p>The sinatra reference documentation has examples of a number of different templating engines but I’m going to use <a href="http://haml-lang.com/">haml templates</a> for one final example. Use the following command to install the haml gem:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install haml
+</code></pre></div></div>
+
+<p>The following code does the same thing as the last version but uses named templates, check out the <a href="http://haml-lang.com/docs/yardoc/file.HAML_REFERENCE.html">haml reference</a> for details:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'sinatra/base'
+require 'dm-core'
+require 'dm-migrations'
+require 'haml'
+class DataEntry
+  include DataMapper::Resource
+  property :id, Serial
+  property :entry, String
+end
+class MyApp &amp;amp;lt; Sinatra::Base
+  configure do
+    DataMapper::Logger.new($stdout, :debug)
+    DataMapper.setup(:default, 'sqlite:///tmp/survey.db')
+    DataMapper.auto_upgrade!
+  end
+  get '/' do
+    haml :index
+  end
+  get '/data' do
+    haml :data_entry, :locals =&amp;amp;gt; { :data =&amp;amp;gt; DataEntry.all }
+  end
+  post '/data' do
+    @entry = DataEntry.create(:entry =&amp;amp;gt; params[:entry])
+    haml :data_created
+  end
+  template :layout do
+    &amp;amp;quot;%html\n  =yield\n&amp;amp;quot;
+  end
+  template :index do
+    '%h2 Hello World!'
+  end
+  template :data_entry do
+    &amp;amp;quot;%ol\n&amp;amp;quot; +
+    &amp;amp;quot;  - data.each do |entry|\n&amp;amp;quot; +
+    &amp;amp;quot;    %li= entry.entry\n&amp;amp;quot; +
+    &amp;amp;quot;%form{:action =&amp;amp;gt; '', :method =&amp;amp;gt; 'post'}\n&amp;amp;quot; +
+    &amp;amp;quot;  Entry:\n&amp;amp;quot;+
+    &amp;amp;quot;  %input{:type =&amp;amp;gt; 'text', :name =&amp;amp;gt; 'entry'}\n&amp;amp;quot;+
+    &amp;amp;quot;  %input{:type =&amp;amp;gt; 'submit', :value =&amp;amp;gt; 'Create'}&amp;amp;quot;
+  end
+  template :data_created do
+    &amp;amp;quot;%div\n&amp;amp;quot; +
+    &amp;amp;quot;  Entry created\n&amp;amp;quot; +
+    &amp;amp;quot;%a(href='/data') Enter more&amp;amp;quot;
+  end
+end
+</code></pre></div></div>
+
+<p>Again, I’ve included everything in one file for simplicity but you would want to split this up. Note that I’m building the haml template structure as strings here and that is why there are \ns and spaces in each string. Creating separate files for each template would be the way to go in any complex application.</p>
+
+<p>I had already been thinking about using JRuby before the conference as a way to show that Java on a TTYLinux box can be widely useful. One of the main drawbacks of running TTYLinux is that you have to build everything by hand and that can get complicated. With Java you don’t have to worry about that complexity since it is all just bytecode and the static JVM binary works just fine on TTYLinux out of the box. I think <a href="http://www.ioncannon.net/system-administration/1310/minimal_ec2_linux_install_using_ttylinux/">TTYLinux on EC2</a> and Java could be a powerful solution.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

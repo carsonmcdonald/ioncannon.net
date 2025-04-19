@@ -1,0 +1,283 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Using scrub to destroy a hard drive - IONCANNON</title>
+<meta name="description" content="Recently I had a hard drive failure that pushed me into getting a little NAS device that I could back up to S3 easily. After consolidating a lot of data to the NAS I was left with a few old hard drives that I needed to do something with as well as some existing hard drives that I’ve collected over the years. Some of the drives I have are from family members that I have recycled computers for but kept the hard drives out of fear that personal data might still be on them. At the same time this was happening I read an article claiming that a single drive wipe protects data.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Using scrub to destroy a hard drive">
+<meta property="og:url" content="http://localhost:4000/system%20administration/utilities/2009/01/20/using-scrub-to-destroy-a-hard-drive/">
+
+
+  <meta property="og:description" content="Recently I had a hard drive failure that pushed me into getting a little NAS device that I could back up to S3 easily. After consolidating a lot of data to the NAS I was left with a few old hard drives that I needed to do something with as well as some existing hard drives that I’ve collected over the years. Some of the drives I have are from family members that I have recycled computers for but kept the hard drives out of fear that personal data might still be on them. At the same time this was happening I read an article claiming that a single drive wipe protects data.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2009-01-20T07:33:40-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/utilities/2009/01/20/using-scrub-to-destroy-a-hard-drive/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Using scrub to destroy a hard drive</h1>
+    
+    <p>Recently I had a hard drive failure that pushed me into getting a little <a href="http://www.dlink.com/products/?pid=509">NAS device</a> that I could back up to <a href="http://aws.amazon.com/s3/">S3</a> easily. After consolidating a lot of data to the NAS I was left with a few old hard drives that I needed to do something with as well as some existing hard drives that I’ve collected over the years. Some of the drives I have are from family members that I have recycled computers for but kept the hard drives out of fear that personal data might still be on them. At the same time this was happening I read an article claiming that a <a href="http://www.securityfocus.com/brief/888">single drive wipe protects data</a>.</p>
+
+<p>I started digging a little more to see just how effective a single drive wipe might be and found the old wisdom in this article: <a href="http://www.cs.auckland.ac.nz/~pgut001/pubs/secure_del.html">Secure Deletion of Data from Magnetic and Solid-State Memory</a>. Scanning over this older article I noticed that it had been updated with a response to the <a href="http://sansforensics.wordpress.com/2009/01/15/overwriting-hard-drive-data/">latest article</a> on the <a href="http://www.springerlink.com/content/408263ql11460147/?p=650ee5e3e45d4e1e845e2bfe8a959f1a&amp;pi=20">effectiveness overwriting a drive with a single pass random data</a>. After reading through the articles I decided that overwriting was good enough. I figure if it doesn’t completely destroy the data it will make it hard enough to not be worth recovering.</p>
+
+<p>The first step I took was to get a <a href="http://www.knoppix.org/">Knoppix</a> live CD. Doing this let me remove data on any drive that I could connect to the PC. The next step was to run the <b>shred</b> command on each disk that I wanted to destroy (<b>shred</b> happens to be on the Knoppix live CD):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>shred -zv -n 3 /dev/hda
+</code></pre></div></div>
+<p>The options I used have the following meaning:</p>
+
+<p>z - zero the drive once the random passes are done
+v - verbose, shows the progress
+n - number of passes to make writing random data</p>
+
+<p>You can have <b>shred</b> make as many passes as you want and the default is 25 passes as described in <a href="http://www.cs.auckland.ac.nz/~pgut001/pubs/secure_del.html">Secure Deletion of Data from Magnetic and Solid-State Memory</a>. Depending on how fast and how large the drive is this command can take a really long time to run. I decided that 3 passes would be good enough for me. I will still probably hold on to most of the disks in question just in case I want to use them later but I now don’t feel like I can’t toss them if I no longer need them.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

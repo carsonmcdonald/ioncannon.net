@@ -1,0 +1,453 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Converting from VirtualBox or VMWare to EC2 now Easier than Ever - IONCANNON</title>
+<meta name="description" content="The new PV-Grub ability introduced by Amazon for EC2 has opened the door for more than just custom kernels, it also makes it a lot easier to turn VirtualBox and VMWare instances into EC2 instances. In the past I have written about transfering VirtualBox images to Xen but to do that with EC2 required a matching kernel exist for your VirtualBox installed OS that was blessed by Amazon. With PV-Grub as long as you can get a kernel for your existing system that is compatible with the EC2 infrastructure you can transfer it. A lot of the most popular distributions already have compatible kernels so that shouldn’t be an issue and if you had to you could always compile the kernel by hand.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Converting from VirtualBox or VMWare to EC2 now Easier than Ever">
+<meta property="og:url" content="http://localhost:4000/system%20administration/2010/08/25/converting-from-virtualbox-or-vmware-to-ec2-now-easier-than-ever/">
+
+
+  <meta property="og:description" content="The new PV-Grub ability introduced by Amazon for EC2 has opened the door for more than just custom kernels, it also makes it a lot easier to turn VirtualBox and VMWare instances into EC2 instances. In the past I have written about transfering VirtualBox images to Xen but to do that with EC2 required a matching kernel exist for your VirtualBox installed OS that was blessed by Amazon. With PV-Grub as long as you can get a kernel for your existing system that is compatible with the EC2 infrastructure you can transfer it. A lot of the most popular distributions already have compatible kernels so that shouldn’t be an issue and if you had to you could always compile the kernel by hand.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2010-08-25T08:19:48-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/2010/08/25/converting-from-virtualbox-or-vmware-to-ec2-now-easier-than-ever/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Converting from VirtualBox or VMWare to EC2 now Easier than Ever</h1>
+    
+    <p>The new PV-Grub ability introduced by Amazon for EC2 has opened the door for more than just custom kernels, it also makes it a lot easier to turn <a href="http://www.virtualbox.org/">VirtualBox</a> and <a href="http://www.vmware.com/">VMWare</a> instances into EC2 instances. In the past I have written about <a href="http://www.ioncannon.net/system-administration/80/how-to-transfer-linux-from-virtualbox-to-xen/">transfering VirtualBox images to Xen</a> but to do that with EC2 required a matching kernel exist for your VirtualBox installed OS that was blessed by Amazon. With PV-Grub as long as you can get a kernel for your existing system that is compatible with the EC2 infrastructure you can transfer it. A lot of the most popular distributions already have compatible kernels so that shouldn’t be an issue and if you had to you could always compile the kernel by hand.</p>
+
+<p>Some of what follows is exactly the same as my post about <a href="http://www.ioncannon.net/system-administration/1205/installing-cent-os-5-5-on-ec2-with-the-cent-os-5-5-kernel/">installing CentOS 5.5 on EC2 with the stock kernel</a>. Once you get the hang of it you can install just about anything Linux based to EC2. I’ve broken this post into two parts to try and separate the generic transfer information from the specifics of an example. The first part that goes over the basics of what needs to be done to transfer any VirtualBox or VMWare box to EC2. The second part is an example of transferring an Ubuntu Server install to from VirtualBox to EC2.</p>
+
+<p>The following steps should work for any Linux OS but the main sticking point is that the kernel needs to be compatible with EC2 (see the <a href="http://aws.typepad.com/aws/2010/07/use-your-own-kernel-with-amazon-ec2.html">anouncment</a> for a list of some distros that have compatible kernels and remember you can always compile by hand as well).</p>
+
+<ol>
+  <li>
+    <p>Make sure your VirtualBox or VMWare install has a kernel that is able to boot on EC2.</p>
+  </li>
+  <li>
+    <p>Make sure you have grub installed and set up your /boot/grub/menu.lst file to point to the correct Xen kernel and initrd file. See the Ubuntu instructions that follow for an example menu.lst.</p>
+  </li>
+  <li>
+    <p>Make sure you have your /boot directory in the correct place. If your disk is just one big partition you shouldn’t need to do anything (use the hd0 PV-Grub kernel in the last step when booting). If you have a partition for /boot you will need to make sure it is the first partition on the disk and you will also need to copy the directory into /boot/boot so that the menu.lst file would be in /boot/boot/grub/menu.lst after the copy. For an example of this see the Ubuntu instructions that follow (use the hd00 PV-Grub kernel in the last step when booting).</p>
+  </li>
+  <li>
+    <p>Export the image to a raw form. This includes the partition table and everything. For VMWare you can use qemu-img to convert the VMDK to a raw image with the following command:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   qemu-img convert -O raw vmware-image.vmdk myosimage.raw
+</code></pre></div>    </div>
+
+    <p>Or if you are using VirtualBox you would use the VBoxManage command (I’m currently using VirtualBox 3.2.6 and since the VBoxManage command has changed before that might be important for those reading this at a later date):</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   VBoxManage internalcommands converttoraw myosimage.vdi myosimage.img
+</code></pre></div>    </div>
+
+    <p>In both cases you should be able to run fdisk against the resulting raw image file and see a partition table:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   fdisk -lu myosimage.img
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create an EBS volume that is the same size or larger than the raw disk image created in step 4 and then attach it to a running EC2 instance:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ec2-create-volume -z us-east-1a -s 2
+ ec2-attach-volume volume-id -i instance-id -d /dev/sdh
+</code></pre></div>    </div>
+
+    <p>Note: The instance you attach the volume to is just a place used to copy the image file onto the volume. There is no need to be too picky about the type of instance it is as long as you have access to the dd command that should be all you need.</p>
+  </li>
+  <li>
+    <p>Transfer the exported VirtualBox or VMWare disk image to the running EC2 instance created in step 5 and then copy it to the volume with the following dd command (this example assumes the volume is attached to the /dev/sdh device):</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> dd if=myosimage.img of=/dev/sdh bs=10M
+</code></pre></div>    </div>
+
+    <p>Note: It may make sense to compress your raw image before transferring it since any free space will be represented in the raw file and will compress down a lot.</p>
+  </li>
+  <li>
+    <p>Make a snapshot of the volume:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ec2-create-snapshot -d "Volume Description" volume-id
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Register the snapshot as a new AMI:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ec2-register -n "AMIName" -d "AMI Description" --root-device-name /dev/sda2 -b /dev/sda=snap-id:2:true
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Boot the new AMI using the correct PV-Grub kernel. The correct kernel will depend on how your partition structure. For more information see the <a href="http://developer.amazonwebservices.com/connect/entry.jspa?categoryID=174&amp;externalID=3967">AWS PV-Grub documentation</a>. The main thing to know is that if you have /boot on its own partition use the hd00 kernel otherwise use the hd0 kernel:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ec2-run-instances -z us-east-1a -g your-group -k your-keypair -n 1 --kernel pv-grub-kernel-id ami-from-step-19
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>The following is a specific example of converting an existing <a href="http://www.ubuntu.com/server">Ubuntu 10.04 LTS Server</a> installed on VirtualBox to a bootable EC2 AMI. Note that steps 1 to 4 of the following create my “existing” Ubuntu Server so skip those if you have something that already exists. The last portion of this will look just like the above generic steps:</p>
+
+<ol>
+  <li>
+    <p>Use the Ubuntu Server ISO to install Ubuntu on a fresh VirtualBox VM. For this example I used 512M of memory and a 2G disk. This is what my VirtualBox setup looked like:<br /><br /></p>
+
+    <p><a href="/assets/2010_08_EC2UbuntuVMSummary.png"><img src="/assets/2010_08_EC2UbuntuVMSummary.png" alt="" title="EC2 Ubuntu VirtualBox Summary" width="699" height="453" class="alignnone size-full wp-image-1248" /></a>
+ &lt;/li&gt;</p>
+  </li>
+  <li>
+    <p>Because I wanted /boot to be on its own partition I used the manual partition creation option:</p>
+
+    <p><a href="/assets/2010_08_EC2UbuntuManualPartitions.png"><img src="/assets/2010_08_EC2UbuntuManualPartitions.png" alt="" title="EC2 Ubuntu Manual Partitions" width="648" height="555" class="alignnone size-full wp-image-1251" /></a></p>
+
+    <p>You don’t have to do this but I wanted these instructions to align with my previous post for CentOS 5.5. In this case I made the first partition mount at /boot and the second partition was everything else mounted at / and the result looked like:<br /></p>
+
+    <p><a href="/assets/2010_08_EC2UbuntuPartitionTable.png"><img src="/assets/2010_08_EC2UbuntuPartitionTable.png" alt="" title="EC2 Ubuntu Partition Table" width="648" height="555" class="alignnone size-full wp-image-1249" /></a></p>
+
+    <p>Notice that I didn’t include any swap, that is something you probably want to put on the EC2 instance’s ephemeral storage.</p>
+  </li>
+  <li>
+    <p>For Ubuntu you are prompted to install other software after the base install and setting up a user. Make sure you install OpenSSH server:<br /><br /></p>
+
+    <p><a href="/assets/2010_08_EC2UbuntuOpenSSHServer.png"><img src="/assets/2010_08_EC2UbuntuOpenSSHServer.png" alt="" title="EC2 Ubuntu OpenSSH Server" width="648" height="555" class="alignnone size-full wp-image-1250" /></a></p>
+  </li>
+  <li>
+    <p>When prompted to install grub answer yes.</p>
+  </li>
+  <li>
+    <p>At this point you should have a bootable Ubuntu system either from following the previous steps or from an existing bootable install. You will need to install the libuuid-perl package so that the EC2 compatible Xen kernels will be installable:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   sudo apt-get install libuuid-perl
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Grab a Xen kernel and initrd that are compatible with EC2:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> wget http://ftp.debian.org/debian/pool/main/l/linux-2.6/linux-base_2.6.32-20_all.deb
+ wget http://ftp.debian.org/debian/pool/main/l/linux-2.6/linux-image-2.6.32-5-xen-686_2.6.32-20_i386.deb
+ sudo dpkg -i linux-base_2.6.32-20_all.deb linux-image-2.6.32-5-xen-686_2.6.32-20_i386.deb
+</code></pre></div>    </div>
+
+    <p>Notes: I was unable to find a compatible kernel that was apt-get installable from Ubuntu and that is why I grab the two above from the Debian site. Also, If you want to continue to boot the system outside of EC2 then make sure to edit the /boot/grub/grub.cfg file so that it has the correct kernel set to boot by default.</p>
+  </li>
+  <li>
+    <p>Create a menu.lst file that points to the correct kernel and initrd that were just installed:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   sudo vi /boot/grub/menu.lst
+</code></pre></div>    </div>
+
+    <p>For this example mine contains:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> default 0
+ timeout 1
+ title UBEC2
+         root (hd0,0)
+         kernel /boot/vmlinuz-2.6.32-5-xen-686 root=/dev/xvda2
+         initrd /boot/initrd.img-2.6.32-5-xen-686
+</code></pre></div>    </div>
+
+    <p>Notes: The grub root command is pointing to hard disk 0 and partition 0 because I put the boot directory on the first partition. The root parameter for the kernel is pointing to /dev/xvda2 and not /dev/sda2 because the kernel patch to disable XSAVE changes the names of the devices.</p>
+  </li>
+  <li>
+    <p>Copy everything from /boot into /boot/boot, this is just the easiest way of making things work since EC2 PV-Grub looks for the menu.lst file /boot/boot/grub/ when you specify the hd00 kernel:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> sudo cp -Rp /boot/ /boot/boot
+</code></pre></div>    </div>
+  </li>
+  <li>Shut the VirtualBox system down and extract the hard drive image with the following command:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> VBoxManage internalcommands converttoraw ~/.VirtualBox/HardDisks/YourHardDiskName.vdi /tmp/myosimage.img
+</code></pre></div>    </div>
+
+    <p>Notes: The raw image that results will be the full size of the disk as it was seen by VirtualBox so if you have a lot of free disk space on your image you will probably want to compress it before you transfer it to EC2. At this point the commands are exactly as they are for the generic instructions above.</p>
+  </li>
+  <li>
+    <p>Start a temporary EC2 instance and transfer your image:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-run-instances -z us-east-1a -g your-group -k your-keypair -n 1 ami-84db39ed
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create an EBS volume of the correct size to put your image onto and attach it to the previously created temporary EC2 instance:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-create-volume -z us-east-1a -s 2
+ec2-attach-volume volume-id -i instance-id -d /dev/sdh
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Transfer the image to the volume:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dd if=myosimage.img of=/dev/sdh bs=10M
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create a snapshot of the volume:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-create-snapshot -d "Volume Description" volume-id
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Register the snapshot as an AMI:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-register -n "AMIName" -d "AMI Description" --root-device-name /dev/sda2 -b /dev/sda=snap-id:2:true
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Boot the AMI:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-run-instances -z us-east-1a -g your-group -k your-keypair -n 1 --kernel pv-grub-kernel-id ami-from-step-19
+</code></pre></div>    </div>
+
+    <p>Note: Because the partition table contains /boot on hd00 I used the kernel named aki-4c7d9525 for the east region.</p>
+  </li>
+</ol>
+
+<p>Once you get the hang of transferring the image these steps aren’t as complicated as they seem. It may help to imagine the extracted disk image as a physical hard drive that you are moving around. The main pain points are selecting the correct PV-Grub kernel and making sure your grub menu.lst file is in the correct location on the partition.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

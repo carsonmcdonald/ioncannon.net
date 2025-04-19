@@ -1,0 +1,333 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Bluetooth 4.0 LE on Raspberry Pi with Bluez 5.x - IONCANNON</title>
+<meta name="description" content="Over the holiday I had a little time to fiddle with the Raspberry Pi I got earlier in the summer and I started wondering how hard it would be to get a Bluetooth LE adapter working. It turned out not to be as hard to get working as I thought it might be thanks to recently added support in the Bluez 5.x Bluetooth stack. What follows is the information you need to get things going.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Bluetooth 4.0 LE on Raspberry Pi with Bluez 5.x">
+<meta property="og:url" content="http://localhost:4000/linux/programming/hardware/2013/01/21/bluetooth-4-0-le-on-raspberry-pi-with-bluez-5-x/">
+
+
+  <meta property="og:description" content="Over the holiday I had a little time to fiddle with the Raspberry Pi I got earlier in the summer and I started wondering how hard it would be to get a Bluetooth LE adapter working. It turned out not to be as hard to get working as I thought it might be thanks to recently added support in the Bluez 5.x Bluetooth stack. What follows is the information you need to get things going.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2013-01-21T08:33:49-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/linux/programming/hardware/2013/01/21/bluetooth-4-0-le-on-raspberry-pi-with-bluez-5-x/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Bluetooth 4.0 LE on Raspberry Pi with Bluez 5.x</h1>
+    
+    <p>Over the holiday I had a little time to fiddle with the Raspberry Pi I got earlier in the summer and I started wondering how hard it would be to get a <a href="http://en.wikipedia.org/wiki/Bluetooth_low_energy">Bluetooth LE</a> adapter working. It turned out not to be as hard to get working as I thought it might be thanks to recently added support in the Bluez 5.x Bluetooth stack. What follows is the information you need to get things going.</p>
+
+<p>To start with I picked the <a href="http://www.iogear.com/product/GBU521/">IOGEAR Bluetooth 4.0 USB Micro Adapter (GBU521)</a> that can be found on <a href="http://www.amazon.com/IOGEAR-Bluetooth-Micro-Adapter-GBU521/dp/B007GFX0PY/">Amazon for just $13</a> since it looked like the chip it uses is decently supported with recent Linux kernels. The only issue I had is the size itself, if it didn’t have a little nub on the end it would be too small to pull back out of the USB plug.</p>
+
+<p>The GBU521 seems to be recognized by older kernels but to get LE support go with the latest kernel you can find. For the RPi it is easy enough to get a very recently kernel using <a href="https://github.com/Hexxeh/rpi-update">rpi-update</a>. Currently it is 3.6.11 and that worked well for me. I also used a 3.5 kernel on a laptop that worked fine but you can’t go any older than that.</p>
+
+<p>Once you have the correct kernel in place you need to grab the latest version of <a href="http://www.bluez.org/">Bluez</a>. Bluez is the official Bluetooth stack for Linux and the 5.x series has introduced Bluetooth LE support. It is still a work in progress but it does work. Grab the <a href="http://www.bluez.org/download/">5.1 version</a> or later and uncompress/untar it somewhere on your RPi. Please note that Bluez 5.x <b>requires a 3.5+ kernel</b> to work correctly, this seems to be a sticking point that a lot of people hit.</p>
+
+<p>I am using the <a href="http://www.raspbian.org/">Raspbian</a> distro found on <a href="http://www.raspberrypi.org/downloads">Raspberry Pi downloads</a>. Outside of the normal install needed to compile I had to install the following packages:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install libusb-dev libdbus-1-dev libglib2.0-dev automake libudev-dev libical-dev libreadline-dev
+</code></pre></div></div>
+
+<p>With those packages installed configure and make (note that I’ve disabled systemd support, it didn’t seem to work for me and I didn’t need it myself):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure --disable-systemd
+make
+make install
+</code></pre></div></div>
+
+<p>Now you will have a number of binaries installed that will get you rolling. I’m not going to go into a lot of detail here about what all of the following commands do but I want to touch on each of them briefly so you know they are there. Assuming you have the Bluetooth adapter plugged in you should be able to run the following command and get details about it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hciconfig
+hci0:	Type: BR/EDR  Bus: USB
+BD Address: 00:00:12:34:56:78  ACL MTU: 1021:8  SCO MTU: 64:1
+DOWN
+RX bytes:467 acl:0 sco:0 events:18 errors:0
+TX bytes:317 acl:0 sco:0 commands:18 errors:0
+</code></pre></div></div>
+
+<p>This shows that the device is in a down state. To bring it up you can issue the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hciconfig hci0 up
+hciconfig
+hci0:	Type: BR/EDR  Bus: USB
+BD Address: 00:00:12:34:56:78  ACL MTU: 1021:8  SCO MTU: 64:1
+UP RUNNING
+RX bytes:467 acl:0 sco:0 events:18 errors:0
+TX bytes:317 acl:0 sco:0 commands:18 errors:0
+</code></pre></div></div>
+
+<p>Now if you know you have a Bluetooth LE peripheral sitting around advertising you can run the following command and you should see an address for that device show up:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hcitool lescan
+LE Scan ...
+12:88:FF:FF:11:99 touch
+12:88:FF:FF:11:99 (unknown)
+</code></pre></div></div>
+
+<p>If you get to the point of wanting to let the RPi act as a peripheral you will need to know about the following command that will enable advertising on the adapter:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hciconfig hci0 leadv 0
+</code></pre></div></div>
+
+<p>Bluez also provides a deamon named bluetoothd (installed in /usr/local/libexc/bluetooth) that runs to take care of communicating with devices for you. It uses DBus to communicate with applications but at this point LE support hasn’t been added. The best way to integrate with it if you want to write your own code is to use a plugin. I won’t go into that here but you can see an example in the source (I also plan on releasing an example of my own that will work with an iOS app).</p>
+
+<p>Lastly remember you don’t need to start off on the Raspberry Pi. Most of the above will work on a normal Linux system and it may be easier to start there to get it working and then move to the RPi once you are familiar with the setup.</p>
+
+<p>To protect all your electronic devices from short circuits, blackouts, etc. You must be sure that your house has all the electrical connections in good condition.</p>
+
+<p>For this you must hire the best company in the market: BSK Data &amp; Electrical. Visit them at <a href="https://www.bskelectrical.com.au">https://www.bskelectrical.com.au</a>, we are sure that they will not fail you, as they have the most trained professionals in electrical issues guaranteeing the electrical safety of your home.</p>
+
+<p>Don’t be afraid to ask the company to send you a request, there are many solutions which is how people like you prefer to live, especially in this day and age. Our website for all types of electrical problems is the solution for many different problems, so please make sure to take advantage of it.</p>
+
+<p>There is all sorts of applications including all the devices at this site, you have very much to rely on this site for the complete solutions.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

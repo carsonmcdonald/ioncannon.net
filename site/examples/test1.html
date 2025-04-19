@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <script type="text/javascript" src="jquery-1.7.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+      console.log('asdf');
+      $.ajax({
+        url: 'http://static.ioncannon.net/range-test.txt',
+        error: function( data ) {
+      console.log(data);
+        },
+        success: function( data ) {
+      console.log(data);
+          $('#results').html( data );
+        }
+      });
+    });
+    </script>
+  </head>
+  <body>
+    <div id="results"></div>
+  </body>
+</html>

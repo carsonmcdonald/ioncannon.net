@@ -1,0 +1,397 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Fedora 12 Bootable Root EBS on EC2 - IONCANNON</title>
+<meta name="description" content="I recently needed to create a clean EC2 AMI using a fairly new linux distro. It has been a while since I’ve needed to create a new AMI so I also wanted to move away from the older pre-packaged AMI and boot using EBS. After taking a look at what was currently available publicly I decided I would just create my own EBS bootable AMI using Fedora 12. It wasn’t all that complicated but there are a decent number of steps so I figured I would document them for anyone else who might want to give it a try.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Fedora 12 Bootable Root EBS on EC2">
+<meta property="og:url" content="http://localhost:4000/system%20administration/2010/02/16/fedora-12-bootable-root-ebs-on-ec2/">
+
+
+  <meta property="og:description" content="I recently needed to create a clean EC2 AMI using a fairly new linux distro. It has been a while since I’ve needed to create a new AMI so I also wanted to move away from the older pre-packaged AMI and boot using EBS. After taking a look at what was currently available publicly I decided I would just create my own EBS bootable AMI using Fedora 12. It wasn’t all that complicated but there are a decent number of steps so I figured I would document them for anyone else who might want to give it a try.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2010-02-16T07:30:13-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/2010/02/16/fedora-12-bootable-root-ebs-on-ec2/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Fedora 12 Bootable Root EBS on EC2</h1>
+    
+    <p>I recently needed to create a clean EC2 AMI using a fairly new linux distro. It has been a while since I’ve needed to create a new AMI so I also wanted to move away from the older pre-packaged AMI and boot using EBS. After taking a look at what was currently available publicly I decided I would just create my own EBS bootable AMI using Fedora 12. It wasn’t all that complicated but there are a decent number of steps so I figured I would document them for anyone else who might want to give it a try.</p>
+
+<p>I’m going to assume you already understand how to do things like create instances, create EBS volumes and ssh into your running instance using key based authentication. I use the AWS management console for a lot of what follows with the exception of needing to register the AMI and for that you will need the <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=351">Amazon EC2 API Tools</a> and <a href="http://developer.amazonwebservices.com/connect/entry.jspa?externalID=368">Amazon EC2 AMI Tools</a></p>
+
+<p>There are two ways to get to a bootable EBS backed Fedora 12 instance and they start off the same. The first thing to do is fire up the AMI named “Basic Fedora Core 8 (AMI Id: ami-84db39ed)” that is provided by Amazon.</p>
+
+<p>Once the Fedora Core 8 EC2 instance is ready ssh into it. Fedora 12 requries a newer version of RPM to install so you now need to upgrade the instance to Fedora 10. This is pretty easy and can be done by following my instructions on <a href="http://www.ioncannon.net/system-administration/142/upgrading-from-fedora-9-to-fedora-10-with-yum/">upgrading from Fedora 9 to Fedora 10</a> (don’t worry about skipping 9 it will work). Here are the commands needed to do the upgrade:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum clean all
+rpm -Uhv http://archive.kernel.org/fedora-archive/releases/10/Fedora/i386/os/Packages/fedora-release-10-1.noarch.rpm http://archive.kernel.org/fedora-archive/releases/10/Fedora/i386/os/Packages/fedora-release-notes-10.0.0-1.noarch.rpm
+yum -y update
+</code></pre></div></div>
+
+<p>After a few minutes the instance will be upgraded and ready for the next step. This is where the two paths diverge depending on how you want the final product constructed. The options are to install Fedora 12 on a freshly minted volume or continue upgrading the instance you just created.</p>
+
+<p><b>Upgrade path</b></p>
+
+<p>I will start with the upgrade path since that is probably the easier of the two although may leave you with a messier instances after it is done. The next step for the upgrade path is to do what I outline in <a href="http://www.ioncannon.net/system-administration/358/upgrading-to-fedora-11-from-fedora-10/">upgrading from Fedora 10 to Fedora 11</a> and <a href="http://www.ioncannon.net/system-administration/719/upgrade-to-fedora-12-from-fedora-11/">upgrading from Fedora 11 to Fedora 12</a>. Here are the commands all in one place to make it easy:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum clean all
+rpm -Uvh http://mirrors.usc.edu/pub/linux/distributions/fedora/linux/releases/11/Fedora/i386/os/Packages/fedora-release-11-1.noarch.rpm http://mirrors.usc.edu/pub/linux/distributions/fedora/linux/releases/11/Fedora/i386/os/Packages/fedora-release-notes-11.0.0-2.fc11.noarch.rpm
+yum -y update
+yum clean all
+rpm -Uvh http://mirrors.kernel.org/fedora/releases/12/Fedora/i386/os/Packages/fedora-release-notes-12.0.0-4.fc12.noarch.rpm http://mirrors.kernel.org/fedora/releases/12/Fedora/i386/os/Packages/fedora-release-12-1.noarch.rpm
+yum -y update
+</code></pre></div></div>
+
+<p>Once you have everything upgraded to Fedora 12 you will have a 15G root partition that has less than 2G used. This may not suite your needs very well if you really don’t need that extra 13G but thankfully if you want to shrink the root EBS partition you can.</p>
+
+<p>I found some instructions in this article on <a href="http://www.elastician.com/2009/12/creating-ebs-backed-ami-from-s3-backed.html">EBS backed AMI</a>s that describes using the following command to copy the entire file system over. Assuming you have created a smaller volume and attached it to the instance as sdh you should be able to do something like the following to copy everything to the new volume:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkfs.ext3 /dev/sdh
+mount /dev/sdh /mnt
+tar cpS / | cpipe -vt -b 1024 | gzip -c | tar zxpS -C /mnt
+rm -rf /mnt/mnt/*
+rm -rf /mnt/proc/*
+umount /mnt
+</code></pre></div></div>
+
+<p>One thing to note in the above is that the entire sdh drive is formatted for the file system (you will actually get a prompt asking if that is ok). As far as I can tell this is the way it has to be or the instance will not boot correctly. I assume this is because the root device is hidden behind a partition already as /dev/sda1 and so shouldn’t have a second partition table.</p>
+
+<p>Skip to the common part now to learn how to make the final bootable AMI.</p>
+
+<p><b>From scratch path</b></p>
+
+<p>This path is similar to and mostly an update/extension to my post on creating a <a href="http://www.ioncannon.net/system-administration/128/how-to-create-a-fedora-7-instance-for-ec2/">Fedora 7 AMI setup</a>. I’m going to leave out most of the details and just provide you with a script that will take an empty volume (assumed to be attached as /dev/sdh) and turn it into a bootable EBS backed Fedora 12 volume. Download the script <a href="http://www.ioncannon.net/examples/createfedora12bootebs.sh">createfedora12bootebs.sh</a> instead of trying to cut and paste the following, it gets formatted in such a way as to lose a newline that is important. Please note that you will need at least 1G of space on the given volume.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/sh
+echo "y" | mkfs.ext3 /dev/sdh
+mount /dev/sdh /mnt
+mkdir /mnt/dev
+mkdir /mnt/proc
+mkdir /mnt/etc
+for i in console null zero ; do /sbin/MAKEDEV -d /mnt/dev -x $i ; done
+cat &lt;&lt;EOL &gt; /mnt/etc/fstab
+/dev/sda1               /                       ext3    defaults 1 1
+none                    /dev/pts                devpts  gid=5,mode=620 0 0
+none                    /dev/shm                tmpfs   defaults 0 0
+none                    /proc                   proc    defaults 0 0
+none                    /sys                    sysfs   defaults 0 0
+/dev/sdc1               /mnt                    ext3    defaults 0 0
+/dev/sdc2               swap                    swap    defaults 0 0
+EOL
+mount -t proc none /mnt/proc
+cat &lt;&lt;EOL &gt; /tmp/yumec2.conf
+[main]
+cachedir=/var/cache/yum
+debuglevel=2
+logfile=/var/log/yum.log
+exclude=*-debuginfo
+gpgcheck=0
+obsoletes=1
+reposdir=/dev/null
+[base]
+name=Fedora 12 &amp;acirc;&amp;euro;&amp;ldquo; i386 &amp;acirc;&amp;euro;&amp;ldquo; Base
+mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=fedora-12&amp;arch=i386
+enabled=1
+[updates-released]
+name=Fedora 12 &amp;acirc;&amp;euro;&amp;ldquo; i386 &amp;acirc;&amp;euro;&amp;ldquo; Released Updates
+mirrorlist=http://mirrors.fedoraproject.org/mirrorlist?repo=updates-released-f12&amp;arch=i386
+enabled=1
+EOL
+yum -c /tmp/yumec2.conf --installroot=/mnt -y groupinstall Base
+yum -c /tmp/yumec2.conf --installroot=/mnt -y install openssh-server
+yum -c /tmp/yumec2.conf --installroot=/mnt -y clean packages
+echo "UseDNS no" &gt;&gt; /mnt/etc/ssh/sshd_config
+echo "PermitRootLogin without-password" &gt;&gt; /mnt/etc/ssh/sshd_config
+cp /etc/rc.local /mnt/etc/
+cp /etc/sysconfig/network /mnt/etc/sysconfig/network
+cp /etc/sysconfig/network-scripts/ifcfg-eth0 /mnt/etc/sysconfig/network-scripts/ifcfg-eth0
+cp /usr/local/sbin/* /mnt/usr/local/sbin/
+cp -Rp /lib/modules/2.6.21.7-2.fc8xen/ /mnt/lib/modules/
+echo "/sbin/MAKEDEV /dev/urandom" &gt;&gt; /mnt/etc/rc.sysinit
+echo "/sbin/MAKEDEV /dev/random" &gt;&gt; /mnt/etc/rc.sysinit
+echo "/sbin/MAKEDEV /dev/sdc" &gt;&gt; /mnt/etc/rc.sysinit
+echo "/sbin/MAKEDEV /dev/sdc1" &gt;&gt; /mnt/etc/rc.sysinit
+echo "/sbin/MAKEDEV /dev/sdc2" &gt;&gt; /mnt/etc/rc.sysinit
+cat &lt;&lt;EOF &gt;&gt; /mnt/etc/rc.sysinit
+# The following will partition the local drive and set up swap
+cat &lt;&lt;EOL | fdisk /dev/sdc
+n
+p
+1
+1
++140G
+n
+p
+2
+w
+EOL
+mkswap /dev/sdc2
+EOF
+mv /mnt/lib/tls /mnt/lib/tls.disabled
+echo "hwcap 0 nosegneg" &gt;&gt; /mnt/etc/ld.so.conf.d/kernelcap-2.6.21.7-2.fc8.conf
+chroot /mnt chkconfig --level 2345 NetworkManager off
+chroot /mnt chkconfig --level 2345 network on
+sync
+umount /mnt/proc
+umount /mnt
+</code></pre></div></div>
+
+<p><b>Common wrap up</b></p>
+
+<p>At this point you will need to create a snapshot of the volume that was created for one of the paths above. Once the snapshot is available you will need to then register the snapshot as an AMI that is bootable from EBS. To do that you would issue something like the following command substituting the correct data in where it relates to your volume and snapshot.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-register -n "AMIName" -d "AMI Description" --block-device-mapping /dev/sdc=ephemeral0 --snapshot your-snapname --architecture i386 --kernel aki-a71cf9ce --ramdisk ari-a51cf9cc
+</code></pre></div></div>
+
+<p>One thing to note in this command is the –block-device-mapping option. That option is what gives you access to the local drive on your node once it is booted. This gives you extra storage for things you don’t need to keep after the life of the running node. In the from scratch option I’m turning part of the local drive into swap as well as creating a partition that could be used as a large temporary storage. If you want to know more details on the ephermeral storage look at <a href="http://developer.amazonwebservices.com/connect/thread.jspa?messageID=155916">this post</a></p>
+
+<p>After all that you should have a bootable EBS backed Fedora 12 install to work with.</p>
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

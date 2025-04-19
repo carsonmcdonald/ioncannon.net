@@ -1,0 +1,48 @@
+<html>
+<head>
+<script src="http://maps.google.com/maps?file=api&v=1&key=ABQIAAAAcktFen-Z7CQCe0dxIKmxeRT6hTyDRG98938_a57V46HEkEDiQhT6ytXMxqkdYUayqYOHAa9BpaeP8g" type="text/javascript"></script>
+</head>
+<body>
+
+<div id="map" style="width: 500px; height: 400px"></div>
+<script type="text/javascript">
+//<!--
+var d2r = Math.PI / 180;   // degrees to radians
+var r2d = 180 / Math.PI;   // radians to degrees
+var earthsradius = 3963; // 3963 is the radius of the earth in miles
+
+var hqpoint = new GPoint(-85.578852, 38.215601);
+var map = new GMap(document.getElementById("map"));
+
+map.addControl(new GSmallMapControl());
+map.addControl(new GMapTypeControl());
+map.centerAndZoom(hqpoint, 4);
+map.addOverlay(new GMarker(hqpoint));
+
+drawCircle(-85.578852, 38.215601, map);
+
+function drawCircle(lng, lat, map)
+{
+   var points = 32;
+   var radius = 1;             // radius in miles
+
+   // find the raidus in lat/lon
+   var rlat = (radius / earthsradius) * r2d;
+   var rlng = rlat / Math.cos(lat * d2r);
+
+   var extp = new Array();
+   for (var i=0; i < points+1; i++) // one extra here makes sure we connect the last to the first
+   {
+      var theta = Math.PI * (i / (points/2));
+      ex = lng + (rlng * Math.cos(theta)); // center a + radius x * cos(theta)
+      ey = lat + (rlat * Math.sin(theta)); // center b + radius y * sin(theta)
+      extp.push(new GPoint(ex, ey));
+   }
+
+   map.addOverlay(new GPolyline(extp, "#000000", 2));
+}
+//-->
+</script>
+
+</body>
+</html>

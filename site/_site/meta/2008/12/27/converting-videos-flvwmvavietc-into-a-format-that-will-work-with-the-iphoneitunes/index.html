@@ -1,0 +1,306 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Converting videos (flv,wmv,avi,etc) into a format that will work with the iPhone/iTunes - IONCANNON</title>
+<meta name="description" content="I have had an iPhone for a while now and I keep running into instances where I want to have videos outside of youtube in some format that I can watch on the device. These include windows WMV formatted videos from PDC as well as FVL formatted videos on Flex. I finally broke down and found a working solution to convert pretty much any video into a iPhone/iTunes format using mencoder.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Converting videos (flv,wmv,avi,etc) into a format that will work with the iPhone/iTunes">
+<meta property="og:url" content="http://localhost:4000/meta/2008/12/27/converting-videos-flvwmvavietc-into-a-format-that-will-work-with-the-iphoneitunes/">
+
+
+  <meta property="og:description" content="I have had an iPhone for a while now and I keep running into instances where I want to have videos outside of youtube in some format that I can watch on the device. These include windows WMV formatted videos from PDC as well as FVL formatted videos on Flex. I finally broke down and found a working solution to convert pretty much any video into a iPhone/iTunes format using mencoder.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2008-12-27T21:37:20-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/meta/2008/12/27/converting-videos-flvwmvavietc-into-a-format-that-will-work-with-the-iphoneitunes/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Converting videos (flv,wmv,avi,etc) into a format that will work with the iPhone/iTunes</h1>
+    
+    <p>I have had an iPhone for a while now and I keep running into instances where I want to have videos outside of youtube in some format that I can watch on the device. These include windows WMV formatted videos from PDC as well as FVL formatted videos on Flex. I finally broke down and found a working solution to convert pretty much any video into a iPhone/iTunes format using mencoder.</p>
+
+<p>Here is the script I came up with to convert a video:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/sh
+
+BN=`basename $1 .flv`
+
+mencoder $1 -ofps 23.976 -ovc lavc -oac copy -o /tmp/test.$BN.avi
+
+mencoder /tmp/test.$BN.avi -o togo/$BN.mp4 -vf scale=480:-10,harddup -lavfopts format=mp4 -faacopts mpeg=4:object=2:raw:br=128 -oac faac -ovc x264 -sws 9 -x264encopts nocabac:level_idc=30:bframes=0:global_header:threads=auto:subq=5:frameref=6:partitions=all:trellis=1:chroma_me:me=umh:bitrate=500 -of lavf
+
+rm /tmp/test.$BN.avi
+</code></pre></div></div>
+<p>One thing to notice is that I have the file format hard coded in the basename argument. I did this because I didn’t need the script to be that generic and I just change it when I move from one format to another. For some reason I found that converting the video with the first statement works best. Without that I had a number of audio sync issues as well as some outright conversion failures .</p>
+
+<p>The options for the first command are</p>
+
+<ul>
+<li>-ofps output frames per second</li>
+<li>-ovc lavc output codec is lavc</li>
+<li>-oac copy output audio is a copy of the input</li>
+<li>-o the output file</li>
+</ul>
+<p>The options for the second command are</p>
+
+<ul>
+<li>-o the output file</li>
+<li>-vf scale=480:-10,harddup video filter that scales to 480 width and rounds the height to the closest 10/16th width as well as forcing duplicate frames to be encoded in the output </li>
+<li>-lavfopts format=mp4 set the video format options to mp4</li>
+<li>-faacopts mpeg=4:object=2:raw:br=128 set the audio options to mp4</li>
+<li>-oac faac set the audio output format to faac</li>
+<li>-ovc x264 set the output to x264 encoding</li>
+<li>-sws 9 set the scaler options to lanczos</li>
+<li>-x264encopts nocabac:level_idc=30:bframes=0:global_header:threads=auto:subq=5:frameref=6:partitions=all:trellis=1:chroma_me:me=umh:bitrate=500 sets the 265 enocoding options</li>
+<li>-of lavf set the output video format</li>
+</ul>
+<p>After converting the video all you need to to do is drag it onto the iTunes Library bar and it will then import it and make it available to sync to your iPhone, touch or iPod.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

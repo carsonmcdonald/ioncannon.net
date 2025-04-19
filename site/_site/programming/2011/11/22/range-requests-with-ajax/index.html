@@ -1,0 +1,327 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Range Requests with Ajax - IONCANNON</title>
+<meta name="description" content="I ran across something the other day that made wonder about doing range requests using ajax. For some reason it wasn’t obvious at first if this would be easy but as it turns out it is.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Range Requests with Ajax">
+<meta property="og:url" content="http://localhost:4000/programming/2011/11/22/range-requests-with-ajax/">
+
+
+  <meta property="og:description" content="I ran across something the other day that made wonder about doing range requests using ajax. For some reason it wasn’t obvious at first if this would be easy but as it turns out it is.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2011-11-22T11:03:58-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2011/11/22/range-requests-with-ajax/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Range Requests with Ajax</h1>
+    
+    <p>I ran across something the other day that made wonder about doing range requests using ajax. For some reason it wasn’t obvious at first if this would be easy but as it turns out it is.</p>
+
+<p>If you aren’t familiar with range requests head over to the HTTP RFC and check out the <a href="http://tools.ietf.org/html/rfc2616#section-14.35.2">range header</a>. Your web server needs to support range requests for this to be useful but most do so that shouldn’t be a huge issue. As a bonus you will find that some CDNs support range request as well (Amazon S3 for example).</p>
+
+<p>To show how this works I’ll start off by getting the offsets of a text file, then use curl to show the actual request and then put it into an ajax request. Even though I’m using a text file the same thing could be done with a binary file as well. Here are the contents of the file I’ve called range-test.txt:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>First part of the file.
+More text here.
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+Some text after Lorem Ipsum.
+End of the file.
+</code></pre></div></div>
+
+<p>Using egrep we can get the offset of each line pretty easy like so:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; egrep -b "\r|\n" range-test.txt
+0:First part of the file.
+25:More text here.
+42:Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+618:Some text after Lorem Ipsum.
+660:End of the file.
+</code></pre></div></div>
+
+<p>Quickly verify that the range looks right in isolation using hexdump:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; hexdump -c -s 618 -n 30 range-test.txt
+000026a   S   o   m   e       t   e   x   t       a   f   t   e   r
+000027a   L   o   r   e   m       I   p   s   u   m   .  \n  \n
+0000288
+</code></pre></div></div>
+
+<p>Now we have a sample range so put the text file on your web server and use curl to send the range request headers (note that the hexdump takes an offset and count of bytes while the range header takes an start and end offset):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; curl -H 'Range:bytes=618-647' http://localhost/range-test.txt
+Some text after Lorem Ipsum.
+</code></pre></div></div>
+
+<p>Now that it makes sense how this range is used to make a request for part of a file we can move on to doing it with an ajax request. I’m going to use <a href="http://jquery.com/">jQuery</a>’s <a href="http://api.jquery.com/jQuery.ajax/">ajax</a> function to make this really simple. It has a feature that lets you set headers really easily. The following is all you need:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;html&gt;
+  &lt;head&gt;
+    &lt;script type="text/javascript" src="jquery-1.7.min.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+    $(function() {
+      $.ajax({
+        url: 'range-test.txt',
+        headers: {Range: "bytes=618-647"},
+        success: function( data ) { $('#results').html( data ); }
+      });
+    });
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+&lt;div id="results"&gt;&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div></div>
+
+<p>And that is all there is to it. This could be useful for all kinds of things like displaying just a section of a large log file at a time. This might also be useful in a situation where you want to stream binary data back to the browser a chunk at a time.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

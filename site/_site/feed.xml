@@ -1,0 +1,925 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-04-19T04:10:16-04:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">IONCANNON</title><subtitle>Thoughts on Software Development and Engineering</subtitle><author><name>Carson McDonald</name></author><entry><title type="html">Azure CLI and ACR Docker Credential Helper on macOS 12 Monterey</title><link href="http://localhost:4000/utilities/2022/01/27/azure-cli-and-acr-docker-credential-helper-on-macos-12-monterey/" rel="alternate" type="text/html" title="Azure CLI and ACR Docker Credential Helper on macOS 12 Monterey" /><published>2022-01-27T04:17:04-05:00</published><updated>2022-01-27T04:17:04-05:00</updated><id>http://localhost:4000/utilities/2022/01/27/azure-cli-and-acr-docker-credential-helper-on-macos-12-monterey</id><content type="html" xml:base="http://localhost:4000/utilities/2022/01/27/azure-cli-and-acr-docker-credential-helper-on-macos-12-monterey/"><![CDATA[<p>After upgrading to macOS 12 Monterey I started getting the following error when using docker with the ACR Docker <a href="https://docs.docker.com/engine/reference/commandline/login/#credential-helpers">Credential Helper</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fatal error: runtime: bsdthread_register error
+</code></pre></div></div>
+
+<p>This error is caused when using a Golang binary that has been compiled with an older version of the Golang compiler, you can find out more in the <a href="https://github.com/golang/go/wiki/MacOS12BSDThreadRegisterIssue">MacOS12BSDThreadRegisterIssue</a> Golang wiki.</p>
+
+<p>You can run the command helper by hand to verify that it is generating the error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-credential-acr-darwin list
+</code></pre></div></div>
+
+<p>If you use the instructions provided by Microsoft to install the ACR Docker Credential Helper binary then you have installed a binary that is compiled with a fairly old version of Golang. The fix for the error is to recompile the ACR Docker Credential Helper using a newer version of Golang.</p>
+
+<p>To recompile using a newer version you will first need to clone the helper github repo:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/Azure/acr-docker-credential-helper
+</code></pre></div></div>
+
+<p>Then you will need to edit the Dockerfile so that the Golang version used is a supported version on macOS 12, I found that version 1.15 worked and the helper still compiled:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM golang:1.15-alpine
+RUN apk update &amp;&amp; apk add make bash zip
+ADD . /build-root
+WORKDIR /build-root
+CMD make
+</code></pre></div></div>
+
+<p>After modifying the Dockerfile you can build the binary by running the <b>build.sh</b> script. This script will build the helper for multiple platforms and put the results in the <b>artifacts</b> directory. The <b>artifacts/docker-credential-acr-darwin-amd64.tar.gz</b> file is the one with the new macOS binaries. The two binaries will need to be extracted from that file and put in the <b>/usr/local/bin/</b> directory.</p>
+
+<p>You can verify that the update has fixed the issue by running the helper by hand again:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-credential-acr-darwin list
+</code></pre></div></div>]]></content><author><name>Carson McDonald</name></author><category term="utilities" /><category term="docker" /><category term="azure" /><summary type="html"><![CDATA[After upgrading to macOS 12 Monterey I started getting the following error when using docker with the ACR Docker Credential Helper:]]></summary></entry><entry><title type="html">Using Ruby to Send Targeted Email to an Apple Watch</title><link href="http://localhost:4000/ruby/programming/2015/05/26/using-ruby-to-send-targeted-email-to-an-apple-watch/" rel="alternate" type="text/html" title="Using Ruby to Send Targeted Email to an Apple Watch" /><published>2015-05-26T10:03:45-04:00</published><updated>2015-05-26T10:03:45-04:00</updated><id>http://localhost:4000/ruby/programming/2015/05/26/using-ruby-to-send-targeted-email-to-an-apple-watch</id><content type="html" xml:base="http://localhost:4000/ruby/programming/2015/05/26/using-ruby-to-send-targeted-email-to-an-apple-watch/"><![CDATA[<p>The other day I ran into a post about sending emails that could fall back to support the limited HTML that the Apple watch can display called <a href="https://litmus.com/blog/how-to-send-hidden-version-email-apple-watch">hidden Apple Watch email</a>. After reading the post I wondered if I could write a quick example to do what they demonstrated. I turned to Ruby + <a href="https://github.com/mikel/mail">Ruby mail gem</a> to give this a try and found that there are a few things to know but generally it works well.</p>
+
+<p>To get started make sure you have the mail gem installed:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install mail
+</code></pre></div></div>
+
+<p>Next there are two main points to remember before diving into the examples:</p>
+
+<ul>
+<li>The sort order of the mime types is important, they need to come in the order listed in the examples or you will end up with the plain text version of the email on the watch</li>
+<li>You need to include something in the full featured HTML section that can't render on the watch or you will see the full featured HTML on the watch. See the article above for some pointers but generally the watch isn't going to fetch an image from the web so that should do it and is what I have in the following images.</li>
+</ul>
+<p>First a simple example that will show plain text for mail clients that don’t support HTML at all, normal HTML for full featured clients and a subset of HTML for the Apple watch.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'mail'
+mail = Mail.new do
+  to      'user@something.com'
+  from    'person@company.com'
+  subject 'Watch mail example'
+end
+#
+# The order supplied here matters
+#
+mail.body.set_sort_order [ "text/plain", "text/watch-html", "text/html" ]
+#
+# The order here doesn't matter
+#
+text_part = Mail::Part.new do
+  body 'This is plain text'
+end
+mail.text_part = text_part
+watch_part = Mail::Part.new do
+  content_type 'text/watch-html; charset=UTF-8'
+  body '&lt;b&gt;This is HTML for the Apple watch&lt;/b&gt;'
+end
+mail.add_part watch_part
+#
+# If this part has something in it that can't display on the watch then
+# the watch part will display. Keep that in mind if you want to force the
+# watch part to display. Here the link out to an image will force the
+# fallback to happen.
+#
+html_part = Mail::Part.new do
+  content_type 'text/html; charset=UTF-8'
+  body '&lt;h1&gt;This is HTML&lt;/h1&gt;&lt;img src="http://images.company.com/someimage.jpg"/&gt;'
+end
+mail.html_part = html_part
+mail.deliver
+</code></pre></div></div>
+
+<p>Here is an example that includes an image that will display on the watch. It is important that in this case the image comes first in the sort order.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'mail'
+mail = Mail.new do
+  to      'user@something.com'
+  from    'person@company.com'
+  subject 'Watch mail example with image'
+end
+#
+# The order supplied here matters
+#
+mail.body.set_sort_order [ "image/png", "text/plain", "text/watch-html", "text/html" ]
+#
+# The order here doesn't matter but you will need to
+# reference the image later.
+#
+mail.attachments['test.png'] = File.read('/tmp/test.png')
+image_cid = mail.parts.first.url
+  text_part = Mail::Part.new do
+  body 'This is plain text'
+end
+mail.text_part = text_part
+  watch_part = Mail::Part.new do
+  content_type 'text/watch-html; charset=UTF-8'
+  body '&lt;b&gt;This is HTML for the watch&lt;/b&gt; &lt;br/&gt; &lt;img src="' + image_cid + '"/&gt;'
+end
+mail.add_part watch_part
+  html_part = Mail::Part.new do
+  content_type 'text/html; charset=UTF-8'
+  body '&lt;h1&gt;This is HTML&lt;/h1&gt;&lt;img src="http://images.company.com/someimage.jpg"/&gt;'
+end
+mail.html_part = html_part
+mail.deliver
+</code></pre></div></div>]]></content><author><name>Carson McDonald</name></author><category term="ruby" /><category term="programming" /><category term="ruby" /><category term="apple watch" /><category term="email" /><summary type="html"><![CDATA[The other day I ran into a post about sending emails that could fall back to support the limited HTML that the Apple watch can display called hidden Apple Watch email. After reading the post I wondered if I could write a quick example to do what they demonstrated. I turned to Ruby + Ruby mail gem to give this a try and found that there are a few things to know but generally it works well.]]></summary></entry><entry><title type="html">Turn a Raspberry Pi into an iBeacon</title><link href="http://localhost:4000/programming/hardware/2013/10/12/turn-a-raspberry-pi-into-an-ibeacon/" rel="alternate" type="text/html" title="Turn a Raspberry Pi into an iBeacon" /><published>2013-10-12T08:54:21-04:00</published><updated>2013-10-12T08:54:21-04:00</updated><id>http://localhost:4000/programming/hardware/2013/10/12/turn-a-raspberry-pi-into-an-ibeacon</id><content type="html" xml:base="http://localhost:4000/programming/hardware/2013/10/12/turn-a-raspberry-pi-into-an-ibeacon/"><![CDATA[<p>Earlier this year Apple added the concept of <a href="https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/LocationAwarenessPG/RegionMonitoring/RegionMonitoring.html#//apple_ref/doc/uid/TP40009497-CH9-SW7">beacon region monitoring</a> into Core Location. This is more widely known as iBeacon. Right now there isn’t a large amount of information on how to take advantage of it outside of iOS and Macs but it is actually pretty easy to implement. The following instructions will get you to a point where a Raspberry Pi can function as an iBeacon (any Linux box should actually work).</p>
+
+<p>Before diving into the technical details I think it is worth noting a few things. There are a few hardware based iBeacons already available in various “beta” states, to name a few: <a href="http://www.kstechnologies.com/collections/all">KST’s iBeacon</a>, <a href="http://blog.onlycoin.com/posts/2013/10/3/coin-arduino-ble-dev-kit">coin for arduino</a> and <a href="http://redbearlab.com/ibeacon/">ReadBearLab’s iBeacon</a>. These dedicated devices are going to have a power and most likely a price advantage over the Raspberry Pi so that is something to keep in mind. The setup I used cost around $70 for example and that is around the cost of the KST device but more than the others and the more that are made the more the price will probably decrease. The main advantage of the Raspberry Pi is flexibility and included in that $70 is a wifi dongle that the other devices don’t have.</p>
+
+<p>My configuration for this post:</p>
+
+<ul>
+  <li><a href="http://www.newark.com/jsp/search/productdetail.jsp?sku=43W5302&amp;COM=embedded-link_RaspberryPi">Raspberry Pi</a> Model B. The Model A would work as well but currently you wouldn’t be able to run both wifi and bluetooth at the same time. You also need <a href="http://www.newark.com/jsp/search/productdetail.jsp?sku=53W8467">power</a>, <a href="http://www.amazon.com/Transcend-Class-Flash-Memory-TS8GSDHC10E/dp/B003VNKNEG/">storage</a> and maybe a <a href="http://www.newark.com/jsp/search/productdetail.jsp?sku=07W8936">case</a>.</li>
+  <li>I’ve used both the <a href="http://www.amazon.com/dp/B007GFX0PY">IOGEAR Bluetooth 4.0 USB Micro Adapter (GBU521)</a> and the <a href="http://www.amazon.com/dp/B0090I9NRE">Cirago Bluetooth 4.0 USB Mini Adapter (BTA8000)</a> adapters successfully.</li>
+  <li>For wifi I’ve been using the <a href="http://www.amazon.com/EW-7811UN-IEEE-802-11n-draft-USB/dp/B005CLMJLU">Edimax</a> device.</li>
+</ul>
+
+<p>Assuming you have your Pi hardware ready the first step is to install the <a href="http://www.raspberrypi.org/downloads">Raspbian distro</a>. I tested on the 2013-09-25-wheezy-raspbian version. Make sure it boots and then run the following commands as root to get the dependancies ready:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get update
+apt-get install libglib2.0-dev libdbus-1-dev libudev-dev libical-dev libreadline6-dev
+</code></pre></div></div>
+
+<p>Next you will need to download and compile a more recent version of <a href="http://www.bluez.org/">Bluez</a> than what is available for the Raspbain distro. I’ve been able to use a number of versions in the Bluez 5.X family but for this I’ll assume <a href="http://www.bluez.org/release-of-bluez-5-9/">Bluez 5.9</a>. Use the following to get it installed and compiled (make sure to do the install part here as root):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://www.kernel.org/pub/linux/bluetooth/bluez-5.9.tar.xz
+tar xvJf bluez-5.9.tar.xz
+cd bluez-5.9
+./configure --disable-systemd --enable-library
+make
+make install
+</code></pre></div></div>
+
+<p>Now you have Bluez installed with bluetooth library support. There are also a number of tools available at this point. The first one you want to run is hciconfig to configure your bluetooth device. It works a lot like ifconfig if you are familiar with setting up network interface. If you run it without any command line arguments you will get a list of bluetooth devices:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hciconfig
+# hci0:   Type: BR/EDR  Bus: USB
+#         BD Address: 00:02:72:32:CA:23  ACL MTU: 1021:8  SCO MTU: 64:1
+#         DOWN
+#         RX bytes:340 acl:0 sco:0 events:7 errors:0
+#         TX bytes:54 acl:0 sco:0 commands:12 errors:0
+</code></pre></div></div>
+
+<p>You want to bring the bluetooth device up so it is available:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hciconfig hci0 up
+hciconfig
+# hci0:   Type: BR/EDR  Bus: USB
+#         BD Address: 00:02:72:32:CA:23  ACL MTU: 1021:8  SCO MTU: 64:1
+#         UP RUNNING
+#         RX bytes:813 acl:0 sco:0 events:26 errors:0
+#         TX bytes:374 acl:0 sco:0 commands:31 errors:0
+</code></pre></div></div>
+
+<p>Make sure you see “UP RUNNING” before proceeding. You will probably want to add the command to bring the bluetooth device up to the startup script. Next you will want to grab my <a href="https://github.com/carsonmcdonald/bluez-ibeacon">bluez-ibeacon</a> repo from github and build it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/carsonmcdonald/bluez-ibeacon.git
+bluez-ibeacon/bluez-beacon/
+make
+
+</code></pre></div></div>
+<p>Now you have a binary named ibeacon that you can run and that will turn the Pi into an iBeacon:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ibeacon 200 e2c56db5dffb48d2b060d0f5a71096e0 1 1 -29
+</code></pre></div></div>
+
+<p>You can read more about what the above means in the README for the bluez-ibeacon project.</p>
+
+<p>There is a demo iOS app in the same bluez-ibeacon project that you can use to then detect the beacon now that it is running.</p>]]></content><author><name>Carson McDonald</name></author><category term="programming" /><category term="hardware" /><category term="rpi" /><category term="bluetooth" /><category term="ibeacon" /><summary type="html"><![CDATA[Earlier this year Apple added the concept of beacon region monitoring into Core Location. This is more widely known as iBeacon. Right now there isn’t a large amount of information on how to take advantage of it outside of iOS and Macs but it is actually pretty easy to implement. The following instructions will get you to a point where a Raspberry Pi can function as an iBeacon (any Linux box should actually work).]]></summary></entry><entry><title type="html">Bluetooth 4.0 LE on Raspberry Pi with Bluez 5.x</title><link href="http://localhost:4000/linux/programming/hardware/2013/01/21/bluetooth-4-0-le-on-raspberry-pi-with-bluez-5-x/" rel="alternate" type="text/html" title="Bluetooth 4.0 LE on Raspberry Pi with Bluez 5.x" /><published>2013-01-21T08:33:49-05:00</published><updated>2013-01-21T08:33:49-05:00</updated><id>http://localhost:4000/linux/programming/hardware/2013/01/21/bluetooth-4-0-le-on-raspberry-pi-with-bluez-5-x</id><content type="html" xml:base="http://localhost:4000/linux/programming/hardware/2013/01/21/bluetooth-4-0-le-on-raspberry-pi-with-bluez-5-x/"><![CDATA[<p>Over the holiday I had a little time to fiddle with the Raspberry Pi I got earlier in the summer and I started wondering how hard it would be to get a <a href="http://en.wikipedia.org/wiki/Bluetooth_low_energy">Bluetooth LE</a> adapter working. It turned out not to be as hard to get working as I thought it might be thanks to recently added support in the Bluez 5.x Bluetooth stack. What follows is the information you need to get things going.</p>
+
+<p>To start with I picked the <a href="http://www.iogear.com/product/GBU521/">IOGEAR Bluetooth 4.0 USB Micro Adapter (GBU521)</a> that can be found on <a href="http://www.amazon.com/IOGEAR-Bluetooth-Micro-Adapter-GBU521/dp/B007GFX0PY/">Amazon for just $13</a> since it looked like the chip it uses is decently supported with recent Linux kernels. The only issue I had is the size itself, if it didn’t have a little nub on the end it would be too small to pull back out of the USB plug.</p>
+
+<p>The GBU521 seems to be recognized by older kernels but to get LE support go with the latest kernel you can find. For the RPi it is easy enough to get a very recently kernel using <a href="https://github.com/Hexxeh/rpi-update">rpi-update</a>. Currently it is 3.6.11 and that worked well for me. I also used a 3.5 kernel on a laptop that worked fine but you can’t go any older than that.</p>
+
+<p>Once you have the correct kernel in place you need to grab the latest version of <a href="http://www.bluez.org/">Bluez</a>. Bluez is the official Bluetooth stack for Linux and the 5.x series has introduced Bluetooth LE support. It is still a work in progress but it does work. Grab the <a href="http://www.bluez.org/download/">5.1 version</a> or later and uncompress/untar it somewhere on your RPi. Please note that Bluez 5.x <b>requires a 3.5+ kernel</b> to work correctly, this seems to be a sticking point that a lot of people hit.</p>
+
+<p>I am using the <a href="http://www.raspbian.org/">Raspbian</a> distro found on <a href="http://www.raspberrypi.org/downloads">Raspberry Pi downloads</a>. Outside of the normal install needed to compile I had to install the following packages:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get install libusb-dev libdbus-1-dev libglib2.0-dev automake libudev-dev libical-dev libreadline-dev
+</code></pre></div></div>
+
+<p>With those packages installed configure and make (note that I’ve disabled systemd support, it didn’t seem to work for me and I didn’t need it myself):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure --disable-systemd
+make
+make install
+</code></pre></div></div>
+
+<p>Now you will have a number of binaries installed that will get you rolling. I’m not going to go into a lot of detail here about what all of the following commands do but I want to touch on each of them briefly so you know they are there. Assuming you have the Bluetooth adapter plugged in you should be able to run the following command and get details about it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hciconfig
+hci0:	Type: BR/EDR  Bus: USB
+BD Address: 00:00:12:34:56:78  ACL MTU: 1021:8  SCO MTU: 64:1
+DOWN
+RX bytes:467 acl:0 sco:0 events:18 errors:0
+TX bytes:317 acl:0 sco:0 commands:18 errors:0
+</code></pre></div></div>
+
+<p>This shows that the device is in a down state. To bring it up you can issue the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hciconfig hci0 up
+hciconfig
+hci0:	Type: BR/EDR  Bus: USB
+BD Address: 00:00:12:34:56:78  ACL MTU: 1021:8  SCO MTU: 64:1
+UP RUNNING
+RX bytes:467 acl:0 sco:0 events:18 errors:0
+TX bytes:317 acl:0 sco:0 commands:18 errors:0
+</code></pre></div></div>
+
+<p>Now if you know you have a Bluetooth LE peripheral sitting around advertising you can run the following command and you should see an address for that device show up:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hcitool lescan
+LE Scan ...
+12:88:FF:FF:11:99 touch
+12:88:FF:FF:11:99 (unknown)
+</code></pre></div></div>
+
+<p>If you get to the point of wanting to let the RPi act as a peripheral you will need to know about the following command that will enable advertising on the adapter:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hciconfig hci0 leadv 0
+</code></pre></div></div>
+
+<p>Bluez also provides a deamon named bluetoothd (installed in /usr/local/libexc/bluetooth) that runs to take care of communicating with devices for you. It uses DBus to communicate with applications but at this point LE support hasn’t been added. The best way to integrate with it if you want to write your own code is to use a plugin. I won’t go into that here but you can see an example in the source (I also plan on releasing an example of my own that will work with an iOS app).</p>
+
+<p>Lastly remember you don’t need to start off on the Raspberry Pi. Most of the above will work on a normal Linux system and it may be easier to start there to get it working and then move to the RPi once you are familiar with the setup.</p>
+
+<p>To protect all your electronic devices from short circuits, blackouts, etc. You must be sure that your house has all the electrical connections in good condition.</p>
+
+<p>For this you must hire the best company in the market: BSK Data &amp; Electrical. Visit them at <a href="https://www.bskelectrical.com.au">https://www.bskelectrical.com.au</a>, we are sure that they will not fail you, as they have the most trained professionals in electrical issues guaranteeing the electrical safety of your home.</p>
+
+<p>Don’t be afraid to ask the company to send you a request, there are many solutions which is how people like you prefer to live, especially in this day and age. Our website for all types of electrical problems is the solution for many different problems, so please make sure to take advantage of it.</p>
+
+<p>There is all sorts of applications including all the devices at this site, you have very much to rely on this site for the complete solutions.</p>]]></content><author><name>Carson McDonald</name></author><category term="linux" /><category term="programming" /><category term="hardware" /><category term="rpi" /><category term="bluethooth" /><summary type="html"><![CDATA[Over the holiday I had a little time to fiddle with the Raspberry Pi I got earlier in the summer and I started wondering how hard it would be to get a Bluetooth LE adapter working. It turned out not to be as hard to get working as I thought it might be thanks to recently added support in the Bluez 5.x Bluetooth stack. What follows is the information you need to get things going.]]></summary></entry><entry><title type="html">Direct Browser Uploading - Amazon S3, CORS, FileAPI, XHR2 and Signed PUTs</title><link href="http://localhost:4000/programming/2012/09/02/direct-browser-uploading-amazon-s3-cors-fileapi-xhr2-and-signed-puts/" rel="alternate" type="text/html" title="Direct Browser Uploading - Amazon S3, CORS, FileAPI, XHR2 and Signed PUTs" /><published>2012-09-02T00:01:07-04:00</published><updated>2012-09-02T00:01:07-04:00</updated><id>http://localhost:4000/programming/2012/09/02/direct-browser-uploading-amazon-s3-cors-fileapi-xhr2-and-signed-puts</id><content type="html" xml:base="http://localhost:4000/programming/2012/09/02/direct-browser-uploading-amazon-s3-cors-fileapi-xhr2-and-signed-puts/"><![CDATA[<p>I’ve been hacking around with FileAPI and XHR2 in HTML5 recently (more on why hopefully in another month or so). So when Amazon <a href="http://aws.typepad.com/aws/2012/08/amazon-s3-cross-origin-resource-sharing.html">announced S3 CORS support</a> I figured I should create a demo of directly uploading a file to S3 from a browser.</p>
+
+<p>The first thing to understand is that while the upload happens directly to S3 there still needs to be some server side code that signs the URL used by the PUT call. That bit of code is really simple and I’m including an example at the end for both PHP and Ruby. If you want to skip to the fun part you can check out the <a href="https://github.com/carsonmcdonald/direct-browser-s3-upload-example">PHP and Ruby example code</a> on github (instructions there on deploying to Heroku as well).</p>
+
+<p>Second there are a good number of technologies involved here so I’ve compiled a list of helpful links in case you aren’t already familiar with them and/or want a reference:</p>
+
+<ul>
+<li><a href="http://www.html5rocks.com/en/tutorials/file/dndfiles/">FileAPI</a></li>
+<li><a href="http://www.html5rocks.com/en/tutorials/file/xhr2/">XHR2</a></li>
+<li><a href="http://www.html5rocks.com/en/tutorials/cors/">CORS</a></li>
+<li><a href="http://docs.amazonwebservices.com/AmazonS3/latest/dev/cors.html">S3 CORS support docs</a></li>
+<li><a href="http://docs.amazonwebservices.com/AmazonS3/latest/dev/RESTAuthentication.html">S3 REST Authentication</a></li>
+<li><a href="http://docs.amazonwebservices.com/AmazonS3/latest/API/RESTObjectPUT.html">S3 PUT requests</a></li>
+</ul>
+
+<p>Setting up CORS support for an S3 bucket can be done using the console, see the S3 CORS support docs above for details. For everything in this demo I used the following CORS configuration:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;CORSConfiguration&gt;
+    &lt;CORSRule&gt;
+        &lt;AllowedOrigin&gt;*&lt;/AllowedOrigin&gt;
+        &lt;AllowedMethod&gt;PUT&lt;/AllowedMethod&gt;
+        &lt;MaxAgeSeconds&gt;3000&lt;/MaxAgeSeconds&gt;
+        &lt;AllowedHeader&gt;Content-Type&lt;/AllowedHeader&gt;
+        &lt;AllowedHeader&gt;x-amz-acl&lt;/AllowedHeader&gt;
+        &lt;AllowedHeader&gt;origin&lt;/AllowedHeader&gt;
+    &lt;/CORSRule&gt;
+&lt;/CORSConfiguration&gt;
+</code></pre></div></div>
+
+<p>That configuration allows any origin to issue PUTs and include the headers Content-Type, x-amz-acl and origin. You would probably want to restrict the origin more but for this demo I want to make sure it works for people who just cut and paste the above.</p>
+
+<p>The following HTML sets up the file input tag and a progress bar to track the upload (index.html):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;html&gt;
+&lt;head&gt;
+&lt;link rel="stylesheet" type="text/css" href="styles.css" /&gt;
+ &lt;script type="text/javascript" src="app.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td&gt;File selection:&lt;/td&gt;
+&lt;td&gt;&lt;input type="file" id="files" name="files[]" multiple /&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Progress:&lt;/td&gt;
+&lt;td&gt;
+&lt;div id="progress_bar"&gt;
+&lt;div class="percent"&gt;0%&lt;/div&gt;
+&lt;/div&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Status:&lt;/td&gt;
+&lt;td&gt;&lt;span id="status"&gt;&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+  &lt;script type="text/javascript"&gt;
+    document.getElementById('files').addEventListener('change', handleFileSelect, false);
+    setProgress(0, 'Waiting for upload.');
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div></div>
+
+<p>CSS for the progress bar (styles.css):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#progress_bar {
+  width: 200px;
+  margin: 10px 0;
+  padding: 3px;
+  border: 1px solid #000;
+  font-size: 14px;
+  clear: both;
+  opacity: 0;
+  -moz-transition: opacity 1s linear;
+  -o-transition: opacity 1s linear;
+  -webkit-transition: opacity 1s linear;
+}
+#progress_bar.loading {
+  opacity: 1.0;
+}
+#progress_bar .percent {
+  background-color: #99ccff;
+  height: auto;
+  width: 0;
+}
+</code></pre></div></div>
+
+<p>The JavaScript that follows has a couple different parts.</p>
+
+<ul>
+<li><b>handleFileSelect</b> - This is where things get started when a file is selected for upload. It kicks off the upload process with each file that was selected.</li>
+<li><b>uploadFile</b> - Called for each file in handleFileSelect and ties the signing process to the S3 PUT process.</li>
+<li><b>executeOnSignedUrl</b> - Calls the server side signing process with the a filename and mime type. The server side signed URL is then passed on to a callback.</li>
+<li><b>uploadToS3</b> - Uses a signed PUT URL to upload the given file to S3 using CORS enabled XHR2.</li>
+<li><b>createCORSRequest</b> - Creates a CORS XHR2 request.</li>
+<li><b>setProgress</b> - Sets the current progress of the upload.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function createCORSRequest(method, url)
+{
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr)
+  {
+    xhr.open(method, url, true);
+  }
+  else if (typeof XDomainRequest != "undefined")
+  {
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+  }
+  else
+  {
+    xhr = null;
+  }
+  return xhr;
+}
+function handleFileSelect(evt)
+{
+  setProgress(0, 'Upload started.');
+  var files = evt.target.files;
+  var output = [];
+  for (var i = 0, f; f = files[i]; i++)
+  {
+    uploadFile(f);
+  }
+}
+/**
+ * Execute the given callback with the signed response.
+ */
+function executeOnSignedUrl(file, callback)
+{
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'signput.php?name=' + file.name + '&amp;type=' + file.type, true);
+  // Hack to pass bytes through unprocessed.
+  xhr.overrideMimeType('text/plain; charset=x-user-defined');
+  xhr.onreadystatechange = function(e)
+  {
+    if (this.readyState == 4 &amp;&amp; this.status == 200)
+    {
+      callback(decodeURIComponent(this.responseText));
+    }
+    else if(this.readyState == 4 &amp;&amp; this.status != 200)
+    {
+      setProgress(0, 'Could not contact signing script. Status = ' + this.status);
+    }
+  };
+  xhr.send();
+}
+function uploadFile(file)
+{
+  executeOnSignedUrl(file, function(signedURL)
+  {
+    uploadToS3(file, signedURL);
+  });
+}
+/**
+ * Use a CORS call to upload the given file to S3. Assumes the url
+ * parameter has been signed and is accessable for upload.
+ */
+function uploadToS3(file, url)
+{
+  var xhr = createCORSRequest('PUT', url);
+  if (!xhr)
+  {
+    setProgress(0, 'CORS not supported');
+  }
+  else
+  {
+    xhr.onload = function()
+    {
+      if(xhr.status == 200)
+      {
+        setProgress(100, 'Upload completed.');
+      }
+      else
+      {
+        setProgress(0, 'Upload error: ' + xhr.status);
+      }
+    };
+    xhr.onerror = function()
+    {
+      setProgress(0, 'XHR error.');
+    };
+    xhr.upload.onprogress = function(e)
+    {
+      if (e.lengthComputable)
+      {
+        var percentLoaded = Math.round((e.loaded / e.total) * 100);
+        setProgress(percentLoaded, percentLoaded == 100 ? 'Finalizing.' : 'Uploading.');
+      }
+    };
+    xhr.setRequestHeader('Content-Type', file.type);
+    xhr.setRequestHeader('x-amz-acl', 'public-read');
+    xhr.send(file);
+  }
+}
+function setProgress(percent, statusLabel)
+{
+  var progress = document.querySelector('.percent');
+  progress.style.width = percent + '%';
+  progress.textContent = percent + '%';
+  document.getElementById('progress_bar').className = 'loading';
+  document.getElementById('status').innerText = statusLabel;
+}
+</code></pre></div></div>
+
+<p>The above example calls the PHP version of the server side signing code. It can easily be changed to anything that can sign a request in the same way.</p>
+
+<p>I have an <a href="http://www.ioncannon.net/programming/21/creating-s3-urls-that-expire-using-php/">old way of creating signed URLs</a> using PHP that hasn’t been updated in forever. With the more recent versions of PHP there is built in support for the <a href="http://php.net/manual/en/function.hash-hmac.php">hash-hmac function</a> and a <a href="http://php.net/manual/en/function.base64-encode.php">base64 encode</a>. Here is the updated PHP script you need on the server side, to get it to work you would need to replace the S3_KEY, S3_SECRET and S3_BUCKET values with your own:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//
+// Change the following settings
+//
+$S3_KEY='S3 Key Here';
+$S3_SECRET='S3 Secret Here';
+$S3_BUCKET='/uploadtestbucket';
+$EXPIRE_TIME=(60 * 5); // 5 minutes
+$S3_URL='http://s3.amazonaws.com';
+$objectName='/' . $_GET['name'];
+$mimeType=$_GET['type'];
+$expires = time() + $EXPIRE_TIME;
+$amzHeaders= "x-amz-acl:public-read";
+$stringToSign = "PUT\n\n$mimeType\n$expires\n$amzHeaders\n$S3_BUCKET$objectName";
+$sig = urlencode(base64_encode(hash_hmac('sha1', $stringToSign, $S3_SECRET, true)));
+$url = urlencode("$S3_URL$S3_BUCKET$objectName?AWSAccessKeyId=$S3_KEY&amp;Expires=$expires&amp;Signature=$sig");
+echo $url;
+</code></pre></div></div>
+
+<p>With all of that in place you should now be able to upload directly to S3 using a browser that supports CORS, XHR2 and the FileAPI (pretty much everything but IE currently).</p>]]></content><author><name>Carson McDonald</name></author><category term="programming" /><summary type="html"><![CDATA[I’ve been hacking around with FileAPI and XHR2 in HTML5 recently (more on why hopefully in another month or so). So when Amazon announced S3 CORS support I figured I should create a demo of directly uploading a file to S3 from a browser.]]></summary></entry><entry><title type="html">Embed Ruby in Your iOS Apps Using mruby</title><link href="http://localhost:4000/programming/2012/05/08/embed-ruby-in-your-ios-apps-using-mruby/" rel="alternate" type="text/html" title="Embed Ruby in Your iOS Apps Using mruby" /><published>2012-05-08T10:20:59-04:00</published><updated>2012-05-08T10:20:59-04:00</updated><id>http://localhost:4000/programming/2012/05/08/embed-ruby-in-your-ios-apps-using-mruby</id><content type="html" xml:base="http://localhost:4000/programming/2012/05/08/embed-ruby-in-your-ios-apps-using-mruby/"><![CDATA[<p>I’ve been playing with <a href="https://github.com/mruby/mruby">mruby</a> for the past week or so. If you haven’t seen it yet it is an embeddable version of Ruby. The first thing I wonder about when I heard about mruby last year a RubyConf was embedding it in iOS apps. Now that the initial version has been released I figured I would give it a try.</p>
+
+<p>There are a few things to take into account before diving into this. The first is that the mruby project is very new and there are a number of gaps in the language support right now but the goal is to support the ISO definition of Ruby at some point. The second thing to know is that I’m talking about embedding Ruby here and not writing iOS apps using Ruby. I’m more interested in the potential of Ruby as a scripting language for something like a game. If you want to look into writing iOS apps using Ruby check out <a href="http://www.rubymotion.com/">RubyMotion</a> or the <a href="http://mobiruby.org/">MobiRuby</a> project (MobiRuby is based on mruby).</p>
+
+<p>Step one on the path to embedding mruby in an iOS app is getting the library compiled as a framework for XCode. Although the earliest version of mruby had support for building an iOS version that support was removed and there seems to be no current push to add it back. Because of that I created a simple <a href="https://github.com/carsonmcdonald/ios-ruby-embedded">iOS mruby build setup</a> on github. The instructions for using it are included with the project. Once the framework has been created it is easy enough to include in your XCode project just like any other external framework using the “Add Other” option in the “Build Phases” -&gt; “Link Binary With Libraries” section.</p>
+
+<p>There are two ways of using mruby, you can run a script as source or you can pre-compile the source into bytecode first. I’m going to focus on the pre-compiled way because I believe it is the less likely of the two to get an app rejected. This requires that you have the mruby tools available. If you use the build setup I created you can find the tools in the bin directory.</p>
+
+<p>And finally I have created a simple <a href="https://github.com/carsonmcdonald/MRubyiOSExample">mruby iOS example</a> XCode project that you can use to get started. It includes a pre-compiled version of the framework created with the build setup mentioned before and examples of calling objective-c from Ruby and Ruby from objective-c. The following is a quick overview of the example:</p>
+
+<ul>
+<li><b>FooUtil.h/m</b> - This is where all the interaction with mruby happens. It coordinates different parts of the examples as well.</li>
+<li><b>example.rb</b> - This is the Ruby code for the example and has to be compiled into example.mrb before changes will take place.</li>
+<li><b>example.mrb</b> - This is the compiled version of example.rb.</li>
+<li><b>FooData.h/m</b> - This is an example data class that is wrapped using a Ruby class named FooData.</li>
+</ul>
+
+<p>Everything is driven from the FooUtil singleton to make it easier to find each example. There are five methods to understand in FooUtil:</p>
+
+<ul>
+<li><b>setDebugBlock</b> - This static method takes a block that will be passed a debug string. This gives an easy way of changing the output of the example.</li>
+<li><b>loadFromBundle</b> - This is an example of loading a pre-compiled script. It assumes it can find the given filename in the app bundle.</li>
+<li><b>execute</b> - This is an example of executing a loaded script. It assumes loadFromBundle has been called. Calling this method will cause the Ruby to objective-c examples to execute.</li>
+<li><b>updateBarLocation</b> - This is an example of executing Ruby code from objective-c.</li>
+<li><b>cleanup</b> - This method will force a garbage collection. It was added to demonstrate the release of the wrapped FooData class.</li>
+</ul>
+
+<p>The example code doesn’t as much error checking as you should have in a real app but it hopefully is enough to get you started. I plan on adding more examples to the github project as features get added to mruby and as I have time. As a reminder, you have to recompile the Ruby code if you make changes or they won’t be seen.</p>]]></content><author><name>Carson McDonald</name></author><category term="programming" /><category term="iOS" /><category term="mruby" /><category term="objective-c" /><category term="embed" /><summary type="html"><![CDATA[I’ve been playing with mruby for the past week or so. If you haven’t seen it yet it is an embeddable version of Ruby. The first thing I wonder about when I heard about mruby last year a RubyConf was embedding it in iOS apps. Now that the initial version has been released I figured I would give it a try.]]></summary></entry><entry><title type="html">Segmenting WebM Video and the MediaSource API</title><link href="http://localhost:4000/utilities/2012/01/03/segmenting-webm-video-and-the-mediasource-api/" rel="alternate" type="text/html" title="Segmenting WebM Video and the MediaSource API" /><published>2012-01-03T08:59:08-05:00</published><updated>2012-01-03T08:59:08-05:00</updated><id>http://localhost:4000/utilities/2012/01/03/segmenting-webm-video-and-the-mediasource-api</id><content type="html" xml:base="http://localhost:4000/utilities/2012/01/03/segmenting-webm-video-and-the-mediasource-api/"><![CDATA[<p>For a while now I’ve seen people ask when support for Apple’s <a href="http://tools.ietf.org/html/draft-pantos-http-live-streaming-07">Pantos HTTP live streaming</a> would make it past Safari and iOS. The answer seems to have been that it wasn’t clear that Pantos streaming was the best option and something else would come about eventually that would be more flexible. There have been other options but they involve either Flash or Silverlight and most people want something that works with html5 video. After a long wait it seems like the time is getting close now with the <a href="http://html5-mediasource-api.googlecode.com/svn/trunk/draft-spec/mediasource-draft-spec.html">MediaSource API</a>.</p>
+
+<p>The MediaSource API has experimental support in Chrome and can be enabled by using the chrome://flags option. To see it in action you can go to the <a href="/assets/MediaSourceAPIDemo/demo.html">MediaSource demo page</a>. You can also read a litte more about it <a href="http://updates.html5rocks.com/2011/11/Stream-video-using-the-MediaSource-API">here</a> although the spec linked to above is probably a better place to learn about it.</p>
+
+<p>A while ago I created a tool for <a href="http://www.ioncannon.net/projects/http-live-video-stream-segmenter-and-distributor/">segmenting H264 video</a> in a Pantos compliant way. When I saw the MediaSource API I wondered how the same type of tool might fit in. The first thing to note is that the Pantos draft describes a complete technique for video streaming while the MediaSource API gives you the tools to stream video and leaves the technique. What follows is a simple technique for segmenting a WebM video in a way that allows standard streaming with the MediaSource API in the same fasion as the Pantos draft technique. While this example will not support variable rate streams it could be expanded to do so and would be the next logical step.</p>
+
+<p>The basics of how the Pantos technique works are simple. A video is broken down into chunks and each of those chunks is downloaded, buffered and played. In older drafts this ment splitting a video file into multiple files but in later drafts support was added for range requests allowing the large file to remain intact. With that understanding there are two major parts that need to be addressed:</p>
+
+<ul>
+<li>Segmenting a WebM video - This will require some understanding of the container format for WebM and the result will be something like a playlist for the video.</li>
+<li>Javascript to play the video - This will use the playlist created by segmenting the WebM video to drive the MediaSource API.</li>
+</ul>
+
+<h2>Segmenting a WebM Video</h2>
+
+<p>Before reading on take a second to read the <a href="http://www.webmproject.org/about/">about WebM</a> page. It describes that WebM specifies a video/audio codec and a container format. We are only interested in the format of the container. If you want all the details you can read the <a href="http://www.webmproject.org/code/specs/container/">WebM container</a> format specs. It is enough to know that the WebM container is a modified version of the <a href="http://matroska.org/">Matroska Container</a> format and both containers use <a href="http://ebml.sourceforge.net/specs/">EBML</a> to specify their structure.</p>
+
+<p>EBML is basically a binary XML format. There are a number of tools available for readin EBML and for my perposes I found the Python <a href="https://github.com/jspiros/python-ebml">python-ebml</a> implementation to be the easiest to get working.</p>
+
+<p>The MediaSource API wants to be fed chunks of video data in a specific way. First it wants header information and then it wants what are called <a href="http://www.webmproject.org/code/specs/container/#cluster">clusters</a> from the WebM container. Each cluster contains various information but the most likely reason for wanting a cluster as input is that each cluster starts with a keyframe. A keyframe is an important reference point in the video stream and one that gets built on until the next keyframe.</p>
+
+<p>The following code will take as input a WebM file and output a playlist for that file in JSON format. The playlist will contain the offsets of each cluster in the given WebM video and we will use it later to fetch the header and each cluster as chunks and feed those to a video element:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from ebml.schema import EBMLDocument, UnknownElement, CONTAINER, BINARY
+def fill_video_info(element, offset, video_info):
+  if element.name == 'Duration':
+    video_info['duration'] = element.value
+  if element.name == 'DisplayWidth':
+    video_info['width'] = element.value
+  if element.name == 'DisplayHeight':
+    video_info['height'] = element.value
+  if element.name == 'Cluster':
+    video_info['clusters'].append({'offset': offset})
+  if element.name == 'Timecode':
+    video_info['clusters'][-1]['timecode'] = element.value
+  if element.type == CONTAINER:
+    for sub_el in element.value:
+      fill_video_info(sub_el, offset + element.head_size, video_info)
+      offset += sub_el.size
+if __name__ == '__main__':
+  import sys
+  import json
+  import os
+  mod_name, _, cls_name = 'ebml.schema.matroska.MatroskaDocument'.rpartition('.')
+  try:
+    doc_mod = __import__(mod_name, fromlist=[cls_name])
+    doc_cls = getattr(doc_mod, cls_name)
+  except ImportError:
+    parser.error('unable to import module %s' % mod_name)
+  except AttributeError:
+    parser.error('unable to import class %s from %s' % (cls_name, mod_name))
+  video_info = {}
+  video_info['filename'] = sys.argv[1]
+  video_info['total_size'] = os.stat(sys.argv[1]).st_size
+  video_info['clusters'] = []
+  with open(sys.argv[1], 'rb') as stream:
+    doc = doc_cls(stream)
+    offset = 0
+    for el in doc.roots:
+      fill_video_info(el, offset, video_info)
+      offset += el.size
+  print json.dumps(video_info)
+</code></pre></div></div>
+
+<p>To run the script you will want to save the above script and install the module then do something like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/jspiros/python-ebml.git
+PYTHONPATH=python-ebml python create_playlist.py test.webm
+</code></pre></div></div>
+
+<p>Running the script will result in JSON output that can be piped to a file and used as a playlist.</p>
+
+<h2>Javascript to Play the WebM Segmented Playlist</h2>
+
+<p>Feeding data to the MediaSource API is done with Javascript. The first thing to do is read in the JSON playlist file created by the Python script when the page is finished loading. To do that I’m using the Snack JS framework, it is micro-framework that has some of the features of JQuery. After reading in the playlist chunks of the WebM file need to be read in with range requests.</p>
+
+<p>A while ago I made created a post about <a href="http://www.ioncannon.net/programming/1506/range-requests-with-ajax/">range requests with ajax</a> and that comes in handy here. The main difference between that post and what we need here is that the MediaSource API expects a typed array as input so we need to use <a href="http://www.w3.org/TR/XMLHttpRequest2/">XHR2</a>.</p>
+
+<p>The following Javascript code is bare bones. One of the most obvious limitations is that it doesn’t have the ability to seek to a portion of the stream, it will only play the stream start to finish or if the player has the content buffered it should allow for seeking in the buffered portion. It demonstrates that the API works and should be a good starting point for experimenting more with multi-rate streaming which is my short term goal.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  /**
+   * This fetches a chunk of video using a range request.
+   *   video_name - The relative filename of the video to fetch
+   *   start_bytes - The start byte of the chunk to fetch
+   *   end_bytes - The last byte of the chunk to fetch
+   *   is_last - True if this is the last chunk to fetch
+   */
+  function fetch_chunk(video, video_name, start_bytes, end_bytes, is_last)
+  {
+    var range_req = 'bytes=' + start_bytes + '-' + end_bytes;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', video_name, true);
+    xhr.setRequestHeader("Range", range_req);
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = function(e)
+    {
+      video.webkitSourceAppend(new Uint8Array(this.response));
+      if(is_last)
+      {
+        video.webkitSourceEndOfStream(HTMLMediaElement.EOS_NO_ERROR);
+      }
+    };
+    xhr.send();
+  }
+  /**
+   * Fetch the header portion of the video file.
+   */
+  function fetch_header(video, video_info)
+  {
+    fetch_chunk(video, video_info.filename, 0, video_info.clusters[0].offset-1, video_info.clusters.length == 1);
+  }
+  var current_cluster = 0;
+  /**
+   * Fetch the next cluster of the video file.
+   */
+  function fetch_next_cluster(video, video_info)
+  {
+    if(video_info.clusters.length == current_cluster+1)
+    {
+      fetch_chunk(video, video_info.filename, video_info.clusters[current_cluster].offset, video_info.total_size, true);
+    }
+    else
+    {
+      fetch_chunk(video, video_info.filename, video_info.clusters[current_cluster].offset, video_info.clusters[current_cluster+1].offset-1, false);
+    }
+    current_cluster++;
+  }
+  /**
+   * Enable the video for MediaSource and attach event listeners to drive the fetching of video chunks.
+   */
+  function video_setup(video_info)
+  {
+    current_cluster = 0;
+    video.src = video.webkitMediaSourceURL;
+    video.addEventListener('webkitsourceopen', function(e)
+    {
+      var video = this;
+      fetch_header(video, video_info);
+      fetch_next_cluster(video, video_info);
+    }, false);
+    video.addEventListener('progress', function(e)
+    {
+      var video = this;
+      if( video.webkitSourceState != HTMLMediaElement.SOURCE_ENDED )
+      {
+        fetch_next_cluster(video, video_info);
+      }
+    });
+  }
+  /**
+   * When the page is done loading read in the JSON playlist and get the video set up.
+   */
+  snack.ready(function()
+  {
+    if (!video.webkitMediaSourceURL)
+    {
+      alert('webkitMediaSourceURL is not available');
+      return;
+    }
+    snack.request({ method: 'get', url: 'test.json', }, function (err, res)
+    {
+      if (err)
+      {
+        alert(err);
+        return;
+      }
+      video_setup(snack.parseJSON(res));
+    });
+  });
+</code></pre></div></div>
+
+<p>Assuming you have enabled support in Chrome (currently the only browser to support the API) you can see everything in action by checking out my <a href="/assets/MediaSourceAPIDemo/demo.html">MediaSource API demo</a> page.</p>
+
+<p>I have glossed over a lot of details but the main take aways are that the MediaSource API gives you the interface to build a Pantos streaming system, segment WebM on clusters to feed to the MediaSource API and use XHR2 to fetch the WebM data with range requests. As one last point a lot of the best practices for encoding video for Pantos streaming will work here as well.</p>]]></content><author><name>Carson McDonald</name></author><category term="utilities" /><summary type="html"><![CDATA[For a while now I’ve seen people ask when support for Apple’s Pantos HTTP live streaming would make it past Safari and iOS. The answer seems to have been that it wasn’t clear that Pantos streaming was the best option and something else would come about eventually that would be more flexible. There have been other options but they involve either Flash or Silverlight and most people want something that works with html5 video. After a long wait it seems like the time is getting close now with the MediaSource API.]]></summary></entry><entry><title type="html">Range Requests with Ajax</title><link href="http://localhost:4000/programming/2011/11/22/range-requests-with-ajax/" rel="alternate" type="text/html" title="Range Requests with Ajax" /><published>2011-11-22T11:03:58-05:00</published><updated>2011-11-22T11:03:58-05:00</updated><id>http://localhost:4000/programming/2011/11/22/range-requests-with-ajax</id><content type="html" xml:base="http://localhost:4000/programming/2011/11/22/range-requests-with-ajax/"><![CDATA[<p>I ran across something the other day that made wonder about doing range requests using ajax. For some reason it wasn’t obvious at first if this would be easy but as it turns out it is.</p>
+
+<p>If you aren’t familiar with range requests head over to the HTTP RFC and check out the <a href="http://tools.ietf.org/html/rfc2616#section-14.35.2">range header</a>. Your web server needs to support range requests for this to be useful but most do so that shouldn’t be a huge issue. As a bonus you will find that some CDNs support range request as well (Amazon S3 for example).</p>
+
+<p>To show how this works I’ll start off by getting the offsets of a text file, then use curl to show the actual request and then put it into an ajax request. Even though I’m using a text file the same thing could be done with a binary file as well. Here are the contents of the file I’ve called range-test.txt:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>First part of the file.
+More text here.
+Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+Some text after Lorem Ipsum.
+End of the file.
+</code></pre></div></div>
+
+<p>Using egrep we can get the offset of each line pretty easy like so:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; egrep -b "\r|\n" range-test.txt
+0:First part of the file.
+25:More text here.
+42:Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+618:Some text after Lorem Ipsum.
+660:End of the file.
+</code></pre></div></div>
+
+<p>Quickly verify that the range looks right in isolation using hexdump:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; hexdump -c -s 618 -n 30 range-test.txt
+000026a   S   o   m   e       t   e   x   t       a   f   t   e   r
+000027a   L   o   r   e   m       I   p   s   u   m   .  \n  \n
+0000288
+</code></pre></div></div>
+
+<p>Now we have a sample range so put the text file on your web server and use curl to send the range request headers (note that the hexdump takes an offset and count of bytes while the range header takes an start and end offset):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; curl -H 'Range:bytes=618-647' http://localhost/range-test.txt
+Some text after Lorem Ipsum.
+</code></pre></div></div>
+
+<p>Now that it makes sense how this range is used to make a request for part of a file we can move on to doing it with an ajax request. I’m going to use <a href="http://jquery.com/">jQuery</a>’s <a href="http://api.jquery.com/jQuery.ajax/">ajax</a> function to make this really simple. It has a feature that lets you set headers really easily. The following is all you need:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;html&gt;
+  &lt;head&gt;
+    &lt;script type="text/javascript" src="jquery-1.7.min.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+    $(function() {
+      $.ajax({
+        url: 'range-test.txt',
+        headers: {Range: "bytes=618-647"},
+        success: function( data ) { $('#results').html( data ); }
+      });
+    });
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+&lt;div id="results"&gt;&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div></div>
+
+<p>And that is all there is to it. This could be useful for all kinds of things like displaying just a section of a large log file at a time. This might also be useful in a situation where you want to stream binary data back to the browser a chunk at a time.</p>]]></content><author><name>Carson McDonald</name></author><category term="programming" /><category term="ajax" /><category term="javascript" /><category term="http" /><summary type="html"><![CDATA[I ran across something the other day that made wonder about doing range requests using ajax. For some reason it wasn’t obvious at first if this would be easy but as it turns out it is.]]></summary></entry><entry><title type="html">Using WebP to Reduce Native iOS App Size</title><link href="http://localhost:4000/programming/2011/06/29/using-webp-to-reduce-native-ios-app-size/" rel="alternate" type="text/html" title="Using WebP to Reduce Native iOS App Size" /><published>2011-06-29T07:23:40-04:00</published><updated>2011-06-29T07:23:40-04:00</updated><id>http://localhost:4000/programming/2011/06/29/using-webp-to-reduce-native-ios-app-size</id><content type="html" xml:base="http://localhost:4000/programming/2011/06/29/using-webp-to-reduce-native-ios-app-size/"><![CDATA[<p>Last year Google released <a href="http://www.webmproject.org/">WebM</a> as an alternative to h264 encoded video. They followed that up with the release of <a href="http://code.google.com/speed/webp/">WebP</a> as an alternative to JPG. Ever since the release I’ve been thinking about giving it a try on iOS to see how well it might work to reduce application size. As a bonus to reduced size, WebP also supports an alpha channel that JPG doesn’t (there is more information available on the original <a href="http://blog.chromium.org/2010/09/webp-new-image-format-for-web.html">release</a> blog post).</p>
+
+<p>To follow along you will need to grab the source for WebP and compile it. The easiest way to do that is to follow the official <a href="http://code.google.com/speed/webp/docs/compiling.html">compiling WebP</a> instructions. After compiling the source you will be able to encode WebP images, later I describe how to build the same source for use with iOS.</p>
+
+<p>Before trying to build a web page I did some testing to see just how easy is to handle <a href="https://www.knownhost.com/wordpress-hosting.html">wordpress hosting</a> to add pictures and videos to blog posts. I used ImageMagick to convert the source images into JPG and pushed the quality of the JPG down as far as seemed reasonable to reduce the resulting size. I tried a number of combinations but ended up using the following command to convert the JPGs:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>convert -quality 75 -resize 1024x680 inputfile.png outputfile.jpg
+</code></pre></div></div>
+
+<p>Here are a couple samples produced using that command:</p>
+
+<p><a href="/assets/2011_06_test2.jpg"><img src="/assets/2011_06_test2.jpg" alt="Egg Carton" title="Egg Carton" width="300" height="199" class="alignnone size-medium wp-image-1485" /></a></p>
+
+<p><a href="/assets/2011_06_test9.jpg"><img src="/assets/2011_06_test9.jpg" alt="Elephants" title="Elephants" width="300" height="199" class="alignnone size-medium wp-image-1485" /></a></p>
+
+<p>For WebP I made the quality 90 and encoded the same images with the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cwebp -q 90 -resize 1024 680 inputfile.png -o outputfile.webp
+</code></pre></div></div>
+
+<p>Here are a couple example images produced using that command (at the time of this post these will only be visible using Chrome):</p>
+
+<p><a href="/assets/2011_06_test2.webp"><img src="/assets/2011_06_test2.webp" alt="Egg Carton" title="Egg Carton" width="300" height="199" class="alignnone size-medium wp-image-1485" /></a></p>
+
+<p><a href="/assets/2011_06_test9.webp"><img src="/assets/2011_06_test9.webp" alt="Elephants" title="Elephants" width="300" height="199" class="alignnone size-medium wp-image-1485" /></a></p>
+
+<p>Even with the advantage I was giving the JPG images by compressing them with a lower quality I was able to get a 25% size reduction in the WebP version. Generally the JPG images would have been usable but some ended up with artifacts that would have required them to be re-encoded at a higher quality. The WebP versions ended up looking better in every case.</p>
+
+<p>This was just my quick attempt to verify that it would be worth the effort of using WebP. A more in depth overview of JPG vs WebP can be found in the <a href="http://code.google.com/speed/webp/gallery.html">example gallery</a>.</p>
+
+<p>With that simple test out of the way I created a script that would compile the libwebp source into a framework compatible with the iOS simulators, iPad and iPhone:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SDK=4.3
+PLATFORMS="iPhoneSimulator iPhoneOS-V6 iPhoneOS-V7"
+DEVELOPER=/Developer
+TOPDIR=`pwd`
+BUILDDIR="$TOPDIR/tmp"
+FINALDIR="$TOPDIR/WebP.framework"
+LIBLIST=''
+mkdir -p $BUILDDIR
+mkdir -p $FINALDIR
+mkdir $FINALDIR/Headers/
+for PLATFORM in ${PLATFORMS}
+do
+if [ "${PLATFORM}" == "iPhoneOS-V7" ]
+then
+PLATFORM="iPhoneOS"
+ARCH="armv7"
+elif [ "${PLATFORM}" == "iPhoneOS-V6" ]
+then
+PLATFORM="iPhoneOS"
+ARCH="armv6"
+else
+ARCH="i386"
+fi
+ROOTDIR="${BUILDDIR}/${PLATFORM}-${SDK}-${ARCH}"
+rm -rf "${ROOTDIR}"
+mkdir -p "${ROOTDIR}"
+export DEVROOT="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer"
+export SDKROOT="${DEVROOT}/SDKs/${PLATFORM}${SDK}.sdk"
+export CC=${DEVROOT}/usr/bin/gcc
+export LD=${DEVROOT}/usr/bin/ld
+export CPP=${DEVROOT}/usr/bin/cpp
+export CXX=${DEVROOT}/usr/bin/g++
+export AR=${DEVROOT}/usr/bin/ar
+export AS=${DEVROOT}/usr/bin/as
+export NM=${DEVROOT}/usr/bin/nm
+export CXXCPP=$DEVROOT/usr/bin/cpp
+export RANLIB=$DEVROOT/usr/bin/ranlib
+export LDFLAGS="-arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -L${ROOTDIR}/lib"
+export CFLAGS="-arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${ROOTDIR}/include"
+export CXXFLAGS="-arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${ROOTDIR}/include"
+rm -rf libwebp-0.1.2
+tar xzf libwebp-0.1.2.tar.gz
+cd libwebp-0.1.2
+sh autogen.sh
+./configure --host=${ARCH}-apple-darwin --prefix=${ROOTDIR} --disable-shared --enable-static
+make
+make install
+LIBLIST="${LIBLIST} ${ROOTDIR}/lib/libwebp.a"
+cp -Rp ${ROOTDIR}/include/webp/* $FINALDIR/Headers/
+cd ..
+done
+${DEVROOT}/usr/bin/lipo -create $LIBLIST -output $FINALDIR/WebP
+rm -rf libwebp-0.1.2
+rm -rf ${BUILDDIR}
+</code></pre></div></div>
+
+<p>The script assumes that the source for libwebp is in the same directory as the script is executed from. If you skipped the first part of the post or want to make sure you are using the same version I used then use the following curl command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://webp.googlecode.com/files/libwebp-0.1.2.tar.gz &gt; libwebp-0.1.2.tar.gz
+</code></pre></div></div>
+
+<p>After you run the script you will have a WebP.framework directory that represents the library. You can use this as a framework in XCode.</p>
+
+<p>Using the library is easy. The following snipit shows how to get the current WebP library version, get the width and height of an image and then read the image into a buffer:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Get the current version of the WebP decoder
+int rc = WebPGetDecoderVersion();
+NSLog(@"Version: %d", rc);
+// Get the width and height of the selected WebP image
+int width = 0;
+int height = 0;
+WebPGetInfo([myData bytes], [myData length], &amp;amp;width, &amp;amp;height);
+NSLog(@"Image Width: %d Image Height: %d", width, height);
+// Decode the WebP image data into a RGBA value array
+uint8_t *data = WebPDecodeRGBA([myData bytes], [myData length], &amp;amp;width, &amp;amp;height);
+</code></pre></div></div>
+
+<p>There is more documentation on the <a href="http://code.google.com/speed/webp/docs/api.html">WebP API</a> and I’ve put together a complete example on Github. If you grab the <a href="https://github.com/carsonmcdonald/WebP-iOS-example">WebP iOS example</a> from Github you will find the build script as well as the full example. First build the library from a command line then open the example project in XCode. If you don’t first build the library before opening the project you will see that the WebP.framework is missing.</p>
+
+<p>At this point you are on your way to having smaller iOS applications. There is at least one drawback at this point and that is speed. Decoding is a little slow and I think this is because the library isn’t constructed to take advantage of any hardware acceleration. The next step is to see if it can be sped up by using the accelerate framework.</p>]]></content><author><name>Carson McDonald</name></author><category term="programming" /><category term="iOS" /><category term="WebP" /><summary type="html"><![CDATA[Last year Google released WebM as an alternative to h264 encoded video. They followed that up with the release of WebP as an alternative to JPG. Ever since the release I’ve been thinking about giving it a try on iOS to see how well it might work to reduce application size. As a bonus to reduced size, WebP also supports an alpha channel that JPG doesn’t (there is more information available on the original release blog post).]]></summary></entry><entry><title type="html">Using the Google Closure Compiler in Java</title><link href="http://localhost:4000/programming/2011/03/08/using-the-google-closure-compiler-in-java/" rel="alternate" type="text/html" title="Using the Google Closure Compiler in Java" /><published>2011-03-08T09:29:55-05:00</published><updated>2011-03-08T09:29:55-05:00</updated><id>http://localhost:4000/programming/2011/03/08/using-the-google-closure-compiler-in-java</id><content type="html" xml:base="http://localhost:4000/programming/2011/03/08/using-the-google-closure-compiler-in-java/"><![CDATA[<p>I recently had a chance to try out <a href="http://code.google.com/closure/compiler/">Google’s closure compiler</a>. The closure compiler is similar to the <a href="http://developer.yahoo.com/yui/compressor/">YUI compressor</a> except that along with minimizing it may rewrite the JavaScript. If you want to understand more about what it does start at the <a href="http://code.google.com/closure/compiler/docs/overview.html">overview documentation</a> and then go from there.</p>
+
+<p>What I needed was a way to use the closure compiler within an Ant task. The Ant task that comes with the library was decent, but it didn’t provide the flexibility I needed to integrate it into an existing system without overhauling the setup. While digging into this, I came across a forum where developers were discussing unconventional solutions, including some that utilized <a href="https://www.richmondreview.co.uk/casinos-not-on-gamstop-uk/">slots not on gamstop</a> for testing payment systems outside standard restrictions. The conversation inspired me to think creatively about my own project, so I dived into the library’s Ant task, dissected its structure, and eventually figured out how to wire it all up in a way that worked perfectly for my needs.</p>
+
+<p>It isn’t that hard to use the compiler library in your own Java code but without a simple example it takes some work to figure out what is needed and what isn’t. The following code is just about as bare bones as you can get. It takes a number of JavaScript files and compile them using the medium setting, more about the choice of settings after the code:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import com.google.javascript.jscomp.*;
+import java.io.FileWriter;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.logging.Level;
+public class Test
+{
+  public static void main(String[] args) throws Exception
+  {
+    // These are external JavaScript files you reference but don't want changed
+    String externalJavascriptResources[] = {
+        "jquery.js",
+        "jqueryui.js"
+    };
+    // These are the files you want optimized
+    String primaryJavascriptToCompile[] = {
+        "somejavascript.js",
+        "otherjavascript.js"
+    };
+    // This is where the optimized code will end up
+    String outputFilename = "combined.min.js";
+    com.google.javascript.jscomp.Compiler.setLoggingLevel(Level.INFO);
+    com.google.javascript.jscomp.Compiler compiler = new com.google.javascript.jscomp.Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    List&lt;JSSourceFile&gt; externalJavascriptFiles = new ArrayList&lt;JSSourceFile&gt;();
+    for (String filename : externalJavascriptResources)
+    {
+      externalJavascriptFiles.add(JSSourceFile.fromFile(filename));
+    }
+    List&lt;JSSourceFile&gt; primaryJavascriptFiles = new ArrayList&lt;JSSourceFile&gt;();
+    for (String filename : primaryJavascriptToCompile)
+    {
+      primaryJavascriptFiles.add(JSSourceFile.fromFile(filename));
+    }
+    compiler.compile(externalJavascriptFiles, primaryJavascriptFiles, options);
+    for (JSError message : compiler.getWarnings())
+    {
+      System.err.println("Warning message: " + message.toString());
+    }
+    for (JSError message : compiler.getErrors())
+    {
+      System.err.println("Error message: " + message.toString());
+    }
+    FileWriter outputFile = new FileWriter(outputFilename);
+    outputFile.write(compiler.toSource());
+    outputFile.close();
+  }
+}
+</code></pre></div></div>
+
+<p>The above code is doing a number of things:</p>
+
+<ul>
+<li>It takes both external resources you don't want optimized as well as resources you do want optimized that refer to those external resources. You may not need to list external resources depending on what level of optimization you use.</li>
+<li>It combines all the input files that are not external into one output file.</li>
+<li>It compiles the javascript code given to it using the SIMPLE_OPTIMIZATIONS setting.</li>
+<li>It lists any warnings or errors it found while compiling the code.</li>
+</ul>
+
+<p>One of the nice side effects of using the closure compiler is that because it compiles the code it can alert you to errors or potential issues using warnings.</p>
+
+<p>What is listed above is using the middle of the road optimizations. There is a level above SIMPLE_OPTIMIZATIONS that you can set by changing that line in the above code to:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+</code></pre></div></div>
+
+<p>Be aware that the advanced optimizations will do things, renaming your variables and functions to name two, that can break your code. The compiler gives you a way of alerting it to things you don’t want changed using externs and exports. Before using the advanced option you should read the <a href="http://code.google.com/closure/compiler/docs/api-tutorial3.html">advanced options tutorial</a>.</p>
+
+<p>If you do not like seeing all the steps the compiler takes you can set the logging level to QUIET by changing the WarningLevel line to the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  WarningLevel.QUIET.setOptionsForWarningLevel(options);
+</code></pre></div></div>
+
+<p>One last note about the compiler is that the <a href="http://code.google.com/closure/compiler/docs/inspector.html">closure inspector</a> is a Firebug plugin that will let you see what the original line of code looked like before it was compiled. This can help a lot when something goes wrong.</p>]]></content><author><name>Carson McDonald</name></author><category term="programming" /><category term="javascript" /><category term="java" /><category term="closure" /><summary type="html"><![CDATA[I recently had a chance to try out Google’s closure compiler. The closure compiler is similar to the YUI compressor except that along with minimizing it may rewrite the JavaScript. If you want to understand more about what it does start at the overview documentation and then go from there.]]></summary></entry></feed>

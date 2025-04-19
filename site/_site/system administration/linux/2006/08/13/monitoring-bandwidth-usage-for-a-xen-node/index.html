@@ -1,0 +1,448 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Monitoring Bandwidth Usage for a Xen node - IONCANNON</title>
+<meta name="description" content="After my last post on limiting bandwidth usage on a Xen node I thought I would follow up with how to monitor the bandwidth usage of a Xen node.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Monitoring Bandwidth Usage for a Xen node">
+<meta property="og:url" content="http://localhost:4000/system%20administration/linux/2006/08/13/monitoring-bandwidth-usage-for-a-xen-node/">
+
+
+  <meta property="og:description" content="After my last post on limiting bandwidth usage on a Xen node I thought I would follow up with how to monitor the bandwidth usage of a Xen node.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-08-13T06:40:55-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/linux/2006/08/13/monitoring-bandwidth-usage-for-a-xen-node/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Monitoring Bandwidth Usage for a Xen node</h1>
+    
+    <p>After my last post on <a href="http://www.ioncannon.net/system-administration/57/limiting-bandwidth-usage-on-xen-linux-setup/">limiting bandwidth usage on a Xen node</a> I thought I would follow up with how to monitor the bandwidth usage of a Xen node.</p>
+
+<p>I chose to use <a href="http://netacct-mysql.gabrovo.com/">netacct-mysql</a> to monitor bandwidth and store the results into a mysql database. This isn’t the only way of monitoring the bandwidth but it was easy to set up and stores the information directly into mysql without needing any extra scripts.</p>
+
+<p>On the Xen setup I’m using for an example there are 3 nodes and a bucket for each node will be created in the mysql database by netacct. Setting up netacct can be tricky so you will want to check to make sure traffic for each node is going into the correct bucket.</p>
+
+<p>Your naccttab file will look something like:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sniff 0
+database mysql
+mysql_user acct
+mysql_password acct_password
+mysql_host localhost
+mysql_port 0
+mysql_database netacct
+pidfile  /var/run/nacctd.pid
+
+compactnet 192.168.1.1 255.255.255.255
+compactnet 192.168.1.2 255.255.255.255
+compactnet 192.168.1.3 255.255.255.255
+
+ournet 192.168.1.1 255.255.255.255
+ournet 192.168.1.2 255.255.255.255
+ournet 192.168.1.3 255.255.255.255
+
+flush 30
+
+errdelay 2
+fdelay 60
+
+device peth0
+
+ignorenet 127.0.0.0 255.0.0.0
+
+debug 0
+debugfile /tmp/nacctd.debug
+</code></pre></div></div>
+<p>A couple notes on setting up netacct:</p>
+
+<ol>
+<li>nacctd runs on Xen0 so it can capture all the traffic from the XenU nodes.</li>
+<li>The naccttab config file needs to go into /usr/local/etc in case it isn't obvious from the README.</li>
+<li>You need to make sure you have the correct Xen0 device set up as the listen device in the naccttab config file.</li>
+<li>If the mysql database is on the Xen0 node then you probably don't need a username or password in the config file.</li>
+</ol>
+<p>After running netacct for some amount of time you can query the database it is logging to and get a count of all the different nodes and their bandwidth usage. Try this query out:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select traffic.ip, sum(input)/1073741824 inp, sum(output)/1073741824 outp from traffic group by ip;
+</code></pre></div></div>
+<p>That will show a total sum of bandwidth in gigabytes broken down by ip.</p>
+
+<p>To get just the current month you would want this query:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>select traffic.ip, sum(input)/1073741824 inp, sum(output)/1073741824 outp from traffic where time between concat(EXTRACT(YEAR_MONTH FROM now()), '01') and now() group by ip;
+</code></pre></div></div>
+<p>Now that you have traffic counts and can query the tables it is time to show some graphs and reports. I chose to do that in php so that I could display the results on the web. Start with my <a href="http://www.ioncannon.net/system-administration/59/php-rrdtool-tutorial/">PHP RRDTool</a> tutorial if you don’t already know how to use RRDTool with PHP.</p>
+
+<p>To display text with totals if fairly easy since all we need to do is run the above queries and then display the output. Here is an example of doing just that with PHP:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php
+  $query_ip = '192.168.1.2';
+
+  mysql_connect( '192.168.1.1', 'user', 'pass' ) or die ( 'Unable to connect to server.' );
+  mysql_select_db( 'netacct' ) or die ( 'Unable to select database.' );
+
+  $sql = "select sum(input) inp, sum(output) outp from traffic where ip = '$query_ip' and time between concat(EXTRACT(YEAR_MONTH FROM now()), '01') and now()";
+  $result = mysql_query( $sql ) or die ( 'Unable to execute query.' );
+  $row = mysql_fetch_row($result);
+
+  $current_inpgigs = round($row[0]/1073741824, 3);
+  $current_outgigs = round($row[1]/1073741824, 3);
+  $current_total = round(($row[1]+$row[0])/1073741824, 3);
+
+  $sql = "select sum(input) inp, sum(output) outp from traffic where ip = '$query_ip' and time between concat(EXTRACT(YEAR_MONTH FROM date_sub(now(), interval 1 month)), '01') and concat(EXTRACT(YEAR_MONTH FROM now()), '01')";
+  $result = mysql_query( $sql ) or die ( 'Unable to execute query.' );
+  $row = mysql_fetch_row($result);
+
+  $last_inpgigs = round($row[0]/1073741824, 3);
+  $last_outgigs = round($row[1]/1073741824, 3);
+  $last_total = round(($row[1]+$row[0])/1073741824, 3);
+
+  echo "Current: $current_inpgigs GB, $current_outgigs GB, $current_total GB\n";
+  echo "Last: $last_inpgigs GB, $last_outgigs GB, $last_total GB\n";
+?&gt;
+</code></pre></div></div>
+<p>If you want to go a step further though you can display traffic graphs using rrdtool. There are two parts to generating the graphs. The first part builds the database and the second part displays graphs based on the database.</p>
+
+<p>Here is an example PHP script that can be used to create and update a database per IP:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/usr/local/bin/php -q
+&lt;?php
+  define("RRD_DIR", "/tmp/rrd/");
+
+  function create_rrd($ip)
+  {
+    $fname = RRD_DIR . $ip . ".rrd";
+    if( !file_exists($fname) )
+    {
+      $opts = array( "--step", "300", "--start", 0,
+         "DS:input:COUNTER:600:U:U",
+         "DS:output:COUNTER:600:U:U",
+         "RRA:AVERAGE:0.5:1:600",
+         "RRA:AVERAGE:0.5:6:700",
+         "RRA:AVERAGE:0.5:24:775",
+         "RRA:AVERAGE:0.5:288:797",
+         "RRA:MAX:0.5:1:600",
+         "RRA:MAX:0.5:6:700",
+         "RRA:MAX:0.5:24:775",
+         "RRA:MAX:0.5:288:797"
+      );
+
+      $ret = rrd_create($fname, $opts, count($opts));
+
+      if( $ret == 0 )
+      {
+        $err = rrd_error();
+        echo "Create error: $err\n";
+      }
+    }
+  }
+
+  function update_rrd($ip)
+  {
+    $sql = "select sum(input), sum(output) from traffic where ip = '$ip'";
+    $result = mysql_query( $sql ) or die ( 'Unable to execute query.' );
+
+    $row = mysql_fetch_row($result);
+    $fname = RRD_DIR . $ip . ".rrd";
+
+    $ret = rrd_update($fname, "N:$row[2]:$row[3]");
+
+    if( $ret == 0 )
+    {
+      $err = rrd_error();
+      echo "ERROR occurred: $err\n";
+    }
+  }
+
+  $update_ip = '192.168.1.2';
+
+  mysql_connect( '192.168.1.1', 'user', 'pass' ) or die ( 'Unable to connect to server.' );
+  mysql_select_db( 'netacct' ) or die ( 'Unable to select database.' );
+
+  create_rrd($update_ip);
+  update_rrd($update_ip);
+?&gt;
+</code></pre></div></div>
+<p>You will want to put a command in cron to run the above script every 5 minutes to update the database.</p>
+
+<p>The following example PHP script will display a graph of an IP generated from the given database:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php
+  $query_ip = '192.168.1.2';
+
+  $opts = array( "--start", "-1d", "--vertical-label=B/s",
+                 "DEF:inoctets=/tmp/rrd/$query_ip.rrd:input:AVERAGE",
+                 "DEF:outoctets=/tmp/rrd/$query_ip.rrd:output:AVERAGE",
+                 "AREA:inoctets#00FF00:In traffic",
+                 "LINE1:outoctets#0000FF:Out traffic\\r",
+                 "CDEF:inbits=inoctets,8,*",
+                 "CDEF:outbits=outoctets,8,*",
+                 "COMMENT:\\n",
+                 "GPRINT:inbits:AVERAGE:Avg In traffic\: %6.2lf %Sbps",
+                 "COMMENT:  ",
+                 "GPRINT:inbits:MAX:Max In traffic\: %6.2lf %Sbps\\r",
+                 "GPRINT:outbits:AVERAGE:Avg Out traffic\: %6.2lf %Sbps",
+                 "COMMENT: ",
+                 "GPRINT:outbits:MAX:Max Out traffic\: %6.2lf %Sbps\\r"
+               );
+
+  $ret = rrd_graph("/tmp/images/${query_ip}_1d.gif", $opts, count($opts));
+
+  if( !is_array($ret) )
+  {
+    $err = rrd_error();
+    echo "rrd_graph() ERROR: $err\n";
+  }
+?&gt;
+</code></pre></div></div>
+<p>That is all there is to it. A more complex set of PHP scripts would allow you to limit access to graphs by user id and could be used by owners of XenU nodes to monitor their bandwidth usage as well as the owner of the box for billing.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

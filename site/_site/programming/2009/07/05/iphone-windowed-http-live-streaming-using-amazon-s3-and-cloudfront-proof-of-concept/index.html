@@ -1,0 +1,552 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>iPhone Windowed HTTP Live Streaming Using Amazon S3 and Cloudfront Proof of Concept - IONCANNON</title>
+<meta name="description" content="This post should be seen as a proof of concept. I’m working on creating a more concise and easier to use package of everything covered here but I felt like getting the knowledge out sooner rather than later would be of help to people looking for a way to do this. If you are interested keep an eye on the HTTP live video stream segementer and distributor project page as well as the github git repository.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="iPhone Windowed HTTP Live Streaming Using Amazon S3 and Cloudfront Proof of Concept">
+<meta property="og:url" content="http://localhost:4000/programming/2009/07/05/iphone-windowed-http-live-streaming-using-amazon-s3-and-cloudfront-proof-of-concept/">
+
+
+  <meta property="og:description" content="This post should be seen as a proof of concept. I’m working on creating a more concise and easier to use package of everything covered here but I felt like getting the knowledge out sooner rather than later would be of help to people looking for a way to do this. If you are interested keep an eye on the HTTP live video stream segementer and distributor project page as well as the github git repository.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2009-07-05T21:07:37-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2009/07/05/iphone-windowed-http-live-streaming-using-amazon-s3-and-cloudfront-proof-of-concept/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">iPhone Windowed HTTP Live Streaming Using Amazon S3 and Cloudfront Proof of Concept</h1>
+    
+    <p>This post should be seen as a proof of concept. I’m working on creating a more concise and easier to use package of everything covered here but I felt like getting the knowledge out sooner rather than later would be of help to people looking for a way to do this. If you are interested keep an eye on the <a href="http://www.ioncannon.net/projects/http-live-video-stream-segmenter-and-distributor/">HTTP live video stream segementer and distributor project page</a> as well as the <a href="http://github.com/carsonmcdonald/HTTP-Live-Video-Stream-Segmenter-and-Distributor/tree/master">github git repository</a>.</p>
+
+<p>After my post on <a href="http://www.ioncannon.net/programming/452/iphone-http-streaming-with-ffmpeg-and-an-open-source-segmenter/">using FFMpeg and an open source segmenter</a> to create videos for the iPhone that conform to the <a href="http://tools.ietf.org/html/draft-pantos-http-live-streaming-01">HTTP live streaming protocol</a> I decided to see if I could get the same segmenter to work on a live stream. As it turns out it didn’t take much modification to work.</p>
+
+<p>If you are looking for something you can buy out of the box it appears that <a href="http://gigaom.com/2009/07/02/akamai-to-make-iphone-video-streaming-smooth/">Akamai</a> is doing <a href="http://newteevee.com/2009/06/30/video-see-apples-http-adaptive-video-streaming-in-action/">iPhone video streaming</a> now. I believe that the following solution using Amazon <a href="http://aws.amazon.com/s3/">S3</a> and <a href="http://aws.amazon.com/cloudfront/">Cloudfront</a> is probably as good as what Akamai can offer but it may be a better choice if you don’t want to have to maintain the configuration.</p>
+
+<p>I put together a quick diagram of the process of transferring the video stream from source to final destination that will hopefully help people understand the full picture before jumping into the details:</p>
+
+<p><a href="/assets/2009_07_streaming-diagram.png"><img src="/assets/2009_07_streaming-diagram.png" alt="HTTP Live Streaming Diagram" title="HTTP Live Streaming Diagram" width="450" height="250" class="alignnone size-medium wp-image-508" /></a></p>
+
+<p>Please note that except for the video stream all of the following was done using Fedora 11. I believe it could work on Windows or OS X but I haven’t had time to test it on either.</p>
+
+<h3>Step 1: Find a suitable video source</h3>
+
+<p>This is an important part and can take more work than it seems like it should. I started out trying to stream video from a  USB QuickCam but for some reason the resulting stream wasn’t correctly formatted even after going through the FFMpeg transcoding. I then turned to the iSight camera on a macbook using <a href="http://www.ioncannon.net/software/478/streaming-video-between-quicktime-broadcaster-and-vlc/">QuickTime Broadcaster to VLC streaming</a>. The resulting stream from the iSight camera works well.</p>
+
+<p>The easiest way I found to experiment with finding a good stream is to dump a short clip out to a file then use the instructions in my <a href="http://www.ioncannon.net/programming/452/iphone-http-streaming-with-ffmpeg-and-an-open-source-segmenter/">previous post</a> to test.</p>
+
+<p>It is also possible to do all of the following steps using a non-live video stream. In fact, due to the flexibility of what can be input into FFMpeg, someone could pull a stream from somewhere like <a href="http://ustream.tv">Ustream TV</a> or <a href="http://www.livestream.com/">Livestream</a> and rebroadcast it. Doing so would open up the door for live streaming to the iPhone using just Safari.</p>
+
+<h3>Step 2: Set up modified segmenter</h3>
+
+<p>To handle the live stream I had to modify the segmenter in two ways. The first was required to bypass an issue with the input coming in as a pipe. For those interested here is the modified section of code:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    ret = av_write_frame(output_context, &amp;packet);
+    if (ret &lt; 0)
+    {
+      fprintf(stderr, "Could not write frame of stream: %d\n", ret);
+      av_free_packet(&amp;packet);
+      //break; ****** removed for streaming support *****
+    }
+    else if (ret &gt; 0)
+    {
+      fprintf(stderr, "End of stream requested\n");
+      av_free_packet(&amp;packet);
+      break;
+    }
+</code></pre></div></div>
+
+<p>The second modification was more extensive. The original segmenter wrote the index file out for each segment as the segment ended. Instead of writing the index to disk I need the index information to push to S3 as well as to know when the segment itself is ready to be pushed. I could have used a <a href="http://libs3.ischo.com/index.html">S3 library</a> and stuck everything into the C code but instead I decided that it made more sense to save the stream to disk then push the index information to another process.</p>
+
+<p>I do the transfer of information over a TCP socket connection from the segmenter to the upload process. A side effect of doing this is that it will allow for the upload process to take input from multiple transcode and segmenters at the same time. This should make for easy variable rate configurations where the transcoding can take advantage of multiple machines.</p>
+
+<p>Here is the modified section of code:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int write_index_file(const char index[], const unsigned int segment_duration, const char output_directory[], const char output_prefix[], const char http_prefix[], const unsigned int first_segment, const unsigned int last_segment, const int end, const char bucket_name[], const char key_prefix[])
+{
+  char buffer[1024 * 10];
+  memset(buffer, 0, sizeof(char) * 1024 * 10);
+  sprintf(buffer, "%s, %s, %d, %s, %s, %d, %d, %d, %s, %s", index, output_directory, segment_duration, output_prefix, http_prefix, first_segment, last_segment, end, bucket_name, key_prefix);
+
+  fprintf(stderr, "Sending: %s\n", buffer);
+
+  int sock;
+  if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) &lt; 0)
+  {
+    fprintf(stderr, "Could not open socket.");
+    return -1;
+  }
+
+  const char *serverIP = "127.0.0.1";
+  int serverPort = 10234;
+
+  struct sockaddr_in serverAddress;
+  memset(&amp;serverAddress, 0, sizeof(serverAddress));
+  serverAddress.sin_family      = AF_INET;
+  serverAddress.sin_addr.s_addr = inet_addr(serverIP);
+  serverAddress.sin_port        = htons(serverPort);
+
+  if (connect(sock, (struct sockaddr *) &amp;serverAddress, sizeof(serverAddress)) &lt; 0)
+  {
+    fprintf(stderr, "Could not connect to socket.");
+    return -1;
+  }
+
+  int buffer_len = strlen(buffer);
+  if (send(sock, buffer, buffer_len, 0) != buffer_len)
+  {
+    fprintf(stderr, "Could not send command.");
+    return -1;
+  }
+
+  close(sock);
+
+  return 0;
+}
+</code></pre></div></div>
+
+<p>The above function assumes that the upload server lives on the same machine as the segmenter at this point. Also note that the command line arguments for the segmenter have grown to include a S3 bucket name and a S3 key prefix:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Usage: live_upload &lt;input MPEG-TS file&gt; &lt;segment duration in seconds&gt; &lt;output directory&gt; &lt;output MPEG-TS file prefix&gt; &lt;output m3u8 index file&gt; &lt;http prefix&gt; &lt;bucket name&gt; &lt;key prefix&gt;
+</code></pre></div></div>
+
+<ul>
+<li>input MPEG-TS file - For the live streaming use you want this to be a pipe so it should be -</li>
+<li>segment duration in seconds - How long to make each segment of video</li>
+<li>output directory - Where the video segments live before they are transfered</li>
+<li>output MPEG-TS file prefix - The prefix of the video file</li>
+<li>output m3u8 index file - The name of the m3u8 index file</li>
+<li>http prefix - The prefix of the URL where the segments are ultimately located</li>
+<li>bucket name - The S3 bucket name that the segments and index will be stored in</li>
+<li>key prefix - The S3 key that the segments and index should be prefixed with</li>
+</ul>
+
+<p>Download the <a href="http://www.ioncannon.net/examples/httplive/Makefile">Makefile</a> and <a href="http://www.ioncannon.net/examples/httplive/live_upload.c">segmenter source</a> and compile if you want to follow step 4.</p>
+
+<h3>Step 3: Transfer the segments</h3>
+
+<p>The modified segmenter is now ready to push the index information to a process that will in turn upload the index as well as the stream segment. In this case I chose to push the segments and index to S3 but that isn’t the only option possible. Furthermore I’ve stuck Cloudfront in front of the segments so they can be cached closer to the destination. Letting the index files be cached by Cloudfront could be done but care would need to be taken to make sure the index isn’t cached for longer than the segment duration.</p>
+
+<p>For the upload server I’m using Ruby and the <a href="http://rightscale.rubyforge.org/right_aws_gem_doc/">Rightscale AWS gem</a> to push the segments and the index files to S3. Here is the complete code to do the upload server (this file is called s3server.rb in the git repository):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'thread'
+require 'socket'
+require 'ftools'
+require 'rubygems'
+require 'right_aws'
+
+AWS_S3_ID="your s3 id"
+AWS_S3_KEY="your s3 private key"
+
+def create_index(segment_duration, output_prefix, http_prefix, first_segment, last_segment, stream_end)
+  File.open("tmp.index.m3u8", 'w') do |index_file|
+    index_file.write("#EXTM3U\n")
+    index_file.write("#EXT-X-TARGETDURATION:#{segment_duration}\n")
+    index_file.write("#EXT-X-MEDIA-SEQUENCE:#{last_segment &gt;= 5 ? last_segment-4 : 1}\n")
+
+  first_segment.upto(last_segment) do | segment_index |
+    if segment_index &gt; last_segment - 5
+      index_file.write("#EXTINF:#{segment_duration}\n")
+      index_file.write("#{http_prefix}#{output_prefix}-%05u.ts\n" % segment_index)
+    end
+  end
+
+    index_file.write("#EXT-X-ENDLIST") if stream_end
+  end
+end
+
+def push_to_s3(index, output_directory, bucket_name, key_prefix, output_prefix, last_segment)
+  s3 = RightAws::S3Interface.new(AWS_S3_ID, AWS_S3_KEY)
+
+  video_filename = "#{output_directory}/#{output_prefix}-%05u.ts" % last_segment
+  puts "Pushing #{video_filename} to s3://#{bucket_name}/#{key_prefix}/#{output_prefix}-%05u.ts" % last_segment
+  s3.put(bucket_name, "#{key_prefix}/#{output_prefix}-%05u.ts" % last_segment, File.open(video_filename), {'x-amz-acl' =&gt; 'public-read', 'content-type' =&gt; 'video/MP2T'})
+  puts "Done pushing video file"
+
+  puts "Pushing tmp.index.m3u8 to s3://#{bucket_name}/#{key_prefix}/#{index}"
+  s3.put(bucket_name, key_prefix + "/" + index, File.open("tmp.index.m3u8"), {'x-amz-acl' =&gt; 'public-read', 'content-type' =&gt; 'video/MP2T'})
+  puts "Done pushing index file"
+end
+
+queue = Queue.new
+
+server_thread = Thread.new do
+  server = TCPServer.new('0.0.0.0', 10234)
+  while (session = server.accept)
+    input = session.gets
+    queue &lt;&lt; input
+    session.close
+  end
+end
+
+upload_thread = Thread.new do
+  while (value = queue.pop)
+    (index, output_directory, segment_duration, output_prefix, http_prefix, first_segment, last_segment, stream_end, bucket_name, key_prefix) = value.strip.split(%r{,\s*})
+    if last_segment.to_i &gt; 0
+      create_index(segment_duration.to_i, output_prefix, http_prefix, first_segment.to_i, last_segment.to_i, stream_end.to_i == 1)
+      push_to_s3(index, output_directory, bucket_name, key_prefix, output_prefix, last_segment.to_i)
+    end
+  end
+end
+
+server_thread.join
+</code></pre></div></div>
+
+<p>To use the above code you will need to put your S3 credentials in place for the values AWS_S3_ID and AWS_S3_KEY.</p>
+
+<h3>Step 4: Test it</h3>
+
+<ol>
+  <li>
+    <p>Set up a HTML file that points to the streaming index file:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> &lt;html&gt;
+   &lt;head&gt;
+     &lt;title&gt;Video Test&lt;/title&gt;
+     &lt;meta name="viewport" content="width=320; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;"/&gt;
+   &lt;/head&gt;
+   &lt;body style="background-color:#FFFFFF; "&gt;
+     &lt;center&gt;
+       &lt;video width='150' height='150' src="http://s3.amazonaws.com/ionlivestream/stream0001/stream-128k.m3u8" /&gt;
+     &lt;/center&gt;
+   &lt;/body&gt;
+ &lt;/html&gt;
+</code></pre></div>    </div>
+
+    <p>Note that the index file is coming from S3 directly and not from Cloudfront to keep it from being cached and a stale version being served. In case it helps, the format for the source index location in this example is: http://s3.amazonaws.com/&gt;bucket name&lt;/&gt;key prefix&lt;/&gt;index file&lt;</p>
+  </li>
+  <li>
+    <p>Start the upload script. Once started It will sit and wait for input from the segmenter:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ruby s3server.rb
+</code></pre></div>    </div>
+
+    <p>As requests are made the script will dump output to stdout describing what it is doing.</p>
+  </li>
+  <li>
+    <p>Configure and start your source video stream. In my case I need to start the VLC to QuickTime Broadcaster connection for the iSight.</p>
+  </li>
+  <li>
+    <p>Run FFMpeg against the source video stream and pipe the resulting transcoded output into the segmenter. For my stream I used the following command:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ffmpeg -v 0 -i http://192.168.132.101:8080 -f mpegts -acodec libmp3lame -ar 48000 -ab 64k -s 320x240 -vcodec libx264 -b 128k -flags +loop -cmp +chroma -partitions +parti4x4+partp8x8+partb8x8 -subq 5 -trellis 1 -refs 1 -coder 0 -me_range 16 -keyint_min 25 -sc_threshold 40 -i_qfactor 0.71 -bt 200k -maxrate 128k -bufsize 128k rc_eq 'blurCplx^(1-qComp)' -qcomp 0.6 -qmin 10 -qmax 51 -qdiff 4 -level 30 -aspect 320:240 -g 30 -async 2 - | live_upload - 10 /tmp/ sample_128k stream-128k.m3u8 http://d3vmly3syseqo9.cloudfront.net/stream0001/ ionlivestream stream0001
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Point safari on your iPhone to the HTML file created in #1 and hit play. After buffering starts you should see the live video with a segment or two delay.</p>
+  </li>
+</ol>
+
+<p><i>Other information</i></p>
+
+<p>Again, this is just a proof of concept so there are a number of things lacking. Here are a list of enhancements I could imagine people would find useful:</p>
+
+<ul>
+<li>Variable bitrate segments</li>
+<li>Easier and more flexible configuration</li>
+<li>Use <a href="http://aws.amazon.com/ec2/">EC2</a> for encoding from one source stream</li>
+<li>Pluggable transfer to a website using FTP or SCP instead of S3</li>
+</ul>
+
+<p>I thought some about the cost breakdown of doing this using S3 and Cloudfront. The following is a quick calculation on what it might cost for a variable rate stream using the cost of S3 and Cloudfront today.</p>
+
+<p><b>Some assumptions:</b></p>
+
+<p>Everyone always finishes the entire stream when they start it.
+Variable rates: 128kbps, 256kbps, 364kbps
+Video length: 5 minute video
+Client streams: 100</p>
+
+<p>30 segments for each stream (5 minutes = 300 seconds / 10 second intervals)</p>
+
+<p>128kbps x 5 minutes = 4.8MB
+256kbps x 5 minutes = 9.6MB
+364kbps x 5 minutes = 13.65MB</p>
+
+<p>% of each stream rate
+25% client streams @ 364kbps = 25 * 13.65MB = 341.25MB
+50% client streams @ 256kbps = 50 * 9.6MB = 480MB
+25% client streams @ 128kbps = 25 * 4.8MB = 128MB</p>
+
+<p>3 stream index files + 1 variable index file
+30 segments * 3 streams = 90 index puts + 90 stream segment puts</p>
+
+<p><b>S3 put cost:</b>
+  $0.10 per GB â€“ all data transfer in
+  $0.01 per 1,000 PUT, COPY, POST, or LIST requests</p>
+
+<p>$0.01 * (180/1000) = $0.0018 + $0.10 * (4.8+9.6+13.65)/1000 = $0.002805 = $0.004605</p>
+
+<p><b>S3 storage cost:</b>
+  $0.15 per GB â€“ first 50 TB / month of storage used</p>
+
+<p>$0.15 * (4.8+9.6+13.65)/1000 = $0.0042075</p>
+
+<p><b>S3 transfer cost:</b>
+  $0.17 per GB â€“ first 10 TB / month data transfer out
+  $0.01 per 10,000 GET and all other requests</p>
+
+<p>The index gets pulled from S3 every time, the streams come from Cloudfront
+  Assumes the transfer to Cloudfront happens 3 times per stream
+  $0.17 * (3 * (4.8+9.6+13.65)) / 1000 = $0.0143055
+  $0.01 * (100 * 30) + (30 * 3) / 10000 = $0.00309</p>
+
+<p><b>Cloudfront transfer cost:</b>
+  $0.17 per GB â€“ first 10 TB / month data transfer out
+  $0.01 per 10,000 GET requests</p>
+
+<p>$0.17 * (341.25 + 480 + 128) / 1000 = $0.1613708
+  $0.01 * (30 * 100) / 10000 = $0.003</p>
+
+<p><b>Rough total cost:</b> $0.1933833</p>
+
+<p>So for 100 streams of 5 minutes worth of video you would be looking at something around 20 cents.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,336 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>iPad Streaming Video and More - IONCANNON</title>
+<meta name="description" content="I’ve updated the configuration examples in the open source segmenter project to reflect Apple’s recommended stream bitrates for iPad video streaming, added a few fixes and a few new features. If you are interested in streaming video on the iPad, iPhone or iPod Touch and haven’t done so yet you it may help to start with my post on windowed streaming on for the iPhone, then read about iPhone HTTP streaming with FFMpeg and the open source segmenter and finally check out the iPad, iPhone, and iPod Touch live video streaming project page.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="iPad Streaming Video and More">
+<meta property="og:url" content="http://localhost:4000/programming/2010/04/06/ipad-streaming-video-and-more/">
+
+
+  <meta property="og:description" content="I’ve updated the configuration examples in the open source segmenter project to reflect Apple’s recommended stream bitrates for iPad video streaming, added a few fixes and a few new features. If you are interested in streaming video on the iPad, iPhone or iPod Touch and haven’t done so yet you it may help to start with my post on windowed streaming on for the iPhone, then read about iPhone HTTP streaming with FFMpeg and the open source segmenter and finally check out the iPad, iPhone, and iPod Touch live video streaming project page.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2010-04-06T06:01:33-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2010/04/06/ipad-streaming-video-and-more/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">iPad Streaming Video and More</h1>
+    
+    <p>I’ve updated the configuration examples in the open source segmenter project to reflect <a href="http://developer.apple.com/iphone/library/technotes/tn2010/tn2224.html">Apple’s recommended stream bitrates</a> for iPad video streaming, added a few fixes and a few new features. If you are interested in streaming video on the iPad, iPhone or iPod Touch and haven’t done so yet you it may help to start with my post on <a href="http://www.ioncannon.net/meta/564/iphone-windowed-http-live-streaming-server/">windowed streaming on for the iPhone</a>, then read about <a href="http://www.ioncannon.net/programming/452/iphone-http-streaming-with-ffmpeg-and-an-open-source-segmenter/">iPhone HTTP streaming with FFMpeg and the open source segmenter</a> and finally check out the <a href="http://www.ioncannon.net/projects/http-live-video-stream-segmenter-and-distributor/">iPad, iPhone, and iPod Touch live video streaming project page</a>.</p>
+
+<p>Here is a demo of the iPad streaming video created with the segmenter (I tried to show the progressive upgrade happening but it happens very quickly since the iPad is on WIFI, I also show that you can scrub without any issues and if you look in the background you can see the server log displaying entries as the segments are downloaded):</p>
+
+<object width="640" height="385"><param name="movie" value="http://www.youtube.com/v/ydP51WxRDDk&amp;hl=en_US&amp;fs=1&amp;rel=0" />&lt;/param&gt;<param name="allowFullScreen" value="true" />&lt;/param&gt;<param name="allowscriptaccess" value="always" />&lt;/param&gt;<embed src="http://www.youtube.com/v/ydP51WxRDDk&amp;hl=en_US&amp;fs=1&amp;rel=0" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="640" height="385" />&lt;/embed&gt;</object>
+
+<p>If you want to view the demo yourself I’ve created a demo for the <a href="http://www.ioncannon.net/projects/ivids/ipad/">iPad</a>, <a href="http://www.ioncannon.net/projects/ivids/iphone/">iPhone, and iPod Touch</a>. Note that those are two links, one for the iPad version and one for the iPhone/iPod Touch version. The main difference is the size of the video.</p>
+
+<p>I used the open source video <a href="http://www.bigbuckbunny.org/">Big Buck Bunny</a> (the 1920x1080 ogg version) for the above demos.</p>
+
+<p>If you are interested in more details on what changed read on or skip to the bottom if you want to see what I’ll be working towards in future versions of the segmenter.</p>
+
+<p>Over the past few weeks I learned that it is important that each segment starts with an <a href="http://avidemux.org/admWiki/index.php?title=H264#I-Frames">IDR frame</a>. To accomplish this I thought setting the gop so that the segment time % (gop size / frame rate) = 0 would work but I haven’t completely convinced myself of this yet. An example of would be a segment size of 10 seconds % (300 gop size / 30 frame rate) = 0. This should insure that each segment starts with the correct i-frame and while I have looked over the resulting segments with a hex editor and believe it works I still get errors when using certain tools on the individual segments that makes me think it isn’t working like I think it should. Either way I have included updates to the gop size in the example configuration files. The gop size is controlled by the -g option for FFMpeg and in the examples I have set it so that for a 10 second segment with the given frame rate the gop size makes sure each segment starts correctly. If you want to know more you can dig into the resulting segments and use this forum post on <a href="http://forum.digital-digest.com/showthread.php?t=89736">how to extract an i-frame</a>, this <a href="http://www.mpucoder.com/DVD/mpeghdrs.html">list of mpeg headers</a> to verify that each has the correct i-frame at the start.</p>
+
+<p>The <a href="http://developer.apple.com/iphone/library/technotes/tn2010/tn2224.html">Apple streaming tech notes</a> where informative in a few other ways as well. The tech notes contain the supported h264 profiles for each device. For the iPhone/iPod Touch baseline level 3.0 is supported while the iPad supports baseline level 3.1. You can find out more about <a href="http://h264.code-shop.com/trac/wiki/Encoding">h264 encoding levels with FFMpeg</a> and also review <a href="http://rob.opendot.cl/index.php/useful-stuff/ffmpeg-x264-encoding-guide/">FFMpeg x264 encoding guide</a>, <a href="http://sites.google.com/site/linuxencoding/x264-ffmpeg-mapping">FFMpeg option mappings</a> and <a href="http://www.mplayerhq.hu/DOCS/HTML/en/menc-feat-x264.html">information on encoding with the x264 codec</a> for more information.</p>
+
+<p>Another bit of information disclosed in the Apple tech notes is the existence of a media stream validation tool. This tool can be downloaded from the Apple iPhone developer site and has to be run on OS X. Apple recommends that you use this tool to validate any streams that you create.</p>
+
+<p>One other note that I have recently ran across is that Apple seems to be <a href="http://techcrunch.com/2010/03/26/iphone-video-apps-downgrade-streaming-rates/">rejecting <i>native apps</i> that have video streams without a fall back audio stream</a>. The correct way of generating the fallback 64k audio only stream is something that is lacking in the current version of the segmenter but I hope to fix that soon. It won’t matter for those using the HTML5 video tag however.</p>
+
+<p>If you are using HTML5 video tags it is important not to use my older posts as a guide for the iPad since I use a now outdated example. Those examples still work on the iPhone but they do not work on the iPad. Here is an updated example that will work on both the iPhone and iPad:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Video Test&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body style="background-color:#FFFFFF; "&gt;
+    &lt;center&gt;
+      &lt;video controls&gt;
+        &lt;source src="stream_multi.m3u8"/&gt;
+      &lt;/video&gt;
+    &lt;/center&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div></div>
+
+<p>Finally I am currently using the latest version of FFMpeg to do tests and it seems to have become more reliable for me. The current version in git seems to be pretty good at producing usable videos from a variety of source videos.</p>
+
+<p>The following is a quick summary of the recent changes I have made:</p>
+
+<ul>
+  <li>Applied an audio patch for the segmenter from Scott Kidder. This patch skips any video processing if there is no video stream.</li>
+  <li>Modified sample configs with newer FFMpeg string, gop sizes, frame rates and other parameters to match the Apple recomended values for iPhone/iPod Touch with aspect ratios of 4:3 and 6:9 on cell or wifi and iPad with aspect ratios of 4:3 and 6:9 on cell or wifi</li>
+  <li>Added configuration sanity checks</li>
+  <li>Made gems not required if not using those features that need them</li>
+  <li>Added fix for deprecation warning from newest version of libavformat</li>
+  <li>Made termination work better when killed with SIGINT/ctrl-c</li>
+  <li>Fixed some minor issues with index file format</li>
+</ul>
+
+<p>The following are enhancements I’m planning on making:</p>
+
+<ul>
+  <li>
+  I plan on creating a howto on getting everything set up on EC2.
+  </li>
+  <li>
+  Dig more into verification that each segment starts with the correct I-frame.
+  </li>
+  <li>
+  I'm going to work on refactoring everything so that instead of creating files and then transferring them it streams them all. This makes more sense with doing encryption as just another part of the pipeline.
+  </li>
+  <li>
+  Add ability to do <a href="http://tools.ietf.org/html/draft-pantos-http-live-streaming-02#section-6.1.2">encryption</a>. I have a proof of concept working but I decided I need to get everything set up in one continuous stream before integrating encryption into the mix.
+  </li>
+  <li>
+  <a href="http://www.ioncannon.net/programming/941/using-daemon-kit-and-robustthread-to-build-ruby-daemons/">I had thoughtabout using the ruby daemon utils</a> to wrap the segmenter but I decided it probably isn't necessary at this point.
+  </li>
+</ul>
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

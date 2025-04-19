@@ -1,0 +1,369 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>PHP MySQLi and Multiple Prepared Statements - IONCANNON</title>
+<meta name="description" content="While sprucing up the PHP code I use to provide my own Stack Overflow API for GeeQe I ran into an error caused by trying to use multiple prepared statements with MySQLi. It turned up when I tried to execute one prepared statement while looping over the result set from another prepared statement that were both created on the same connection. What came out was the following error:">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="PHP MySQLi and Multiple Prepared Statements">
+<meta property="og:url" content="http://localhost:4000/programming/2010/02/09/php-mysqli-and-multiple-prepared-statements/">
+
+
+  <meta property="og:description" content="While sprucing up the PHP code I use to provide my own Stack Overflow API for GeeQe I ran into an error caused by trying to use multiple prepared statements with MySQLi. It turned up when I tried to execute one prepared statement while looping over the result set from another prepared statement that were both created on the same connection. What came out was the following error:">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2010-02-09T06:58:44-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2010/02/09/php-mysqli-and-multiple-prepared-statements/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">PHP MySQLi and Multiple Prepared Statements</h1>
+    
+    <p>While sprucing up the PHP code I use to provide my own Stack Overflow API for <a href="http://www.ioncannon.net/projects/geeqe/">GeeQe</a> I ran into an error caused by trying to use multiple prepared statements with <a href="http://www.php.net/manual/en/book.mysqli.php">MySQLi</a>. It turned up when I tried to execute one prepared statement while looping over the result set from another prepared statement that were both created on the same connection. What came out was the following error:</p>
+
+<p>“Commands out of sync; you can’t run this command now”</p>
+
+<p>Details about this error can be found in the <a href="http://dev.mysql.com/doc/refman/5.0/en/commands-out-of-sync.html">mysql docs</a>. Reading those details makes it clear that the result sets of a prepared statement execution need to be fetched completely before executing another prepared statement on the same connection.</p>
+
+<p>Fixing the issue can be accomplished by using the <a href="http://php.net/manual/en/mysqli-stmt.store-result.php">store result</a> call. Here is an example of what I initially was trying to do:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php
+  $db_connection = new mysqli('127.0.0.1', 'user', '', 'test');
+  $post_stmt = $db_connection-&gt;prepare("select id, title from post where id = 1000");
+  $comment_stmt = $db_connection-&gt;prepare("select user_id from comment where post_id = ?");
+  if ($post_stmt-&gt;execute())
+  {
+    $post_stmt-&gt;bind_result($post_id, $post_title);
+    if ($post_stmt-&gt;fetch())
+    {
+      $comments = array();
+      $comment_stmt-&gt;bind_param('i', $post_id);
+      if ($comment_stmt-&gt;execute())
+      {
+        $comment_stmt-&gt;bind_result($user_id);
+        while ($comment_stmt-&gt;fetch())
+        {
+          array_push($comments, array('user_id' =&gt; $user_id));
+        }
+      }
+      else
+      {
+        printf("Comment statement error: %s\n", $comment_stmt-&gt;error);
+      }
+    }
+  }
+  else
+  {
+    printf("Post statement error: %s\n", $post_stmt-&gt;error);
+  }
+  $post_stmt-&gt;close();
+  $comment_stmt-&gt;close();
+  $db_connection-&gt;close();
+  printf("ID: %d -&gt; %s\n", $post_id, $post_title);
+  print_r($comments);
+?&gt;
+</code></pre></div></div>
+
+<p>The above will result in the following error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Comment statement error: Commands out of sync; you can't run this command now
+PHP Notice:  Undefined variable: post_title in error.php on line 41
+ID: 9033 -&gt;
+Array
+(
+)
+</code></pre></div></div>
+
+<p>Here is what needs to be done to make it work correctly:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php
+  $db_connection = new mysqli('127.0.0.1', 'user', '', 'test');
+  $post_stmt = $db_connection-&gt;prepare("select id, title from post where id = 1000");
+  $comment_stmt = $db_connection-&gt;prepare("select user_id from comment where post_id = ?");
+  if ($post_stmt-&gt;execute())
+  {
+    $post_stmt-&gt;store_result();
+    $post_stmt-&gt;bind_result($post_id, $post_title);
+    if ($post_stmt-&gt;fetch())
+    {
+      $comments = array();
+      $comment_stmt-&gt;bind_param('i', $post_id);
+      if ($comment_stmt-&gt;execute())
+      {
+        $comment_stmt-&gt;bind_result($user_id);
+        while ($comment_stmt-&gt;fetch())
+        {
+          array_push($comments, array('user_id' =&gt; $user_id));
+        }
+      }
+      else
+      {
+        printf("Comment statement error: %s\n", $comment_stmt-&gt;error);
+      }
+    }
+    $post_stmt-&gt;free_result();
+  }
+  else
+  {
+    printf("Post statement error: %s\n", $post_stmt-&gt;error);
+  }
+  $post_stmt-&gt;close();
+  $comment_stmt-&gt;close();
+  $db_connection-&gt;close();
+  printf("ID: %d -&gt; %s\n", $post_id, $post_title);
+  print_r($comments);
+?&gt;
+</code></pre></div></div>
+
+<p>A couple things to note about the above example:</p>
+
+<ul>
+  <li>The bind and fetch on the statement still works correctly.</li>
+  <li>Make sure the results are freed when the processing is done.</li>
+</ul>
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

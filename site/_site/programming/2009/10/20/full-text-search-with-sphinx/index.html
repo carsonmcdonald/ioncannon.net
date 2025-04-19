@@ -1,0 +1,561 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Full Text Search with Sphinx - IONCANNON</title>
+<meta name="description" content="While developing my GeeQE iPhone application I decided I needed a way to let users search posts so I started looking around for a simple search engine that I could use with PHP. I took a look at a number of different options like MySQL Full Text search, Sphinx, Solr and others based on Lucene. After looking at what it would take to get started with each I decided to go with Sphinx. Sphinx looked like it would be the easiest and quickest to set up, didn’t require a lot of resources to run in an idle state and would integrate with PHP easily.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Full Text Search with Sphinx">
+<meta property="og:url" content="http://localhost:4000/programming/2009/10/20/full-text-search-with-sphinx/">
+
+
+  <meta property="og:description" content="While developing my GeeQE iPhone application I decided I needed a way to let users search posts so I started looking around for a simple search engine that I could use with PHP. I took a look at a number of different options like MySQL Full Text search, Sphinx, Solr and others based on Lucene. After looking at what it would take to get started with each I decided to go with Sphinx. Sphinx looked like it would be the easiest and quickest to set up, didn’t require a lot of resources to run in an idle state and would integrate with PHP easily.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2009-10-20T03:30:28-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2009/10/20/full-text-search-with-sphinx/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Full Text Search with Sphinx</h1>
+    
+    <p>While developing my <a href="http://www.ioncannon.net/projects/geeqe/">GeeQE</a> iPhone application I decided I needed a way to let users search posts so I started looking around for a simple search engine that I could use with PHP. I took a look at a number of different options like <a href="http://dev.mysql.com/doc/refman/5.1/en/fulltext-search.html">MySQL Full Text search</a>, <a href="http://www.sphinxsearch.com/">Sphinx</a>, <a href="http://lucene.apache.org/solr/">Solr</a> and others based on <a href="http://lucene.apache.org/">Lucene</a>. After looking at what it would take to get started with each I decided to go with Sphinx. Sphinx looked like it would be the easiest and quickest to set up, didn’t require a lot of resources to run in an idle state and would integrate with PHP easily.</p>
+
+<p>This post goes over how I went about configuring Sphinx and gives an example of how to integrate it with PHP. I’m using MySQL as the data store filled with the <a href="http://blog.stackoverflow.com/2009/06/stack-overflow-creative-commons-data-dump/">Stack Overflow CC data dump</a> although it should be easy to adapt the instructions to other data sources. To follow along just download a copy of the data dump and use my <a href="http://code.google.com/p/geeqe/source/browse/trunk/scripts/schema.sql">schema</a> and <a href="http://code.google.com/p/geeqe/source/browse/trunk/scripts/load.rb">loader</a> to get the same MySQL database.</p>
+
+<p>I’ve broken the setup down into the following 4 steps:</p>
+
+<ol>
+  <li><a href="#sphinx-config">Configuring Sphinx</a></li>
+  <li><a href="#sphinx-index">Building an Index with Sphinx</a></li>
+  <li><a href="#sphinx-search">Searching with Sphinx</a></li>
+  <li><a href="#sphinx-php-api">Using the Sphinx PHP API</a></li>
+</ol>
+
+<p>As a side note, Sphinx is available as a package under Fedora 11 and I assume the same of other Linux distributions so it shouldn’t be too hard to install. I am using version 0.9.8.1 compiled from source.</p>
+
+<p><a name="sphinx-config"><b>Configuring Sphinx</b></a></p>
+
+<p>The Sphinx configuration file can be be broken down into different parts with some of those parts being used by the indexer and some by the search service. I have broken the configuration file I am using into different sections but I include the full file for download at the end. The first segment of the configuration describes where to get the data for the index, in this case it is a MySQL database:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>###############################################
+## source for the data to be indexed
+###############################################
+
+source sosrc
+{
+	type			= mysql
+
+	sql_host		= localhost
+	sql_user		= souser
+	sql_pass		=
+	sql_db		        = so_2009_10
+	sql_port		= 3306
+
+	sql_query		= SELECT id, owner_id, UNIX_TIMESTAMP(created) AS date_added, title, body_text FROM post WHERE post_type_id = 1
+
+	sql_attr_uint		= owner_id
+	sql_attr_timestamp	= date_added
+
+	sql_ranged_throttle	= 0
+
+	# document info query, ONLY for CLI search (ie. testing and debugging)
+	sql_query_info		= SELECT * FROM post WHERE id=$id
+}
+</code></pre></div></div>
+
+<p>There are a few notable parts to the above. The field “sql_query” defines the query that grabs data from the database for the index. The “sql_attr_*” values point out the columns in the data that will be used in search queries later to sort or group by, more on that in the searching section.</p>
+
+<p>The next section defines the index:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>###############################################
+## base search index
+###############################################
+
+index so_2009_10
+{
+	source			= sosrc
+	path			= ./data/so_2009_10
+	docinfo			= extern
+	mlock			= 0
+
+	morphology		= none
+
+	min_word_len		= 1
+	charset_type		= sbcs
+
+	html_strip		= 1
+}
+
+###############################################
+## index that extends the original index
+###############################################
+
+index so_2009_10stemmed : so_2009_10
+{
+	path			= ./data/so_2009_10stemmed
+	morphology		= stem_en
+}
+</code></pre></div></div>
+
+<p>In the above there are two index definitions. The first index is very basic and has no morphology defined. The second index is derived from the first index and uses a <a href="http://en.wikipedia.org/wiki/Stemming">stemming</a> morphology. I’m also having any HTML stripped out of the content since there is some in the data and it doesn’t need to be searchable in the index.</p>
+
+<p>The next block in the configuration file defines how the indexer will run. Here I’m limiting the amount of memory used to 32M as an example of what could be done:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>###############################################
+## indexer settings
+###############################################
+
+indexer
+{
+	mem_limit		= 32M
+}
+</code></pre></div></div>
+
+<p>The final part of the configuration file sets options for the search daemon:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>###############################################
+## searchd settings
+###############################################
+
+searchd
+{
+	port			= 3312
+	log			= /tmp/searchd.log
+	query_log		= /tmp/query.log
+
+	read_timeout		= 5
+	max_children		= 30
+	pid_file	 	= /tmp/searchd.pid
+	max_matches		= 100
+	seamless_rotate	        = 1
+	preopen_indexes	        = 0
+	unlink_old		= 1
+}
+</code></pre></div></div>
+
+<p>You can download the full configuration file here: <a href="/examples/sphinx.conf">sphinx.conf</a></p>
+
+<p>The above configuration gets you the basics. If you want to find out more you can check out the <a href="http://www.sphinxsearch.com/docs/current.html#indexing">indexing</a> documentation.</p>
+
+<p><a name="sphinx-index"><b>Building an Index with Sphinx</b></a></p>
+
+<p>The complexity of building and maintaining an index goes up with the frequency of the updates that are required to keep it up to date. Luckily the data set I’m working with gets updated once a month so it is fairly static. Because the data is updated monthly I only have to update the index once a month so this makes the indexing simple but keep in mind that I still need to use services like the ones offered at <a href="https://blog.couchbase.com/database-indexing-best-practices/">Couchbase</a>, as I think it improves productivity.</p>
+
+<p>This is the command I use to create the index:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>indexer --all --config sphinx.conf
+</code></pre></div></div>
+
+<p>Indexing the entire data set I have only takes a few minutes so re-indexing speed isn’t an issue for me and the resulting index is in the 250M range as of this post so size isn’t necessarily an issue either. However I currently create the index on one machine and then upload it to the server so a 250M transfer could become a bandwidth hog if I needed to update the index more often. If I were able to get deltas from the data dump I would look into using the <a href="http://www.sphinxsearch.com/docs/current.html#index-merging">index merging</a> feature and then transferring the delta index.</p>
+
+<p><a name="sphinx-search"><b>Searching with Sphinx</b></a></p>
+
+<p>Sphinx offers a lot of flexibility in configuring how a search is run and I found myself needing that flexibility to get better results. The search command line interface (see the <a href="http://www.sphinxsearch.com/docs/current.html#ref-search">reference</a> for all the options) can be used to test a few of the options but you can’t do everything with it that you can with the various APIs available.</p>
+
+<p>The first place I started changing defaults with the search is in how it matches the search words. The default is to find all words:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>search --config sphinx.conf "php full text search"
+</code></pre></div></div>
+
+<p>Here is an example of the output you get from the CLI search:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Copyright (c) 2001-2008, Andrew Aksyonoff
+
+using config file 'sphinx.conf'...
+index 'so_2009_10': query 'php full text search ': returned 19 matches of 19 total in 0.061 sec
+
+displaying matches:
+1. document=553055, weight=6, owner_id=2287, date_added=Mon Feb 16 11:45:01 2009
+        id=553055
+        post_type_id=1
+        accepted_answer_id=553269
+        parent_id=(null)
+        score=6
+        view_count=604
+        body_text=truncated... body text would be here
+        owner_id=2287
+        last_editor_user_id=2287
+        last_editor_display_name=PConroy
+        last_edit_date=2009-02-18 10:54:44
+        last_activity_date=2009-03-25 19:42:34
+        title=Best full text search for mysql?
+        answer_count=5
+        comment_count=0
+        favorite_count=7
+        created=2009-02-16 11:45:01
+...
+</code></pre></div></div>
+
+<p>The output shows you the “document id” as well as the weight and any “sql_attr_” values. I used the CLI search to get the weights for each search change I made before I started working with the API. Please note that the extended information in the above example output only shows up if the sql_query_info query is set correctly in the configuration file.</p>
+
+<p>Next I tested with “any” and “extended search version 2” before settling on extended version 2:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>search --any --config sphinx.conf "php full text search"
+
+search --ext2 --config sphinx.conf "php full text search"
+</code></pre></div></div>
+
+<p>The CLI search will also perform sorts. It is important to note that you can only sort on values that were indexed using the “sql_attr_”* configuration options. Here is an example of sorting by an indexed value:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>search --sortby "date_added desc" --config sphinx.conf "php regex"
+</code></pre></div></div>
+
+<p>This is what happens when you try to sort based on an un-index attribute:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>search --sortby "id desc" --config sphinx.conf "php regex"
+
+Sphinx 0.9.8.1-release (r1533)
+Copyright (c) 2001-2008, Andrew Aksyonoff
+
+using config file 'sphinx.conf'...
+index 'so_2009_10': search error: failed to create sorting queue: sort-by attribute 'id' not found.
+</code></pre></div></div>
+
+<p>One of the things that the CLI search interface can’t do is change <a href="http://www.sphinxsearch.com/docs/current.html#weighting">weightings</a> for the different data points. I found that weighting the title more than the body made sense and that is reflected in the PHP code that follows in the API section.</p>
+
+<p>The last part of searching to cover is searchd server. This is the integration point for the various Sphinx APIs and I assume it is running for the examples in the PHP API section. If the configuration example given in the first section is used all that needs to be done is to start the daemon. The following is a simple init script I use to start and stop searchd:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/sh
+
+case "$1" in
+'start')
+searchd --config /etc/sphinx/sphinx.conf
+;;
+'stop')
+killall -9 searchd;
+;;
+*)
+echo "Usage: $0 { start | stop}"
+exit 1
+;;
+esac
+exit 0
+#
+</code></pre></div></div>
+
+<p><a name="sphinx-php-api"><b>Using the Sphinx PHP API</b></a></p>
+
+<p>The Sphinx PHP API is included in the <a href="http://www.sphinxsearch.com/downloads.html">Sphinx source</a>. The API is contained in one file named sphinxapi.php that is located in the api directory of the source. Make sure the library is in a place where it can be included before trying out the examples. There is also some <a href="http://www.sphinxsearch.com/wiki/doku.php?id=php_api_docs">documentation</a> for the PHP API.</p>
+
+<p>In the following example I’m running the search query then serializing it to JSON format. Notice that the title is given a weight of 70 and the body_text is given a weight of 30 so the results will focus more on the title than what is in the body:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php
+
+require_once('sphinxapi.php');
+
+// Create the client, tell it where the server
+// is and how long to wait for a response.
+$sphinxClient = new SphinxClient();
+$sphinxClient-&gt;SetServer( 'localhost', 3312 );
+$sphinxClient-&gt;SetConnectTimeout( 1 );
+
+// This gives the title more weight than the
+// body text for searches.
+$sphinxClient-&gt;SetFieldWeights(array('title' =&gt; 70, 'body_text' =&gt; 30));
+
+// Use the exteneded v2 match type
+$sphinxClient-&gt;SetMatchMode( SPH_MATCH_EXTENDED2 );
+
+// Set the maximum number of search results to return
+$sphinxClient-&gt;SetLimits( 0, 20, 1000 );
+
+// Set how to rank the weighted values
+$sphinxClient-&gt;SetRankingMode( SPH_RANK_PROXIMITY_BM25 );
+
+// Give me back the results as an array
+$sphinxClient-&gt;SetArrayResult( true );
+
+$searchQuery = $_GET['query'];
+$searchResults = $sphinxClient-&gt;Query( $searchQuery, '*' );
+
+$jhash = array();
+
+if ( $searchResults === false )
+{
+  $jhash['status'] = 'failed';
+  $jhash['status_message'] = $sphinxClient-&gt;GetLastError();
+}
+else
+{
+  if ( $sphinxClient-&gt;GetLastWarning() )
+  {
+    $jhash['status'] = 'warning';
+    $jhash['status_message'] = $sphinxClient-&gt;GetLastWarning();
+  }
+  else
+  {
+    $jhash['status'] = 'good';
+  }
+
+  $jhash['result_total'] = $searchResults['total'];
+  $jhash['result_found'] = $searchResults['total_found'];
+
+  $jhash_matches = array();
+  if ( is_array($searchResults["matches"]) )
+  {
+    $row_ids = array();
+    foreach ( $searchResults["matches"] as $docinfo )
+    {
+      array_push($row_ids, mysql_real_escape_string($docinfo['id']));
+    }
+  }
+
+  $jhash['matches'] = $jhash_matches;
+}
+
+echo json_encode($jhash);
+
+?&gt;
+</code></pre></div></div>
+
+<p>Although I picked PHP there are a wide range of language specific libraries available.</p>
+
+<p>Overall it didn’t seem too difficult to set up Sphinx and have it serving search results quickly. I liked that it is very light weight and doesn’t need a lot of resources or require a lot of extra parts to be installed.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

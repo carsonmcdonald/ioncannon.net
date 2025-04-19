@@ -1,0 +1,380 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Using WebP to Reduce Native iOS App Size - IONCANNON</title>
+<meta name="description" content="Last year Google released WebM as an alternative to h264 encoded video. They followed that up with the release of WebP as an alternative to JPG. Ever since the release I’ve been thinking about giving it a try on iOS to see how well it might work to reduce application size. As a bonus to reduced size, WebP also supports an alpha channel that JPG doesn’t (there is more information available on the original release blog post).">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Using WebP to Reduce Native iOS App Size">
+<meta property="og:url" content="http://localhost:4000/programming/2011/06/29/using-webp-to-reduce-native-ios-app-size/">
+
+
+  <meta property="og:description" content="Last year Google released WebM as an alternative to h264 encoded video. They followed that up with the release of WebP as an alternative to JPG. Ever since the release I’ve been thinking about giving it a try on iOS to see how well it might work to reduce application size. As a bonus to reduced size, WebP also supports an alpha channel that JPG doesn’t (there is more information available on the original release blog post).">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2011-06-29T07:23:40-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2011/06/29/using-webp-to-reduce-native-ios-app-size/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Using WebP to Reduce Native iOS App Size</h1>
+    
+    <p>Last year Google released <a href="http://www.webmproject.org/">WebM</a> as an alternative to h264 encoded video. They followed that up with the release of <a href="http://code.google.com/speed/webp/">WebP</a> as an alternative to JPG. Ever since the release I’ve been thinking about giving it a try on iOS to see how well it might work to reduce application size. As a bonus to reduced size, WebP also supports an alpha channel that JPG doesn’t (there is more information available on the original <a href="http://blog.chromium.org/2010/09/webp-new-image-format-for-web.html">release</a> blog post).</p>
+
+<p>To follow along you will need to grab the source for WebP and compile it. The easiest way to do that is to follow the official <a href="http://code.google.com/speed/webp/docs/compiling.html">compiling WebP</a> instructions. After compiling the source you will be able to encode WebP images, later I describe how to build the same source for use with iOS.</p>
+
+<p>Before trying to build a web page I did some testing to see just how easy is to handle <a href="https://www.knownhost.com/wordpress-hosting.html">wordpress hosting</a> to add pictures and videos to blog posts. I used ImageMagick to convert the source images into JPG and pushed the quality of the JPG down as far as seemed reasonable to reduce the resulting size. I tried a number of combinations but ended up using the following command to convert the JPGs:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>convert -quality 75 -resize 1024x680 inputfile.png outputfile.jpg
+</code></pre></div></div>
+
+<p>Here are a couple samples produced using that command:</p>
+
+<p><a href="/assets/2011_06_test2.jpg"><img src="/assets/2011_06_test2.jpg" alt="Egg Carton" title="Egg Carton" width="300" height="199" class="alignnone size-medium wp-image-1485" /></a></p>
+
+<p><a href="/assets/2011_06_test9.jpg"><img src="/assets/2011_06_test9.jpg" alt="Elephants" title="Elephants" width="300" height="199" class="alignnone size-medium wp-image-1485" /></a></p>
+
+<p>For WebP I made the quality 90 and encoded the same images with the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cwebp -q 90 -resize 1024 680 inputfile.png -o outputfile.webp
+</code></pre></div></div>
+
+<p>Here are a couple example images produced using that command (at the time of this post these will only be visible using Chrome):</p>
+
+<p><a href="/assets/2011_06_test2.webp"><img src="/assets/2011_06_test2.webp" alt="Egg Carton" title="Egg Carton" width="300" height="199" class="alignnone size-medium wp-image-1485" /></a></p>
+
+<p><a href="/assets/2011_06_test9.webp"><img src="/assets/2011_06_test9.webp" alt="Elephants" title="Elephants" width="300" height="199" class="alignnone size-medium wp-image-1485" /></a></p>
+
+<p>Even with the advantage I was giving the JPG images by compressing them with a lower quality I was able to get a 25% size reduction in the WebP version. Generally the JPG images would have been usable but some ended up with artifacts that would have required them to be re-encoded at a higher quality. The WebP versions ended up looking better in every case.</p>
+
+<p>This was just my quick attempt to verify that it would be worth the effort of using WebP. A more in depth overview of JPG vs WebP can be found in the <a href="http://code.google.com/speed/webp/gallery.html">example gallery</a>.</p>
+
+<p>With that simple test out of the way I created a script that would compile the libwebp source into a framework compatible with the iOS simulators, iPad and iPhone:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SDK=4.3
+PLATFORMS="iPhoneSimulator iPhoneOS-V6 iPhoneOS-V7"
+DEVELOPER=/Developer
+TOPDIR=`pwd`
+BUILDDIR="$TOPDIR/tmp"
+FINALDIR="$TOPDIR/WebP.framework"
+LIBLIST=''
+mkdir -p $BUILDDIR
+mkdir -p $FINALDIR
+mkdir $FINALDIR/Headers/
+for PLATFORM in ${PLATFORMS}
+do
+if [ "${PLATFORM}" == "iPhoneOS-V7" ]
+then
+PLATFORM="iPhoneOS"
+ARCH="armv7"
+elif [ "${PLATFORM}" == "iPhoneOS-V6" ]
+then
+PLATFORM="iPhoneOS"
+ARCH="armv6"
+else
+ARCH="i386"
+fi
+ROOTDIR="${BUILDDIR}/${PLATFORM}-${SDK}-${ARCH}"
+rm -rf "${ROOTDIR}"
+mkdir -p "${ROOTDIR}"
+export DEVROOT="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer"
+export SDKROOT="${DEVROOT}/SDKs/${PLATFORM}${SDK}.sdk"
+export CC=${DEVROOT}/usr/bin/gcc
+export LD=${DEVROOT}/usr/bin/ld
+export CPP=${DEVROOT}/usr/bin/cpp
+export CXX=${DEVROOT}/usr/bin/g++
+export AR=${DEVROOT}/usr/bin/ar
+export AS=${DEVROOT}/usr/bin/as
+export NM=${DEVROOT}/usr/bin/nm
+export CXXCPP=$DEVROOT/usr/bin/cpp
+export RANLIB=$DEVROOT/usr/bin/ranlib
+export LDFLAGS="-arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -L${ROOTDIR}/lib"
+export CFLAGS="-arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${ROOTDIR}/include"
+export CXXFLAGS="-arch ${ARCH} -pipe -no-cpp-precomp -isysroot ${SDKROOT} -I${ROOTDIR}/include"
+rm -rf libwebp-0.1.2
+tar xzf libwebp-0.1.2.tar.gz
+cd libwebp-0.1.2
+sh autogen.sh
+./configure --host=${ARCH}-apple-darwin --prefix=${ROOTDIR} --disable-shared --enable-static
+make
+make install
+LIBLIST="${LIBLIST} ${ROOTDIR}/lib/libwebp.a"
+cp -Rp ${ROOTDIR}/include/webp/* $FINALDIR/Headers/
+cd ..
+done
+${DEVROOT}/usr/bin/lipo -create $LIBLIST -output $FINALDIR/WebP
+rm -rf libwebp-0.1.2
+rm -rf ${BUILDDIR}
+</code></pre></div></div>
+
+<p>The script assumes that the source for libwebp is in the same directory as the script is executed from. If you skipped the first part of the post or want to make sure you are using the same version I used then use the following curl command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl http://webp.googlecode.com/files/libwebp-0.1.2.tar.gz &gt; libwebp-0.1.2.tar.gz
+</code></pre></div></div>
+
+<p>After you run the script you will have a WebP.framework directory that represents the library. You can use this as a framework in XCode.</p>
+
+<p>Using the library is easy. The following snipit shows how to get the current WebP library version, get the width and height of an image and then read the image into a buffer:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Get the current version of the WebP decoder
+int rc = WebPGetDecoderVersion();
+NSLog(@"Version: %d", rc);
+// Get the width and height of the selected WebP image
+int width = 0;
+int height = 0;
+WebPGetInfo([myData bytes], [myData length], &amp;amp;width, &amp;amp;height);
+NSLog(@"Image Width: %d Image Height: %d", width, height);
+// Decode the WebP image data into a RGBA value array
+uint8_t *data = WebPDecodeRGBA([myData bytes], [myData length], &amp;amp;width, &amp;amp;height);
+</code></pre></div></div>
+
+<p>There is more documentation on the <a href="http://code.google.com/speed/webp/docs/api.html">WebP API</a> and I’ve put together a complete example on Github. If you grab the <a href="https://github.com/carsonmcdonald/WebP-iOS-example">WebP iOS example</a> from Github you will find the build script as well as the full example. First build the library from a command line then open the example project in XCode. If you don’t first build the library before opening the project you will see that the WebP.framework is missing.</p>
+
+<p>At this point you are on your way to having smaller iOS applications. There is at least one drawback at this point and that is speed. Decoding is a little slow and I think this is because the library isn’t constructed to take advantage of any hardware acceleration. The next step is to see if it can be sped up by using the accelerate framework.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

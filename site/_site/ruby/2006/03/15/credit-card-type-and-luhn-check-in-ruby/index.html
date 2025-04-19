@@ -1,0 +1,307 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Credit card type and luhn check in ruby - IONCANNON</title>
+<meta name="description" content="I was looking at implementing a luhn and credit card type check the other day in java and I noticed that there seems to be a lack of code for doing this in ruby. So I figured I would put something together for doing the checks in ruby.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Credit card type and luhn check in ruby">
+<meta property="og:url" content="http://localhost:4000/ruby/2006/03/15/credit-card-type-and-luhn-check-in-ruby/">
+
+
+  <meta property="og:description" content="I was looking at implementing a luhn and credit card type check the other day in java and I noticed that there seems to be a lack of code for doing this in ruby. So I figured I would put something together for doing the checks in ruby.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-03-15T14:06:47-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/ruby/2006/03/15/credit-card-type-and-luhn-check-in-ruby/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Credit card type and luhn check in ruby</h1>
+    
+    <p>I was looking at implementing a luhn and credit card type check the other day in java and I noticed that there seems to be a lack of code for doing this in ruby. So I figured I would put something together for doing the checks in ruby.</p>
+
+<p>The following function will do a luhn check for a given number (any number not just credit card numbers).  The luhn algorithm is fairly simple, if you want to learn more about it <a href="http://en.wikipedia.org/wiki/Luhn_formula">check here</a>.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  def luhnCheck(ccNumber)
+  ccNumber = ccNumber.gsub(/D/, '')
+  cardLength = ccNumber.length
+  parity = cardLength % 2
+  sum = 0
+  for i in 0...cardLength
+    digit = ccNumber[i] - 48
+   if i % 2 == parity
+      digit = digit * 2
+    end
+   if digit &gt; 9
+      digit = digit - 9
+    end
+   sum = sum + digit
+  end
+  return (sum % 10) == 0
+end
+</code></pre></div></div>
+
+<p>Before running the luhn check you may want to verify that you have a valid card type or at least one you want to accept. The following function will do that based on the current bin ranges for the differenct companies as of today (for more on this see the following: <a href="http://en.wikipedia.org/wiki/Credit_card_number">credit card number information</a> and <a href="http://en.wikipedia.org/wiki/Bank_Identification_Number">BIN range information</a>). N.B. Bin ranges change from time to time so this will become dated. It should be easy enough to find the updated ranges.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def ccTypeCheck(ccNumber)
+  ccNumber = ccNumber.gsub(/D/, '')
+  case ccNumber
+    when /^3[47]d{13}$/ then return "AMEX"
+    when /^4d{12}(d{3})?$/ then return "VISA"
+    when /^5d{15}|36d{14}$/ then return "MC"
+    when /^6011d{12}|650d{13}$/ then return "DISC"
+    when /^3(0[0-5]|8[0-1])d{11}$/ then return "DINERS"
+    when /^(39d{12})|(389d{11})$/ then return "CB"
+    when /^3d{15}|1800d{11}|2131d{11}$/ then return "JCB"
+    else return "NA"
+  end
+end
+</code></pre></div></div>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

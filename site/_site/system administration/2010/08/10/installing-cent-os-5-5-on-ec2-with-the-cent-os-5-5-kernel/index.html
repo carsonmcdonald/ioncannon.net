@@ -1,0 +1,669 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Installing Cent OS 5.5 on EC2 with the Cent OS 5.5 Kernel - IONCANNON</title>
+<meta name="description" content="Amazon recently introduced the ability to boot a custom kernel using pv-grub on EC2. This opens the door for all kinds of interesting ideas that I’ve been thinking about for a while, like seeing if I can boot right into a web server and skip all that extra junk that comes with Linux distributions, but that is just me. The main door it is going to open for most people interested in EC2 will be the ability to upgrade the kernel that comes with their distribution. That brings us to how to install Cent OS 5.5 on EC2 and use the kernel that is part of the distribution.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Installing Cent OS 5.5 on EC2 with the Cent OS 5.5 Kernel">
+<meta property="og:url" content="http://localhost:4000/system%20administration/2010/08/10/installing-cent-os-5-5-on-ec2-with-the-cent-os-5-5-kernel/">
+
+
+  <meta property="og:description" content="Amazon recently introduced the ability to boot a custom kernel using pv-grub on EC2. This opens the door for all kinds of interesting ideas that I’ve been thinking about for a while, like seeing if I can boot right into a web server and skip all that extra junk that comes with Linux distributions, but that is just me. The main door it is going to open for most people interested in EC2 will be the ability to upgrade the kernel that comes with their distribution. That brings us to how to install Cent OS 5.5 on EC2 and use the kernel that is part of the distribution.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2010-08-10T05:51:37-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/2010/08/10/installing-cent-os-5-5-on-ec2-with-the-cent-os-5-5-kernel/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Installing Cent OS 5.5 on EC2 with the Cent OS 5.5 Kernel</h1>
+    
+    <p>Amazon recently introduced the ability to <a href="http://aws.typepad.com/aws/2010/07/use-your-own-kernel-with-amazon-ec2.html">boot a custom kernel</a> using pv-grub on EC2. This opens the door for all kinds of interesting ideas that I’ve been thinking about for a while, like seeing if I can boot right into a web server and skip all that extra junk that comes with Linux distributions, but that is just me. The main door it is going to open for most people interested in EC2 will be the ability to upgrade the kernel that comes with their distribution. That brings us to how to install Cent OS 5.5 on EC2 and use the kernel that is part of the distribution.</p>
+
+<p>For those who might just be interested in booting a custom kernel using EC2 pv-grub I will try to produce a few more posts with more details on that but for now here are the main things to know:</p>
+
+<ul>
+  <li>The pv-grup kernels named with hd00 will look on the first partition of the registered device in the /boot/boot/grub directory for a menu.lst file. Use this type of kernel if you create want to use a partitioned disk.</li>
+  <li>The pv-grup kernels named with hd0 will look on the registered device in the /boot/grub directory for a menu.lst file. Use this type of kernel if you don’t have a partition on your disk.</li>
+  <li>You won’t get anything meaningful back from the boot attempt if your grub menu.lst file is in the wrong place or is not valid. See the end of the post for what a pv-grub error message looks like and some tips on what to do if you see it.</li>
+  <li>The kernel you use does matter but the current mainline Linux kernel (2.6.35) contains everything you need except for a small change to turn off XSAVE. The main thing to know is that not every distribution may have made the change needed to work on EC2.</li>
+  <li>I have tried non-Linux kernels to no avail. See the end of the post for a little more information.&lt;/li&gt;</li>
+</ul>
+
+<p>A lot of what follows is similar, both steps and concepts, to the “from scratch” section of my post on <a href="http://www.ioncannon.net/system-administration/894/fedora-12-bootable-root-ebs-on-ec2/">Fedora 12 on EC2 using a root EBS</a>. I’ve also bundled all the instance building commands up into one <a href="http://www.ioncannon.net/examples/centos5.5.sh">script (centos5.5.sh)</a>. If you want to use that script then do 1 and 2 of what follows, make sure to change the password used for root in the script and then pick back up at 18. The following steps should not be taken as the only way to do this but more of a recipe:</p>
+
+<ol>
+  <li>
+    <p>Start an EC2 instance that has yum on it to be used as a setup box. A RedHat based box, Fedora or CentOS will work best unless you want to install yum. For the following steps I used a Fedora 8 based EC2 node.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ec2-run-instances -z us-east-1a -g your-group -k your-keypair -n 1 ami-84db39ed
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create a new EBS volume to install to and map it to the running instance from step 1. Your volume should be greater than 2G for a base install. I mapped this new volume to the /dev/sdh device on the setup machine so you will notice that in the following steps (if you are using the script you will want to make sure you map to /dev/sdh as well):</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ec2-create-volume -z us-east-1a -s 2
+ ec2-attach-volume volume-id -i instance-id -d /dev/sdh
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create a <a href="http://tldp.org/HOWTO/Partition/fdisk_partitioning.html">partion table using fdisk</a> on the volume you are going to install to.</p>
+
+    <p>I created both a /boot and / partion on /dev/sdh1 and /dev/sdh2 respecivly. I also made the /dev/sdh1 partition active so it is exactly as it would be if it had been installed on a real machine.</p>
+
+    <p>Note that this step is optional but I am going to include it because I think it makes for a more natural setup and is more in line with what you would get if you did a VirtualBox install and then transfered the image.</p>
+  </li>
+  <li>
+    <p>Format your partition(s) and mount them into /mnt. For me that was done with the following:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> echo "y" | mkfs.ext3 /dev/sdh1
+ echo "y" | mkfs.ext3 /dev/sdh2
+ mount /dev/sdh2 /mnt
+ mkdir /mnt/boot
+ mkdir /mnt/dev
+ mkdir /mnt/proc
+ mkdir /mnt/etc
+ mount /dev/sdh1 /mnt/boot
+ mount -t proc none /mnt/proc
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create a base device setup for the new instance:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> for i in console null zero ; do /sbin/MAKEDEV -d /mnt/dev -x $i ; done
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create a base fstab file in /mnt/etc/fstab. The following is the one I used:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> /dev/sda1               /boot                   ext3    defaults 1 1
+ /dev/sda2               /                       ext3    defaults 1 2
+ none                    /dev/pts                devpts  gid=5,mode=620 0 0
+ none                    /dev/shm                tmpfs   defaults 0 0
+ none                    /proc                   proc    defaults 0 0
+ none                    /sys                    sysfs   defaults 0 0
+ /dev/sdc1               /mnt                    ext3    defaults 0 0
+ /dev/sdc2               swap                    swap    defaults 0 0
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Create the yum repo configuration, prepare for the yum install and then install the base OS onto the new volume.<br /><br /></p>
+
+    <p>The following is the yum configuration file I used:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> [main]
+ cachedir=/var/cache/yum
+ debuglevel=2
+ logfile=/var/log/yum.log
+ exclude=*-debuginfo
+ gpgcheck=0
+ obsoletes=1
+ reposdir=/dev/null
+
+ [os]
+ name=CentOS 5.5 - i386 - OS
+ mirrorlist=http://mirrorlist.centos.org/?release=5&amp;arch=i386&amp;repo=os
+ enabled=1
+
+ [updates]
+ name=CentOS 5.5 - i386 - Updates
+ mirrorlist=http://mirrorlist.centos.org/?release=5&amp;arch=i386&amp;repo=updates
+ enabled=1
+</code></pre></div>    </div>
+
+    <p>The following command will install the base of Cent OS 5.5 into /mnt (note that I created the above config file as /tmp/yumec2.conf):</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> yum -c /tmp/yumec2.conf --installroot=/mnt -y groupinstall Base
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Install sshd, grub, the Cent OS Xen kernel and then clean the repo to free up disk space:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> yum -c /tmp/yumec2.conf --installroot=/mnt -y install openssh-server
+ yum -c /tmp/yumec2.conf --installroot=/mnt -y install grub
+ yum -c /tmp/yumec2.conf --installroot=/mnt -y install kernel-xen.i686
+ yum -c /tmp/yumec2.conf --installroot=/mnt -y clean packages
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Disable DNS checks and allow root to log in via SSH:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> echo "UseDNS no" &gt;&gt; /mnt/etc/ssh/sshd_config
+ echo "PermitRootLogin yes" &gt;&gt; /mnt/etc/ssh/sshd_config
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Set up networking by creating the /mnt/etc/sysconfig/network file. The contents for this example are:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>NETWORKING=yes
+</code></pre></div>    </div>
+
+    <p>As well as the /mnt/etc/sysconfig/network-scripts/ifcfg-eth0 file. The contents for this example are:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DEVICE=eth0
+BOOTPROTO=dhcp
+ONBOOT=yes
+TYPE=Ethernet
+USERCTL=yes
+PEERDNS=yes
+IPV6INIT=no
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>I’m not sure if this is needed still but in the past there have been some /dev file missing on boot so I always add the following to the startup script to make sure they are available. The first two are the random devices and the last three are where the ephimeral drive is usually mapped:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo "/sbin/MAKEDEV /dev/urandom" &gt;&gt; /mnt/etc/rc.sysinit
+echo "/sbin/MAKEDEV /dev/random" &gt;&gt; /mnt/etc/rc.sysinit
+echo "/sbin/MAKEDEV /dev/sdc" &gt;&gt; /mnt/etc/rc.sysinit
+echo "/sbin/MAKEDEV /dev/sdc1" &gt;&gt; /mnt/etc/rc.sysinit
+echo "/sbin/MAKEDEV /dev/sdc2" &gt;&gt; /mnt/etc/rc.sysinit
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Change the root password for the new instance. This is optional as you could create scripts to download your SSH key from EC2 but for these instructions setting the root password is the easiest:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chroot /mnt
+pwconv
+passwd
+exit
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Change the network settings so that the NetworkManager is off and network is on</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chroot /mnt chkconfig --level 2345 NetworkManager off
+chroot /mnt chkconfig --level 2345 network on
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Disable a few things that are enabled by default but won’t do any good for an EC2 instance:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chroot /mnt chkconfig --level 2345 avahi-daemon off
+chroot /mnt chkconfig --level 2345 firstboot off
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>The stock CentOS Xen initrd doesn’t load the Xen block or net drivers and those are required to boot. I unpacked the installed initrd and created a modified version by hand using the following commands (note that as soon as the CentOS Xen kernel version changes this will stop functioning):</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp /mnt/boot/initrd-2.6.18-194.8.1.el5xen.img /mnt/boot/initrd-2.6.18-194.8.1.el5xen.img.orig
+mkdir /tmp/initrdextract
+cd /tmp/initrdextract
+gzip -dc /mnt/boot/initrd-2.6.18-194.8.1.el5xen.img | cpio -id
+cp /mnt/lib/modules/2.6.18-194.8.1.el5xen/kernel/drivers/xen/blkfront/xenblk.ko lib
+cp /mnt/lib/modules/2.6.18-194.8.1.el5xen/kernel/drivers/xen/netfront/xennet.ko lib
+chmod -x lib/xenblk.ko
+chmod -x lib/xennet.ko
+cat &lt;&lt;EOL &gt; init
+#!/bin/nash
+mount -t proc /proc /proc
+setquiet
+echo Mounting proc filesystem
+echo Mounting sysfs filesystem
+mount -t sysfs /sys /sys
+echo Creating /dev
+mount -o mode=0755 -t tmpfs /dev /dev
+mkdir /dev/pts
+mount -t devpts -o gid=5,mode=620 /dev/pts /dev/pts
+mkdir /dev/shm
+mkdir /dev/mapper
+echo Creating initial device nodes
+mknod /dev/null c 1 3
+mknod /dev/zero c 1 5
+mknod /dev/urandom c 1 9
+mknod /dev/systty c 4 0
+mknod /dev/tty c 5 0
+mknod /dev/console c 5 1
+mknod /dev/ptmx c 5 2
+mknod /dev/rtc c 10 135
+mknod /dev/tty0 c 4 0
+mknod /dev/tty1 c 4 1
+mknod /dev/tty2 c 4 2
+mknod /dev/tty3 c 4 3
+mknod /dev/tty4 c 4 4
+mknod /dev/tty5 c 4 5
+mknod /dev/tty6 c 4 6
+mknod /dev/tty7 c 4 7
+mknod /dev/tty8 c 4 8
+mknod /dev/tty9 c 4 9
+mknod /dev/tty10 c 4 10
+mknod /dev/tty11 c 4 11
+mknod /dev/tty12 c 4 12
+mknod /dev/ttyS0 c 4 64
+mknod /dev/ttyS1 c 4 65
+mknod /dev/ttyS2 c 4 66
+mknod /dev/ttyS3 c 4 67
+echo Setting up hotplug.
+hotplug
+echo Creating block device nodes.
+mkblkdevs
+echo "Loading jbd.ko module"
+insmod /lib/jbd.ko
+echo "Loading ext3.ko module"
+insmod /lib/ext3.ko
+echo "Loading xenblk.ko module"
+insmod /lib/xenblk.ko
+echo "Loading xennet.ko module"
+insmod /lib/xennet.ko
+mkblkdevs
+echo Scanning and configuring dmraid supported devices
+resume /dev/sdc2
+echo Creating root device.
+mkrootdev -t ext3 -o defaults,ro /dev/sda1
+echo Mounting root filesystem.
+mount /sysroot
+echo Setting up other filesystems.
+setuproot
+echo Switching to new root and running init.
+switchroot
+EOL
+find ./ | cpio -H newc -o | gzip &gt; /mnt/boot/initrd-2.6.18-194.8.1.el5xen.img
+cd -
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Install grub on the new instance, move the boot directory into a subdirectory and create a grub menu.lst file that points to the CentOS kernel and initrd file:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chroot /mnt grub-install /dev/sdh
+mkdir /mnt/boot/boot/
+mv /mnt/boot/* /mnt/boot/boot/ 2&gt; /dev/null &gt; /dev/null
+</code></pre></div>    </div>
+
+    <p>Put the following in /mnt/boot/boot/grub/menu.lst  (note that as soon as the CentOS Xen kernel version changes this will be incorrect):</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>default 0
+timeout 1
+title CentOS5.5
+    root (hd0,0)
+    kernel /boot/vmlinuz-2.6.18-194.8.1.el5xen root=/dev/sda2
+    initrd /boot/initrd-2.6.18-194.8.1.el5xen.img
+</code></pre></div>    </div>
+
+    <p>Note that this goes in /mnt/boot/boot/grub and that isn’t the normal spot you would expect it in. This is where the AWS EC2 pv-grub expects to find the file on the first partition and moving the boot directory around just keeps everything in line with those expectations.</p>
+  </li>
+  <li>
+    <p>Make sure everything is written to disk and unmount the volume. At this point you have a CentOS 5.5 install that is almost ready to boot.</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sync
+umount /mnt/proc
+umount /mnt/boot
+umount /mnt
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Make a snapshot of the volume you just installed to, you will need to volume ID that came from step 2:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-create-snapshot -d "Volume Description" volume-id
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Use the snapshot from step 18 along with the ec2-register command to register your instance:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-register -n "AMIName" -d "AMI Description" --root-device-name /dev/sda2 -b /dev/sda=snap-id:2:true
+</code></pre></div>    </div>
+
+    <p>There are a number of things to take note of with the above command:</p>
+
+    <ol>
+  <li>Running this command will result in output something like: IMAGE   ami-a5ae9bb</li>
+  <li>The -b option can now assign a snapshot to a block device, the options in this example tell EC2 to generate 2G of space for the snapshot and to delete the volume it creates from the snapshot if the instance terminates. If you plan to use an instance long term you should replace that true at the end with a false to keep EC2 from deleting the volume when the instance terminates.</li>
+  <li>Notice that the -b option is assigning the snapshot to the device and not to a partition of the device, that is /dev/sda instead of /dev/sda1. You can still assign a snapshot directly to a partition but now you can also assign a block device to a raw partitioned disk. Because I created the partition table earlier the snapshot is the raw disk device here.</li>
+  <li>Also note that we are missing the kernel configuration option. As of this post using it with a pv-grub kernel causes the register command to fail. It isn't a big issue but just keep that in mind when you fire the AMI up otherwise it won't boot with the correct pv-grub kernel.</li>
+</ol>
+  </li>
+  <li>
+    <p>Start an instance of the fresh CentOS 5.5 install. One key thing here is picking the correct pv-grub kernel to boot from. There are currently 4 different kernels at each location, see the <a href="http://developer.amazonwebservices.com/connect/entry.jspa?categoryID=174&amp;externalID=3967">Enabling User Provided Kernels in Amazon EC2</a> document for a full list of kernels in each availability zone. In this case because the root disk was created with a partition table I used the “ec2-public-images/pv-grub-hd00-V1.01-i386.gz.manifest.xml” kernel to boot with (on US-East-1 that is kernel id aki-4c7d9525). For example:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-run-instances -z us-east-1a -g your-group -k your-keypair -n 1 --kernel pv-grub-kernel-id ami-from-step-19
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p><b>Tips on debugging the boot process</b></p>
+
+<p>If your instance won’t boot you can use the ec2-get-console-output command to get the console output created from the pv-grub boot process. If your console output ends up like the following there are a number of things you may have done wrong.</p>
+
+<ul>
+  <li>You may have selected the wrong kernel and it is trying to boot from a non-existant partition. Make sure you are using the correct pv-grub kernel hd0 vs hd00.</li>
+  <li>You forgot to install grub or installed grub in the wrong place. Make sure you have either /boot/grub/menu.lst or /boot/boot/grub/menu.lst</li>
+  <li>You have a bad menu.lst file. One mistake I made was giving a boot item a title with a space in it. Make the menu.lst as simple as you can until you get it to boot.</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Xen Minimal OS!
+  start_info: 0xb10000(VA)
+    nr_pages: 0x6a400
+  shared_inf: 0x002f9000(MA)
+     pt_base: 0xb13000(VA)
+nr_pt_frames: 0x9
+    mfn_list: 0x967000(VA)
+   mod_start: 0x0(VA)
+     mod_len: 0
+       flags: 0x0
+    cmd_line:  root=/dev/sda1 ro 4
+  stack:      0x946780-0x966780
+MM: Init
+      _text: 0x0(VA)
+     _etext: 0x621f5(VA)
+   _erodata: 0x76000(VA)
+     _edata: 0x7b6d4(VA)
+stack start: 0x946780(VA)
+       _end: 0x966d34(VA)
+  start_pfn: b1f
+    max_pfn: 6a400
+Mapping memory range 0xc00000 - 0x6a400000
+setting 0x0-0x76000 readonly
+skipped 0x1000
+MM: Initialise page allocator for e6c000(e6c000)-0(6a400000)
+MM: done
+Demand map pfns at 6a401000-7a401000.
+Heap resides at 7a402000-ba402000.
+Initialising timer interface
+Initialising console ... done.
+gnttab_table mapped at 0x6a401000.
+Initialising scheduler
+Thread "Idle": pointer: 0x7a402008, stack: 0x6a030000
+Initialising xenbus
+Thread "xenstore": pointer: 0x7a402478, stack: 0x6a040000
+Dummy main: start_info=0x966880
+Thread "main": pointer: 0x7a4028e8, stack: 0x6a050000
+"main" "root=/dev/sda1" "ro" "4"
+vbd 2048 is hd0
+******************* BLKFRONT for device/vbd/2048 **********
+backend at /local/domain/0/backend/vbd/2111/2048
+Failed to read /local/domain/0/backend/vbd/2111/2048/feature-barrier.
+Failed to read /local/domain/0/backend/vbd/2111/2048/feature-flush-cache.
+12582912 sectors of 0 bytes
+**************************
+vbd 2051 is hd1
+******************* BLKFRONT for device/vbd/2051 **********
+backend at /local/domain/0/backend/vbd/2111/2051
+Failed to read /local/domain/0/backend/vbd/2111/2051/feature-barrier.
+Failed to read /local/domain/0/backend/vbd/2111/2051/feature-flush-cache.
+1835008 sectors of 0 bytes
+**************************
+    [H
+    [J
+    GNU GRUB  version 0.97  (1740800K lower / 0K upper memory)
+       [ Minimal BASH-like line editing is supported.   For
+         the   first   word,  TAB  lists  possible  command
+         completions.  Anywhere else TAB lists the possible
+         completions of a device/filename. ]
+grubdom&gt;
+    [9;10H
+
+</code></pre></div></div>
+
+<p><b>Booting non-Linux OSes with EC2</b></p>
+
+<p>I have attempted both FreeBSD and NetBSD in particular with no luck.</p>
+
+<p>FreeBSD is tricky because it really wants to use its loader and while you can do that with the grub chainloader command it results in a grub error from EC2 about needing to load the kernel before booting:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root (hd0,1)
+ Filesystem type unknown, partition type 0xa5
+chainloader +1
+Error 8: Kernel must be loaded before booting
+Press any key to continue...
+</code></pre></div></div>
+
+<p>I was also able to try a modified version of FreeBSD that should boot without the loader but with that I get an error claiming the kernel isn’t bziped:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root (hd0,1,a)
+ Filesystem type is ufs2, partition type 0xa5
+kernel /boot/loader
+xc_dom_probe_bzimage_kernel: kernel is not a bzImage
+ERROR Invalid kernel: xc_dom_find_loader: no loader found
+xc_dom_core.c:523: panic: xc_dom_find_loader: no loader found
+xc_dom_parse_image returned -1
+Error 9: Unknown boot failure
+Press any key to continue...
+</code></pre></div></div>
+
+<p>For NetBSD the result is actually a completely blank console log so I assume it causes some catastrophic failure that keeps the EC2 system from even being able to pull back a log.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

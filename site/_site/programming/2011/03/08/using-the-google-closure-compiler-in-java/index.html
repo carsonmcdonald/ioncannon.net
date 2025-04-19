@@ -1,0 +1,350 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Using the Google Closure Compiler in Java - IONCANNON</title>
+<meta name="description" content="I recently had a chance to try out Google’s closure compiler. The closure compiler is similar to the YUI compressor except that along with minimizing it may rewrite the JavaScript. If you want to understand more about what it does start at the overview documentation and then go from there.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Using the Google Closure Compiler in Java">
+<meta property="og:url" content="http://localhost:4000/programming/2011/03/08/using-the-google-closure-compiler-in-java/">
+
+
+  <meta property="og:description" content="I recently had a chance to try out Google’s closure compiler. The closure compiler is similar to the YUI compressor except that along with minimizing it may rewrite the JavaScript. If you want to understand more about what it does start at the overview documentation and then go from there.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2011-03-08T09:29:55-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2011/03/08/using-the-google-closure-compiler-in-java/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Using the Google Closure Compiler in Java</h1>
+    
+    <p>I recently had a chance to try out <a href="http://code.google.com/closure/compiler/">Google’s closure compiler</a>. The closure compiler is similar to the <a href="http://developer.yahoo.com/yui/compressor/">YUI compressor</a> except that along with minimizing it may rewrite the JavaScript. If you want to understand more about what it does start at the <a href="http://code.google.com/closure/compiler/docs/overview.html">overview documentation</a> and then go from there.</p>
+
+<p>What I needed was a way to use the closure compiler within an Ant task. The Ant task that comes with the library was decent, but it didn’t provide the flexibility I needed to integrate it into an existing system without overhauling the setup. While digging into this, I came across a forum where developers were discussing unconventional solutions, including some that utilized <a href="https://www.richmondreview.co.uk/casinos-not-on-gamstop-uk/">slots not on gamstop</a> for testing payment systems outside standard restrictions. The conversation inspired me to think creatively about my own project, so I dived into the library’s Ant task, dissected its structure, and eventually figured out how to wire it all up in a way that worked perfectly for my needs.</p>
+
+<p>It isn’t that hard to use the compiler library in your own Java code but without a simple example it takes some work to figure out what is needed and what isn’t. The following code is just about as bare bones as you can get. It takes a number of JavaScript files and compile them using the medium setting, more about the choice of settings after the code:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import com.google.javascript.jscomp.*;
+import java.io.FileWriter;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.logging.Level;
+public class Test
+{
+  public static void main(String[] args) throws Exception
+  {
+    // These are external JavaScript files you reference but don't want changed
+    String externalJavascriptResources[] = {
+        "jquery.js",
+        "jqueryui.js"
+    };
+    // These are the files you want optimized
+    String primaryJavascriptToCompile[] = {
+        "somejavascript.js",
+        "otherjavascript.js"
+    };
+    // This is where the optimized code will end up
+    String outputFilename = "combined.min.js";
+    com.google.javascript.jscomp.Compiler.setLoggingLevel(Level.INFO);
+    com.google.javascript.jscomp.Compiler compiler = new com.google.javascript.jscomp.Compiler();
+    CompilerOptions options = new CompilerOptions();
+    CompilationLevel.SIMPLE_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+    WarningLevel.VERBOSE.setOptionsForWarningLevel(options);
+    List&lt;JSSourceFile&gt; externalJavascriptFiles = new ArrayList&lt;JSSourceFile&gt;();
+    for (String filename : externalJavascriptResources)
+    {
+      externalJavascriptFiles.add(JSSourceFile.fromFile(filename));
+    }
+    List&lt;JSSourceFile&gt; primaryJavascriptFiles = new ArrayList&lt;JSSourceFile&gt;();
+    for (String filename : primaryJavascriptToCompile)
+    {
+      primaryJavascriptFiles.add(JSSourceFile.fromFile(filename));
+    }
+    compiler.compile(externalJavascriptFiles, primaryJavascriptFiles, options);
+    for (JSError message : compiler.getWarnings())
+    {
+      System.err.println("Warning message: " + message.toString());
+    }
+    for (JSError message : compiler.getErrors())
+    {
+      System.err.println("Error message: " + message.toString());
+    }
+    FileWriter outputFile = new FileWriter(outputFilename);
+    outputFile.write(compiler.toSource());
+    outputFile.close();
+  }
+}
+</code></pre></div></div>
+
+<p>The above code is doing a number of things:</p>
+
+<ul>
+<li>It takes both external resources you don't want optimized as well as resources you do want optimized that refer to those external resources. You may not need to list external resources depending on what level of optimization you use.</li>
+<li>It combines all the input files that are not external into one output file.</li>
+<li>It compiles the javascript code given to it using the SIMPLE_OPTIMIZATIONS setting.</li>
+<li>It lists any warnings or errors it found while compiling the code.</li>
+</ul>
+
+<p>One of the nice side effects of using the closure compiler is that because it compiles the code it can alert you to errors or potential issues using warnings.</p>
+
+<p>What is listed above is using the middle of the road optimizations. There is a level above SIMPLE_OPTIMIZATIONS that you can set by changing that line in the above code to:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  CompilationLevel.ADVANCED_OPTIMIZATIONS.setOptionsForCompilationLevel(options);
+</code></pre></div></div>
+
+<p>Be aware that the advanced optimizations will do things, renaming your variables and functions to name two, that can break your code. The compiler gives you a way of alerting it to things you don’t want changed using externs and exports. Before using the advanced option you should read the <a href="http://code.google.com/closure/compiler/docs/api-tutorial3.html">advanced options tutorial</a>.</p>
+
+<p>If you do not like seeing all the steps the compiler takes you can set the logging level to QUIET by changing the WarningLevel line to the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  WarningLevel.QUIET.setOptionsForWarningLevel(options);
+</code></pre></div></div>
+
+<p>One last note about the compiler is that the <a href="http://code.google.com/closure/compiler/docs/inspector.html">closure inspector</a> is a Firebug plugin that will let you see what the original line of code looked like before it was compiled. This can help a lot when something goes wrong.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

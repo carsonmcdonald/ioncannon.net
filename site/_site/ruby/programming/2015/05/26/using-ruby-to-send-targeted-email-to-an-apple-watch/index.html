@@ -1,0 +1,352 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Using Ruby to Send Targeted Email to an Apple Watch - IONCANNON</title>
+<meta name="description" content="The other day I ran into a post about sending emails that could fall back to support the limited HTML that the Apple watch can display called hidden Apple Watch email. After reading the post I wondered if I could write a quick example to do what they demonstrated. I turned to Ruby + Ruby mail gem to give this a try and found that there are a few things to know but generally it works well.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Using Ruby to Send Targeted Email to an Apple Watch">
+<meta property="og:url" content="http://localhost:4000/ruby/programming/2015/05/26/using-ruby-to-send-targeted-email-to-an-apple-watch/">
+
+
+  <meta property="og:description" content="The other day I ran into a post about sending emails that could fall back to support the limited HTML that the Apple watch can display called hidden Apple Watch email. After reading the post I wondered if I could write a quick example to do what they demonstrated. I turned to Ruby + Ruby mail gem to give this a try and found that there are a few things to know but generally it works well.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2015-05-26T10:03:45-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/ruby/programming/2015/05/26/using-ruby-to-send-targeted-email-to-an-apple-watch/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Using Ruby to Send Targeted Email to an Apple Watch</h1>
+    
+    <p>The other day I ran into a post about sending emails that could fall back to support the limited HTML that the Apple watch can display called <a href="https://litmus.com/blog/how-to-send-hidden-version-email-apple-watch">hidden Apple Watch email</a>. After reading the post I wondered if I could write a quick example to do what they demonstrated. I turned to Ruby + <a href="https://github.com/mikel/mail">Ruby mail gem</a> to give this a try and found that there are a few things to know but generally it works well.</p>
+
+<p>To get started make sure you have the mail gem installed:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install mail
+</code></pre></div></div>
+
+<p>Next there are two main points to remember before diving into the examples:</p>
+
+<ul>
+<li>The sort order of the mime types is important, they need to come in the order listed in the examples or you will end up with the plain text version of the email on the watch</li>
+<li>You need to include something in the full featured HTML section that can't render on the watch or you will see the full featured HTML on the watch. See the article above for some pointers but generally the watch isn't going to fetch an image from the web so that should do it and is what I have in the following images.</li>
+</ul>
+<p>First a simple example that will show plain text for mail clients that don’t support HTML at all, normal HTML for full featured clients and a subset of HTML for the Apple watch.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'mail'
+mail = Mail.new do
+  to      'user@something.com'
+  from    'person@company.com'
+  subject 'Watch mail example'
+end
+#
+# The order supplied here matters
+#
+mail.body.set_sort_order [ "text/plain", "text/watch-html", "text/html" ]
+#
+# The order here doesn't matter
+#
+text_part = Mail::Part.new do
+  body 'This is plain text'
+end
+mail.text_part = text_part
+watch_part = Mail::Part.new do
+  content_type 'text/watch-html; charset=UTF-8'
+  body '&lt;b&gt;This is HTML for the Apple watch&lt;/b&gt;'
+end
+mail.add_part watch_part
+#
+# If this part has something in it that can't display on the watch then
+# the watch part will display. Keep that in mind if you want to force the
+# watch part to display. Here the link out to an image will force the
+# fallback to happen.
+#
+html_part = Mail::Part.new do
+  content_type 'text/html; charset=UTF-8'
+  body '&lt;h1&gt;This is HTML&lt;/h1&gt;&lt;img src="http://images.company.com/someimage.jpg"/&gt;'
+end
+mail.html_part = html_part
+mail.deliver
+</code></pre></div></div>
+
+<p>Here is an example that includes an image that will display on the watch. It is important that in this case the image comes first in the sort order.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'mail'
+mail = Mail.new do
+  to      'user@something.com'
+  from    'person@company.com'
+  subject 'Watch mail example with image'
+end
+#
+# The order supplied here matters
+#
+mail.body.set_sort_order [ "image/png", "text/plain", "text/watch-html", "text/html" ]
+#
+# The order here doesn't matter but you will need to
+# reference the image later.
+#
+mail.attachments['test.png'] = File.read('/tmp/test.png')
+image_cid = mail.parts.first.url
+  text_part = Mail::Part.new do
+  body 'This is plain text'
+end
+mail.text_part = text_part
+  watch_part = Mail::Part.new do
+  content_type 'text/watch-html; charset=UTF-8'
+  body '&lt;b&gt;This is HTML for the watch&lt;/b&gt; &lt;br/&gt; &lt;img src="' + image_cid + '"/&gt;'
+end
+mail.add_part watch_part
+  html_part = Mail::Part.new do
+  content_type 'text/html; charset=UTF-8'
+  body '&lt;h1&gt;This is HTML&lt;/h1&gt;&lt;img src="http://images.company.com/someimage.jpg"/&gt;'
+end
+mail.html_part = html_part
+mail.deliver
+</code></pre></div></div>
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

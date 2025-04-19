@@ -1,0 +1,341 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Debian EC2 AMI - IONCANNON</title>
+<meta name="description" content="After working on my FC6 AMI I started thinking about how small of an AMI I could create. The goal would be to have a 10 meg or less image that is very specialized for doing something like serving images with lighttpd or apache. I started very very small but the lack of console access on EC2 makes it hard to debug errors so I moved on to try and find a reasonable sized distro that I was more sure would work. I managed to find a Debian image that is pretty small and decided to see if I could make it work for EC2.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Debian EC2 AMI">
+<meta property="og:url" content="http://localhost:4000/system%20administration/2007/01/16/debian-ec2-ami/">
+
+
+  <meta property="og:description" content="After working on my FC6 AMI I started thinking about how small of an AMI I could create. The goal would be to have a 10 meg or less image that is very specialized for doing something like serving images with lighttpd or apache. I started very very small but the lack of console access on EC2 makes it hard to debug errors so I moved on to try and find a reasonable sized distro that I was more sure would work. I managed to find a Debian image that is pretty small and decided to see if I could make it work for EC2.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2007-01-16T21:13:05-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/2007/01/16/debian-ec2-ami/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Debian EC2 AMI</h1>
+    
+    <p>After working on my <a href="http://www.ioncannon.net/system-administration/115/creating-your-own-fc6-instance-for-ec2/">FC6 AMI</a> I started thinking about how small of an AMI I could create. The goal would be to have a 10 meg or less image that is very specialized for doing something like serving images with lighttpd or apache. I started very very small but the lack of console access on EC2 makes it hard to debug errors so I moved on to try and find a reasonable sized distro that I was more sure would work. I managed to find a Debian image that is pretty small and decided to see if I could make it work for EC2.</p>
+
+<p>While looking around I found this <a href="http://jailtime.org/download:debian:v3.1">Debian 3.1</a> Xen image pretty much ready to go. I downloaded it and wrote the following script that can be used to update the image so that it will work as an EC2 AMI.</p>
+
+<p>I assume here that you have downloaded the image from the above site and that the name of the image is still debian.3-1.20061221.img.tar.bz2, if it is not you can modify the script to use the newly named file.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/sh
+
+tar xvjf debian.3-1.20061221.img.tar.bz2
+rm -f debian.3-1.xen2.cfg
+rm -f debian.3-1.xen3.cfg
+rm -f debian.swap
+
+mount -o loop debian.3-1.img /mnt
+
+cat &lt;&lt;EOL &gt; /mnt/etc/fstab
+/dev/sda1       /       ext3    errors=remount-ro       0       1
+proc            /proc   proc    defaults                0       0
+/dev/sda2       /mnt    ext3    errors=remount-ro       0       2
+/dev/sda3       none    swap    sw                      0       0
+EOL
+
+sed -i -e 's/PermitRootLogin no/#PermitRootLogin no/g' /mnt/etc/ssh/sshd_config
+
+cat &lt;&lt;EOL &gt;&gt; /mnt/etc/ssh/sshd_config
+UseDNS  no
+PermitRootLogin without-password
+EOL
+
+cat &lt;&lt;EOL &gt; /mnt/etc/init.d/aws-auth.sh
+#!/bin/sh
+if [ ! -d /root/.ssh ] ; then
+        mkdir -p /root/.ssh
+        chmod 700 /root/.ssh
+fi
+# or fetch public key using the file in the ephemeral store:
+if [ -e /mnt/openssh_id.pub ] ; then
+        cat /mnt/openssh_id.pub &gt;&gt; /root/.ssh/authorized_keys
+        chmod 600 /root/.ssh/authorized_keys
+fi
+EOL
+
+chmod +x /mnt/etc/init.d/aws-auth.sh
+
+cd /mnt/etc/rcS.d
+ln -s ../init.d/aws-auth.sh S41aws-auth
+cd -
+
+touch /mnt/.firstrun
+
+cat &lt;&lt;EOL &gt; /mnt/etc/init.d/firstrun.sh
+#!/bin/sh
+if [ -f "/.firstrun" ] ; then
+  dd if=/dev/urandom count=50|md5sum &gt; /tmp/p.out
+  POUT=\`cat /tmp/p.out | cut -d" " -f1-1\`
+  rm -f /tmp/p.out
+  /usr/sbin/usermod -p \$POUT root
+  rm -f /.firstrun
+fi
+EOL
+
+chmod +x /mnt/etc/init.d/firstrun.sh
+
+cd /mnt/etc/rcS.d
+ln -s ../init.d/firstrun.sh S39firstrun
+cd -
+
+sync
+umount /mnt
+</code></pre></div></div>
+<p>After running the script you will have 45 meg image that is ready to run on EC2. Compared to any of the currently available public AMIs this is very small.</p>
+
+<p>I plan on trying to see if I can get an even smaller image before I start creating images for each application I have in mind.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

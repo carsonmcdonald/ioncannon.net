@@ -1,0 +1,290 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Upgrading from Fedora 8 to Fedora 9 with yum - IONCANNON</title>
+<meta name="description" content="A new release of Fedora is out again so it is time to check out the upgrade. This time it is the Fedora 9 release. The upgrade from Fedora 8 to Fedora 9 is almost exactly like the upgrade to Fedora 8. Here are the steps you need to do the upgrade from Fedora 8 to Fedora 9:">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Upgrading from Fedora 8 to Fedora 9 with yum">
+<meta property="og:url" content="http://localhost:4000/system%20administration/linux/2008/05/13/upgrading-from-fedora-8-to-fedora-9-with-yum/">
+
+
+  <meta property="og:description" content="A new release of Fedora is out again so it is time to check out the upgrade. This time it is the Fedora 9 release. The upgrade from Fedora 8 to Fedora 9 is almost exactly like the upgrade to Fedora 8. Here are the steps you need to do the upgrade from Fedora 8 to Fedora 9:">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2008-05-13T20:52:51-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/linux/2008/05/13/upgrading-from-fedora-8-to-fedora-9-with-yum/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Upgrading from Fedora 8 to Fedora 9 with yum</h1>
+    
+    <p>A new release of Fedora is out again so it is time to check out the upgrade. This time it is the <a href="http://docs.fedoraproject.org/release-notes/">Fedora 9 release</a>. The upgrade from Fedora 8 to Fedora 9 is almost exactly like the <a href="http://www.ioncannon.net/system-administration/133/upgrading-from-fedora-7-to-fedora-8-with-yum/">upgrade to Fedora 8</a>. Here are the steps you need to do the upgrade from Fedora 8 to Fedora 9:</p>
+
+<p>As someone points out in the comments there is a new facility to do upgrades that you can install. See the following wiki entry about the <a href="http://fedoraproject.org/wiki/Features/PreUpgrade">PreUpgrade</a>. I tried to use PreUpgrade but it didn’t install the update boot option for some reason but maybe others will have better luck.</p>
+
+<ol>
+  <li>yum update</li>
+  <li>yum clean all</li>
+  <li>I like to repeated update and clean all a second time to make sure everything got updated</li>
+  <li>Run the following command to update the yum repo on your box:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> rpm -Uhv http://mirror.liberty.edu/pub/fedora/linux/releases/9/Fedora/i386/os/Packages/fedora-release-9-2.noarch.rpm http://mirror.liberty.edu/pub/fedora/linux/releases/9/Fedora/i386/os/Packages/fedora-release-notes-9.0.0-1.noarch.rpm
+</code></pre></div>    </div>
+  </li>
+  <li>Next I had to do a “yum clean all” again before it picked up the change</li>
+  <li>Next do a yum -y update</li>
+  <li>As in the past, a few packages had to be removed to get the dependencies to work out. In this case I had to remove the beryl-manager, VirtualBox and cups. In the case of cups I noted what got removed so I could re-install it later.</li>
+  <li>The packages have grown a little and this time I had to wait for 1.4G of packages to download and install. After an hour or so it was ready for a reboot.</li>
+  <li>After a reboot I had problems getting my NVIDIA driver to load. I ended up having to download the latest beta version of the driver per this forum post: http://www.nvnews.net/vbulletin/showthread.php?t=111460</li>
+  <li>I recompiled my NVIDIA driver and then added the flag for X suggested in the forum. GDM wouldn’t start because the flag was set there but I can live with that.</li>
+  <li>Now I have X but I’ve run into a number of issues getting apps to run correctly. For example firefox won’t start without the –sync option. At this point I think it will just be a matter of time before things get worked out, until then I’m just going to wait it out. At least it boots and mostly works.</li>
+</ol>
+
+<p>Update: I think I may have found one of the issues with X and that is the fonts changed in Fedora 9. See <a href="http://fedoraproject.org/wiki/Releases/9/ReleaseSummary#head-f96ff8f24487c77aba8e45738bbe2dfb4aa52ac5">Fedora 9 Fonts</a>. I re-added the old fonts and now apps are starting correctly.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

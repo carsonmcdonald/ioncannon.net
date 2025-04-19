@@ -1,0 +1,341 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>How to transfer a Linux image from VirtualBox to Xen - IONCANNON</title>
+<meta name="description" content="There have been times recently when I wanted to pull a VirtualBox Linux instance I had into Xen. I kept thinking it had to be fairly easy but I kept putting off trying it until recently when I ran into something I wanted to install from a CD image into an Amazon EC2 AMI. It turns out the main hurdle in transferring an image is lack of documentation.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="How to transfer a Linux image from VirtualBox to Xen">
+<meta property="og:url" content="http://localhost:4000/system%20administration/linux/2009/01/04/how-to-transfer-linux-from-virtualbox-to-xen/">
+
+
+  <meta property="og:description" content="There have been times recently when I wanted to pull a VirtualBox Linux instance I had into Xen. I kept thinking it had to be fairly easy but I kept putting off trying it until recently when I ran into something I wanted to install from a CD image into an Amazon EC2 AMI. It turns out the main hurdle in transferring an image is lack of documentation.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2009-01-04T14:19:11-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/linux/2009/01/04/how-to-transfer-linux-from-virtualbox-to-xen/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">How to transfer a Linux image from VirtualBox to Xen</h1>
+    
+    <p>There have been times recently when I wanted to pull a <a href="http://www.virtualbox.org/">VirtualBox</a> Linux instance I had into Xen. I kept thinking it had to be fairly easy but I kept putting off trying it until recently when I ran into something I wanted to install from a CD image into an Amazon EC2 AMI. It turns out the main hurdle in transferring an image is lack of documentation.</p>
+
+<p>I’m using VirtualBox 2.1.0 so some of the following commands may not work with older versions. I learned the hard way that they have changed a number of tools for VirtualBox and some of the older tools where probably easier to use and documented better. I installed the package I was using from an ISO image and then started trying to extract the part that I needed from the VDI that was created.</p>
+
+<p>My first attempt at extracting the partition required me to convert my dynamic VDI into a static image. To dump a dynamic VDI into a static image you run this command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>VBoxManage convertdd -static abox.vdi /tmp/abox.img
+</code></pre></div></div>
+<p>I thought I could find the image by hand in the VDI after I had it in a raw format. There were a number of hints that I found that made me think I could just pull the partition out without much of a problem: <a href="http://forensicir.blogspot.com/2008/01/virtualbox-and-forensics-tools.html">VirtualBox and forensics tools</a> and <a href="http://forums.virtualbox.org/viewtopic.php?t=52&amp;start=0&amp;postdays=0&amp;postorder=asc&amp;highlight=">a forum post</a>. However I found that just looking around wasn’t easy enough to find where the partition started so I moved on to trying to find something else that could scan the disk and find it.</p>
+
+<p>I rand into <a href="http://www.cgsecurity.org/wiki/TestDisk">TestDisk</a> and gave it a try. When it would scan the disk it found the /boot partition but for some reason it wasn’t finding the root partition so I moved on.</p>
+
+<p>I then took a look at the <a href="http://forums.virtualbox.org/viewtopic.php?t=8046">format for VDI disks</a> to see if it was possible to pull it out given the header information with a simple program but that looked like it would be a lot of work so it was back to square one.</p>
+
+<p>Along the way I happened to came across information about an undocumented command to <a href="http://www.virtualbox.org/changeset/12775">export</a> raw <a href="http://techokarma.blogspot.com/2008/10/v2p-virtual-to-physical-for-virtualbox.html">disk image</a>. This turned out to be the break I needed because running the following command will result in only the disk image itself without any VirtualBox residue:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>VBoxManage internalcommands converttoraw myosimage.vdi /tmp/myosimage.img
+</code></pre></div></div>
+<p>At this point things became a lot easier. There were multiple partitions on the resulting disk image but I only needed the / partition. To extract the root partition I first listed the partitions with this command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fdisk -lu myosimage.img
+</code></pre></div></div>
+
+<p>This output the following for my image:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>You must set cylinders.
+You can do this from the extra functions menu.
+
+Disk myosimage.img: 0 MB, 0 bytes
+255 heads, 63 sectors/track, 0 cylinders, total 0 sectors
+Units = sectors of 1 * 512 = 512 bytes
+Disk identifier: 0x0003f47f
+
+      Device Boot                Start             End         Blocks    Id  System
+myosimage.img1   *              63       208844        104391   83  Linux
+myosimage.img2          208845      3662819     1726987+  83  Linux
+myosimage.img3         3662820     4192964       265072+  82  Linux swap / Solaris
+</code></pre></div></div>
+<p>To figure out where the root partition starts I just multiplied the start sector by the number of bytes per sector:  208845 * 512 = 106928640</p>
+
+<p>I then did a quick test to make sure I had the correct partition:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mount -o loop,offset=106928640 myosimage.img /mnt/
+</code></pre></div></div>
+<p>This looked good so I extracted the partition from the disk and did a filesystem check on it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dd if=myosimage.img of=mypartimage.img bs=512 skip=208845 count=3453974
+e2fsck mypartimage.img
+</code></pre></div></div>
+<p>Extracting the partition you want is about 80% of the battle. Getting it to run under Xen after extraction is just a matter of fixing anything that was left out because the install was done under a “real” machine.</p>
+
+<p>I add a nosegneg ld.so.conf directive and move /lib/tls directory out of the way first:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo "hwcap 0 nosegneg" &gt;  /mnt/etc/ld.so.conf.d/nosegneg.conf
+mv /mnt/lib/tls /mnt/lib/tls.disabled
+</code></pre></div></div>
+<p>Next the base device entries needed to be created:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for i in console null zero ; do /sbin/MAKEDEV -d /mnt/dev -x $i ; done
+</code></pre></div></div>
+<p>I then removed the disk label from the partition using e2label:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>e2label mypartimage.img ""
+</code></pre></div></div>
+<p>Because I was sending this image to EC2 I recreated the fstab with the following entries that are specific to the way EC2 allocates disks to a node:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/dev/sda1  /         ext3    defaults        1 1
+/dev/sda2  /mnt      ext3    defaults        1 2
+/dev/sda3  swap      swap    defaults        0 0
+</code></pre></div></div>
+<p>The finally, again because I was going to EC2 I added a few scripts and created rc.local to let me in when the instance was started.</p>
+
+<p>This seems to be a fairly easy process now that I have done it from start to finish once.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

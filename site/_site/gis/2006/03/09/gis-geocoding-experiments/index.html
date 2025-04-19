@@ -1,0 +1,325 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>GIS Geocoding experiments - IONCANNON</title>
+<meta name="description" content="I’ve been evaluating a couple different mapping software packages recently and the other day I noticed that the same addresses geocoded (for those who don’t know what geocoding is you can find out more about it here) to different locations. They are mostly the same but I figured it was interesting enough to do some more digging and see how different mapping services compared.I looked at the following services. Some of them are commercial services with open apis (ESRI and mapquest) and some of them are non-commercial services with open apis (yahoo and google although google does not have a geocoding api).">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="GIS Geocoding experiments">
+<meta property="og:url" content="http://localhost:4000/gis/2006/03/09/gis-geocoding-experiments/">
+
+
+  <meta property="og:description" content="I’ve been evaluating a couple different mapping software packages recently and the other day I noticed that the same addresses geocoded (for those who don’t know what geocoding is you can find out more about it here) to different locations. They are mostly the same but I figured it was interesting enough to do some more digging and see how different mapping services compared.I looked at the following services. Some of them are commercial services with open apis (ESRI and mapquest) and some of them are non-commercial services with open apis (yahoo and google although google does not have a geocoding api).">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-03-09T03:39:31-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/gis/2006/03/09/gis-geocoding-experiments/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">GIS Geocoding experiments</h1>
+    
+    <p>I’ve been evaluating a couple different mapping software packages recently and the other day I noticed that the same addresses geocoded (for those who don’t know what geocoding is you can find out more about it <a title="here" href="http://en.wikipedia.org/wiki/Geocoding">here</a>) to different locations. They are mostly the same but I figured it was interesting enough to do some more digging and see how different mapping services compared.I looked at the following services. Some of them are commercial services with open apis (ESRI and mapquest) and some of them are non-commercial services with open apis (yahoo and google although google does not have a geocoding api).</p>
+
+<ul>
+<li><a title="http://www.esri.com/software/awspublicservices/index.html" href="http://www.esri.com/software/awspublicservices/index.html">http://www.esri.com/software/awspublicservices/index.html</a></li>
+<li><a title="http://developer.yahoo.com/maps/index.html" href="http://developer.yahoo.com/maps/index.html"> http://developer.yahoo.com/maps/index.html</a></li>
+<li><a title="http://www.mapquest.com/openapi" href="http://www.mapquest.com/openapi"> http://www.mapquest.com/openapi</a></li>
+<li><a title="http://maps.google.com" href="http://maps.google.com"> http://maps.google.com</a></li>
+</ul>
+<p>For google I viewed the resulting values for latitude and longitude that were generated from a search for the address. For yahoo and ESRI I used their REST geocoding apis and for mapquest I used their java api to their commercial service since their openapi service is only in beta currently.I took 5 addresses located at different points in the US and one in Canada and mapped the returned latitude and longitude from each service. Here are the results:
+<a></a></p>
+
+<p>Missiondata, 2300 Hurstbourne Village Drive, Suite 1100, Louisville, KY, 40299
+mapquest: 38.215303, -85.578698
+google: 38.215601, -85.578852
+yahoo: 38.215496, -85.578669
+esri: 38.216273, -85.579028</p>
+
+<p><img alt="Missiondata Results" src="/examples/gis-01/md.gis.jpg" /></p>
+
+<p>Googleplex, 1600 Amphitheatre Parkway, Mountain View, CA, 94043
+mapquest: 37.4238,   -122.0901
+google: 37.422845, -122.085035
+yahoo: 37.42386,  -122.090332
+esri: 37.42386,  -122.090332</p>
+
+<p><img alt="Googleplex Results" src="/examples/gis-01/google.gis.jpg" /></p>
+
+<p>IBM New York, 590 Madison Ave, New York, NY, 10022
+mapquest: 40.7623,   -73.972399
+google: 40.762267, -73.972535
+yahoo: 40.762245, -73.972644
+esri: 40.762245, -73.972644</p>
+
+<p><img alt="IBM NY Results" src="/examples/gis-01/ibm.gis.jpg" /></p>
+
+<p>Lockheed Martin, 6304 Spine Rd, Boulder, CO, 80301
+mapquest: 40.0672,   -105.206711
+google: 40.067084, -105.206555
+yahoo: 40.067063, -105.20654
+esri: 40.067063, -105.20654</p>
+
+<p><img alt="Lockheed Martin Results" src="/examples/gis-01/lm.gis.jpg" /></p>
+
+<p>Red Hat Canada, 2323 Yonge Street, Suite #300, Toronto, Ontario M4P 2C9, Canada
+yahoo: none
+mapquest: 43.708137, -79.3985
+google: 37.062500, -95.677068
+esri: 79.398592, -43.7081</p>
+
+<p><img alt="Redhat Canada Mapquest Results" src="/examples/gis-01/canada.mapquest.jpg" />
+<img alt="Redhat Canada Google Results" src="/examples/gis-01/canada.google.jpg" /></p>
+
+<p>For the most part all of the services provide very similar results for geocoding in the US. From the limited number of locations I tested it seems that the larger cities have a more reliable set of outputs. In NY for example they almost completely stack on top of each other. I find it interesting too that in 4 out of 6 cases yahoo came back with the exact same results as ESRI provided.</p>
+
+<p>The last thing to notice of course is that the results for Canada are not as good. First off I couldn’t get yahoo’s service to work with a Canadian address for some reason. Also notice that the ESRI latitude and longitude results are swapped. And viewing the results from google for latitude and longitude gave me some wildly incorrect values but the map was actually correct (thus the two maps). The only completely reliable service for Canada was mapquest and google (although google doesn’t do geocoding) with ESRI coming in next just because the results were swapped. All in all I think all 3 did a good job.</p>
+
+<p>I’m not sure why google hasn’t produced something in the way of geocoding yet. I think they have the mapping nailed down but their lack of geocoding will put them at somewhat of a disadvantage at some point since the other 3 services are in the open now and both ESRI and mapquest already have commercial versions of their services that people use widely.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,473 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Minimal EC2 Linux Install Using TTYLinux - IONCANNON</title>
+<meta name="description" content="If you have ever wondered how to get a Linux EC2 node down to the bare minimum this post is for you. I have been wanting to do this for a long time but it wasn’t possible until pv-grub support that was added recently. To make this even more exciting Amazon now offers EC2 micro instances that will go well with this type of bare bones system.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Minimal EC2 Linux Install Using TTYLinux">
+<meta property="og:url" content="http://localhost:4000/system%20administration/2010/09/14/minimal_ec2_linux_install_using_ttylinux/">
+
+
+  <meta property="og:description" content="If you have ever wondered how to get a Linux EC2 node down to the bare minimum this post is for you. I have been wanting to do this for a long time but it wasn’t possible until pv-grub support that was added recently. To make this even more exciting Amazon now offers EC2 micro instances that will go well with this type of bare bones system.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2010-09-14T12:22:10-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/2010/09/14/minimal_ec2_linux_install_using_ttylinux/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Minimal EC2 Linux Install Using TTYLinux</h1>
+    
+    <p>If you have ever wondered how to get a Linux EC2 node down to the bare minimum this post is for you. I have been wanting to do this for a long time but it wasn’t possible until pv-grub support that was added recently. To make this even more exciting Amazon now offers <a href="http://aws.typepad.com/aws/2010/09/new-amazon-ec2-micro-instances.html">EC2 micro instances</a> that will go well with this type of bare bones system.</p>
+
+<p>You may wonder why you would want to do this. I’ll give you at least two reasons. First there is speed. The configuration I ended up with will boot in about 14 seconds. Almost all of that time is spent waiting on the AWS DHCP server for an IP address. The second reason is security. There is little on this system that you don’t need. The majority of what you need is provided by a single application that you can easily monitor for patches. That leaves you to worry about only the tools you must have to get your job done. I’ll also include a couple downsides. First this isn’t going to be easy for everyone and it can be fairly complicated. The second issue you will run into is that there is nothing in this distribution. If you need something like PHP you might spend a long time building all the support you need. There isn’t much to be done about the complexity if you want to do this all yourself. Selection of tools can help you lessen the impact of the bare nature of the system, more on that in a future post.</p>
+
+<p>I picked <a href="http://minimalinux.org/ttylinux/">TTYLinux</a> because that is what I’m most familiar with. I have used it a number of times and I believe it may be the most basic of all the small Linux distros. It really is bare and the large majority of the features are provided by <a href="http://www.busybox.net/">BusyBox</a>. Before attempting to build your own instance it may help to read some of the TTYLinux documentation. Although I haven’t tried I assume that other small distros like DSL would probably work with the same general instructions.</p>
+
+<p>A couple important prerequisites are needed before starting this. First look at the How_To_Build_ttylinux.txt file that comes with the TTYLinux source. It contains a lot of information about how you go about building the system. Next look at my post on <a href="http://www.ioncannon.net/system-administration/1290/how-to-build-compile-a-custom-linux-kernel-for-ec2/">compiling the Linux kernel for EC2</a> because you will need to do that for this TTYLinux instance. Finally you need to have to have gcc, g++ and yacc available on the machine you are going to use to build on.</p>
+
+<p>I have also created a public AMI that anyone can use with the name TTYLinuxBase and AMI ID of ami-0cfe0b65. Be sure to boot it with the correct hd0 kernel for your region. The password for root on this AMI is just password so be sure to change it when you fire it up. I have created the AMI so that the EBS volume gets deleted when it is terminated.</p>
+
+<ol>
+  <li>Grab the source from <a href="http://minimalinux.org/ttylinux/source.html">the TTYLinux source page</a>:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  wget http://minimalinux.org/ttylinux/Download/ttylinux-src-mp3.tar.bz2
+  tar xvjf ttylinux-src-mp3.tar.bz2
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>The kernel that comes with the current version of TTYLinux isn’t new enough to work on EC2 so the configuration and build scripts need to be changed to get a more recent version that will. The first step is to create a kernel configuration and put it in the correct location:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ttylinux-src-mp3/config/platform_pc/kernel-2.6.35.4-i686.cfg
+</code></pre></div>    </div>
+
+    <p>You can create this configuration by doing a make menuconfig on the kernel you want to use and then saving the kernel configuration to a file. You may also download the <a href="/examples/ec2ttylinux/kernel-2.6.35.4-i686.cfg">kernel config</a> I used:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget http://www.ioncannon.net/examples/ec2ttylinux/kernel-2.6.35.4-i686.cfg
+cp kernel-2.6.35.4-i686.cfg ttylinux-src-mp3/config/platform_pc/kernel-2.6.35.4-i686.cfg
+</code></pre></div>    </div>
+
+    <p>There is a lot of the kernel that can be pruned from the kernel configuration so if you do this by hand take time to turn things off that you won’t need. Doing so will speed up the kernel compile and make the system boot faster. The above kernel configuration is pruned down quite a bit.</p>
+  </li>
+  <li>Copy the packages configuration to one that matches the kernel version:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp ttylinux-src-mp3/config/platform_pc/packages-2.11-2.6.30.5.txt ttylinux-src-mp3/config/platform_pc/packages-2.11-2.6.35.4.txt
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Modify the kernel build script to apply the XSAVE patch. Start by adding the following line to line 132 of the ttylinux-src-mp3/scripts/build-kernel.sh build script:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>patch -p1 &lt; /tmp/kernel.patch
+</code></pre></div>    </div>
+
+    <p>You should end up with the following around it:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo -n "b." &gt;&amp;${CONSOLE_FD}
+cp "${kcfg}" "linux-${kver}/.config"
+cd "linux-${kver}"
+patch -p1 &lt; /tmp/kernel.patch
+sed --in-place scripts/mod/sumversion.c \
+        --expression="s|&lt;string.h&gt;|
+&lt;limits.h&gt;\n#include &lt;string.h&gt;|"
+source "${TTYLINUX_XTOOL_DIR}/_xbt_env_set"
+</code></pre></div>    </div>
+
+    <p>Create the patch file /tmp/kernel.patch with the following in it:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> --- a/arch/x86/xen/enlighten.c  2010-08-05 20:35:13.000000000 -0400
+ +++ b/arch/x86/xen/enlighten.c  2010-08-05 20:35:22.000000000 -0400
+ @@ -776,6 +776,7 @@
+ {
+   cr4 &amp;= ~X86_CR4_PGE;
+   cr4 &amp;= ~X86_CR4_PSE;
+ +	cr4 &amp;= ~X86_CR4_OSXSAVE;
+   native_write_cr4(cr4);
+ }
+</code></pre></div>    </div>
+
+    <p>Note that the above patch file has tabs in it. Make sure there is a tab before each cr4 line and the native_write_cr4 line or download the <a href="/examples/ec2ttylinux/kernel.patch">kernel patch</a> file I created.</p>
+  </li>
+  <li>Select the correct build target in the ttylinux-src-mp3/ttylinux.dist-config.sh file. Find the TTYLINUX_TARGET lines, comment them all out and then add the following line:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> TTYLINUX_TARGET="i686:pc:2.11-2.6.35.4"
+</code></pre></div>    </div>
+  </li>
+  <li>Set up the cross compile tools build directory:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cp -Rp ttylinux-src-mp3/cross-tools-2.11-2.6.30.5/ ttylinux-src-mp3/cross-tools-2.11-2.6.35.4/
+</code></pre></div>    </div>
+
+    <p>Find XBT_KERNEL in the script ttylinux-src-mp3/cross-tools-2.11-2.6.35.4/_scripts/xbt-versions.sh and change it to:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> XBT_KERNEL="linux-2.6.35.4"
+</code></pre></div>    </div>
+  </li>
+  <li>Build the cross compile tools:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> cd ttylinux-src-mp3/cross-tools-2.11-2.6.35.4
+ make setup
+ make dload
+ make i686
+ cd ..
+</code></pre></div>    </div>
+  </li>
+  <li>Build the entire TTYLinux distro:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> make dist
+</code></pre></div>    </div>
+    <p>From this point the instructions are just like the last few posts I have made. The distribution created in here needs to be transferred to an EBS volume and made into an AMI.</p>
+  </li>
+  <li>Using a temporary EC2 instance create a volume that will be used to boot the install and give it a file system:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ec2-create-volume -z us-east-1a -s 1
+ ec2-attach-volume volume-id -i instance-id -d /dev/sdh
+ mkfs.ext3 /dev/sdh
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Transfer the TTYLinux distribution image that was created to the temporary EC2 instance. Then copy the image to the boot volume:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir /mnt/dest
+mkdir /mnt/src
+mount /dev/sdh /mnt/dest
+mount -o loop img/file_sys-i686-11.2.img /mnt/src
+cd /mnt/src
+find . | cpio -pvd /mnt/dest
+cd -
+cp config/boot/* /mnt/dest/boot/
+umount /mnt/src
+</code></pre></div>    </div>
+
+    <p>In the above the boot volume is mounted, the TTYLinux distribution image is mounted via a loop device and then all the files are copied from the image to the boot volume. I do a copy here because the default boot image that the TTYLinux build creates is only 8M and the smallest EBS volume you can create is 1G so it is better to use what you have to have.</p>
+  </li>
+  <li>
+    <p>While the boot volume is mounted there are a number of things that need to be configured that are different than some of the previous examples of booting custom systems in EC2. First set the password for root by using chroot:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chroot /mnt/dest/ passwd
+</code></pre></div>    </div>
+
+    <p>Next change the root device in fstab:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat &lt;&lt;EOF &gt; /mnt/dest/etc/fstab
+/dev/xvda1    /            ext3       defaults                      0 0
+tmpfs         /dev         tmpfs      noauto                        0 0
+devpts        /dev/pts     devpts     gid=5,mode=0620               0 0
+tmpfs         /dev/shm     tmpfs      rw,noexec,nosuid,size=24k     0 0
+proc          /proc        proc       noauto                        0 0
+sysfs         /sys         sysfs      noauto                        0 0
+EOF
+</code></pre></div>    </div>
+
+    <p>Then modify the inittab to only create one terminal:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat &lt;&lt;EOF &gt; /mnt/dest/etc/inittab
+::sysinit:/etc/rc.d/rc.sysinit
+tty1::respawn:/sbin/getty 38400 tty1
+::ctrlaltdel:/sbin/reboot
+::shutdown:/etc/rc.d/rc.sysdone
+EOF
+</code></pre></div>    </div>
+
+    <p>Then configure the network to start on boot:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat &lt;&lt;EOF &gt; /mnt/dest/etc/sysconfig/network-scripts/ifcfg-eth0
+ENABLE=yes
+NAME=Ethernet
+IPADDRESS=192.168.1.20
+CIDRLEN=24
+NETWORK=192.168.1.0
+NETMASK=255.255.255.0
+GATEWAY=192.168.1.1
+BROADCAST=192.168.1.255
+DHCP=yes
+EOF
+</code></pre></div>    </div>
+
+    <p>Finally, If you want to get rid of the warnings about setting the hardware clock you can edit /mnt/dest/etc/rc.d/rc.sysdone and comment out the part that tries to set it:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Disabled for XenU use
+#if [[ "$(uname -m)" != armv5tej* ]]; then
+#     action $"syncing hardware clock to system time" hwclock ${HWCLOCKARGS}
+#fi
+</code></pre></div>    </div>
+
+    <p>and you will also want to do the same to /mnt/dest/etc/rc.d/rc.sysinit:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Disabled for XenU
+#if [[ "$(uname -m)" != armv5tej* ]]; then hwclock ${HWCLOCKARGS}; fi
+</code></pre></div>    </div>
+  </li>
+  <li>To tell pv-grub what to boot you will need a /boot/grub/menu.lst file with the following in it:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir /mnt/dest/boot/grub
+
+cat &lt;&lt;EOF &gt; /mnt/dest/boot/grub/menu.lst
+default 0
+timeout 0
+title TTYOS
+        root (hd0)
+        kernel /boot/vmlinuz root=/dev/xvda1
+EOF
+</code></pre></div>    </div>
+
+    <p>Unmount the boot image:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>umount /mnt/dest/
+</code></pre></div>    </div>
+  </li>
+  <li>Snapshot the volume and register it as an AMI:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-create-snapshot -d "Volume Description" volume-id
+ec2-register -n "AMIName" -d "AMI Description" --root-device-name /dev/sda1 -b /dev/sda1=snap-id:1:true
+</code></pre></div>    </div>
+  </li>
+  <li>Boot it using the hd0 kernel for your region (in my case that is aki-407d9529):
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ec2-run-instances -z us-east-1a -g your-group -k your-keypair -n 1 --kernel pv-grub-kernel-id ami-from-step-13
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>There are a few final notes that might be interesting. The smallest you can create is 1G and that is about 950M too large. This is probably not a real issue since you will most likely want space to put your application but it is interesting to note. The instructions assume you are building a i386 instance but they are almost the same for a 64 bit instance.</p>
+
+<p>With the kernel config I provide you will see boot times from start to init in about 0.3 seconds. That is pretty fast. From init to login is fast as well but depends completely on how long it takes to get an IP from the DHCP server. This type of system could potentially boot in just a second or two if it didn’t have to wait for any AWS parts.</p>
+
+<p>A few people have created <a href="http://minimalinux.org/ttylinux/addons.html">TTY addons</a> to make compiling code for TTYLinux easier. You may want to check those out. Baring that you will find instructions on building anything with the cross compiling system in the TTYLinux howto documentation. Of course you may be able to bypass any pain there by compiling static binaries or even using something like Java.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

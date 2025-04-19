@@ -1,0 +1,401 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>5 ImageMagick command line examples part 2 - IONCANNON</title>
+<meta name="description" content="I’ve put together another 5 ImageMagick command line examples as a followup to part 1. These examples are a little more advanced and include some extra information on techniques.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="5 ImageMagick command line examples part 2">
+<meta property="og:url" content="http://localhost:4000/linux/utilities/2006/07/22/5-imagemagick-command-line-examples-part-2/">
+
+
+  <meta property="og:description" content="I’ve put together another 5 ImageMagick command line examples as a followup to part 1. These examples are a little more advanced and include some extra information on techniques.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-07-22T08:44:29-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/linux/utilities/2006/07/22/5-imagemagick-command-line-examples-part-2/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">5 ImageMagick command line examples part 2</h1>
+    
+    <p>I’ve put together another 5 ImageMagick command line examples as a followup to <a href="http://www.ioncannon.net/linux/81/5-imagemagick-command-line-examples-part-1/">part 1</a>. These examples are a little more advanced and include some extra information on techniques.</p>
+
+<p>I started with the following image as a base for all the examples that follow:</p>
+
+<p><img width="500" height="375" src="/assets/magick0706/img/flower_original.jpg" /></p>
+
+<p><b>1. Resizing an image.</b></p>
+
+<p>Resizing seems to be a very common task that people need automated. With convert you can easily write a script that resizes call images in a directory. Before you start resizing images it helps if you read <a href="http://bobatkins.com/photography/digital/digital_image_resizing.html">a howto on resizing digital images</a>.</p>
+
+<p>Example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>convert flower_original.jpg -resize 640x480 flower.jpg
+</code></pre></div></div>
+
+<p>Produces:</p>
+
+<p><img src="/assets/magick0706/img/flower.jpg" /></p>
+
+<p>For more in depth examples of resizing check out the <a href="http://www.imagemagick.org/Usage/resize/">examples page</a> and the convert <a href="http://www.imagemagick.org/script/command-line-options.php?#resize">-resize</a> options. If you are interested in the output of the different filter types check out these <a href="http://www.dylanbeattie.net/magick/filters/result.html">examples</a> of each of them at different levels.</p>
+
+<p><b>2. Sharpening an image.</b></p>
+
+<p>Sharpening an image can bring out some details that get lost when you resize or compress an image. I came across an article about <a href="http://www.cameronmoll.com/archives/000169.html">using sharpen</a> to make a picture look better and went off to find a way to reproduce the results with ImageMagick. It wasn’t easy but I found another article on <a href="http://redskiesatnight.com/Articles/IMsharpen/">sharpening with ImageMagick</a>. I have found the following command works the best:</p>
+
+<p>Example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>convert flower.jpg -unsharp 1.5x1.0+1.5+0.02 flower_unsharp.jpg
+</code></pre></div></div>
+
+<p>Produces:</p>
+
+<p><img src="/assets/magick0706/img/flower_unsharp.jpg" /></p>
+
+<p>For more information on sharpening see <a href="http://www.imagemagick.org/Usage/convolve/">this example page</a> and the <a href="http://www.imagemagick.org/script/command-line-options.php?#unsharp">-unsharp</a> option.</p>
+
+<p><b>3. Changing image formats</b></p>
+
+<p>ImageMagick supports a wide range of image formats and you can use convert to change one format into another. Some formats have optional commands that can be given to change the output. An example of that would be png and jpg quality.</p>
+
+<p>Example (jpg to png):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>convert flower.jpg -quality 95 flower_quality.png
+</code></pre></div></div>
+
+<p>Produces:</p>
+
+<p><img src="/assets/magick0706/img/flower_quality.png" /></p>
+
+<p>Example: (jpg to jpg - lower quality):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>convert flower.jpg -quality 80% flower_quality.jpg
+</code></pre></div></div>
+
+<p>Produces:</p>
+
+<p><img src="/assets/magick0706/img/flower_quality.jpg" /></p>
+
+<p>PNGs have a different type of quality setting than JPGs. You can read more about the different options on the <a href="http://www.imagemagick.org/Usage/formats/">example page</a> or the <a href="http://www.imagemagick.org/script/command-line-options.php?#quality">-quality</a> option.</p>
+
+<p><b>4. Adding a raised border</b></p>
+
+<p>Adding a frame around an image can come in handy. With ImageMagick there is nothing to it.</p>
+
+<p>Example (simple raised border):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>convert flower.jpg -frame 6x6+2+2 flower_frame1.jpg
+</code></pre></div></div>
+
+<p>Produces:</p>
+
+<p><img src="/assets/magick0706/img/flower_frame1.jpg" /></p>
+
+<p>Example (raised with annotation):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>convert flower.jpg -mattecolor grey -background grey -frame 3x3+0+3 -gravity South -splice 0x15 -annotate 0x0 'Flower' -frame 6x6+3+0 flower_frame2.jpg
+</code></pre></div></div>
+
+<p>Produces:</p>
+
+<p><img src="/assets/magick0706/img/flower_frame2.jpg" /></p>
+
+<p>To see all the options you have with frames see <a href="http://www.imagemagick.org/Usage/crop/#frame">the examples</a>.</p>
+
+<p><b>5. Buttons</b></p>
+
+<p>This example shows how to make “gel” buttons. It could be modified to make buttons for a website.</p>
+
+<p>Example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>convert -size 100x60 xc:none -fill red -draw 'circle 25,30 10,30' \
+-draw 'circle 75,30 90,30' -draw 'rectangle 25,15 75,45' gel_shape.png
+</code></pre></div></div>
+
+<p>Produces:</p>
+
+<p><img src="/assets/magick0706/img/gel_shape.png" /></p>
+
+<p>Example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>convert gel_shape.png \( +clone -fx A +matte  -blur 0x12  -shade 110x0 -normalize \
+-sigmoidal-contrast 16,60% -evaluate Multiply .5 -roll +5+10 +clone -compose Screen -composite \) \
+-matte -compose In -composite gel_highlight.png
+</code></pre></div></div>
+
+<p>Produces:</p>
+
+<p><img src="/assets/magick0706/img/gel_highlight.png" /></p>
+
+<p>Example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>convert gel_highlight.png \( +clone -fx A  +matte -blur 0x2  -shade 0x90 -normalize \
+-blur 0x2  -negate -evaluate multiply .4 -negate -roll -.5-1 +clone  -compose Multiply -composite \) \
+-matte -compose In -composite gel_border.png
+</code></pre></div></div>
+<p>Produces:</p>
+
+<p><img src="/assets/magick0706/img/gel_border.png" /></p>
+
+<p>Example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>convert gel_border.png -font AvantGarde-Book -pointsize 24 -fill white \
+-gravity Center -annotate 0 "Gel" -trim +repage -bordercolor none -border 4  \
+\( +clone -background navy -shadow 80x4+4+4 \) +swap -background none -flatten gel_button.png
+</code></pre></div></div>
+
+<p>Produces:</p>
+
+<p><img src="/assets/magick0706/img/gel_button.png" /></p>
+
+<p>See this <a href="http://www.imagemagick.org/Usage/advanced/#gel_effects">example</a> for more information.</p>
+
+<p>If you are interested here is a link to <a href="/assets/magick0706/all.sh">all the examples in one file</a>.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

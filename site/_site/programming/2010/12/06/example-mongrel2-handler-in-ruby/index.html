@@ -1,0 +1,407 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Example Mongrel2 Handler in Ruby - IONCANNON</title>
+<meta name="description" content="Right before I went to Rubyconf I started looking at Mongrel2 so I had something to hack on while I was there. I grabbed the two Ruby handlers listed on the main site, Ruby Mongrel2 and Rack Mongrel2, to get started. I noticed right away that I couldn’t kill the handler process once it started using either one of these libraries. I started down the path of figuring out why they wouldn’t respond to SIGINT and eventually to writing my own handler in Ruby that demonstrates how to fix the issue">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Example Mongrel2 Handler in Ruby">
+<meta property="og:url" content="http://localhost:4000/programming/2010/12/06/example-mongrel2-handler-in-ruby/">
+
+
+  <meta property="og:description" content="Right before I went to Rubyconf I started looking at Mongrel2 so I had something to hack on while I was there. I grabbed the two Ruby handlers listed on the main site, Ruby Mongrel2 and Rack Mongrel2, to get started. I noticed right away that I couldn’t kill the handler process once it started using either one of these libraries. I started down the path of figuring out why they wouldn’t respond to SIGINT and eventually to writing my own handler in Ruby that demonstrates how to fix the issue">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2010-12-06T09:27:35-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2010/12/06/example-mongrel2-handler-in-ruby/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Example Mongrel2 Handler in Ruby</h1>
+    
+    <p>Right before I went to <a href="http://rubyconf.org">Rubyconf</a> I started looking at <a href="http://mongrel2.org/">Mongrel2</a> so I had something to hack on while I was there. I grabbed the two Ruby handlers listed on the main site, <a href="https://github.com/perplexes/m2r">Ruby Mongrel2</a> and <a href="https://github.com/darkhelmet/rack-mongrel2">Rack Mongrel2</a>, to get started. I noticed right away that I couldn’t kill the handler process once it started using either one of these libraries. I started down the path of figuring out why they wouldn’t respond to SIGINT and eventually to writing my own handler in Ruby that demonstrates how to fix the issue</p>
+
+<p>Before getting started with the handler itself it is important to note that Mongrel2 uses <a href="http://www.zeromq.org/">ZeroMQ</a> to communicate with handlers. At least some idea of how ZeroMQ works is needed to follow along with the handler code so take a few minutes to read over the <a href="http://www.zeromq.org/intro:read-the-manual">manual</a>. After looking at the manual take a look at the <a href="http://www.zeromq.org/bindings:ruby">ZeroMQ Ruby bindings</a>. You may even want to take a few minutes and check out some <a href="https://github.com/andrewvc/learn-ruby-zeromq">examples using ZeroMQ with Ruby</a>.</p>
+
+<p>The first significant difference between the following example handler and the two Ruby handlers list above is that it uses the ZeroMQ Ruby bindings. The other two use the <a href="https://github.com/chuckremes/ffi-rzmq">FFI RZMQ</a> bindings. I decided to use the ZeroMQ Ruby bindings after reading the “FEATURES/PROBLEMS” section of the FFI RZMQ bindings. The main drawback in going this route is that the example handler won’t run under JRuby. After installing the ZeroMQ library you can use the following command to install the correct gem needed for the handler:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install zmq
+</code></pre></div></div>
+
+<p>You will also need the ZeroMQ library installed before installing Mongrel2.</p>
+
+<p>Before starting on the handler it is important to understand how Mongrel2 is configured. A good place to start is either the <a href="http://mongrel2.org/wiki?name=GettingStarted">Mongrel2 quickstart guide</a> or the <a href="http://mongrel2.org/doc/tip/docs/manual/book.wiki">Mongrel2 manual</a>. The example handler was tested using mongrel2-1.4 and the following Mongrel2 configuration will work with the example handler:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>demo = Handler(send_spec='tcp://127.0.0.1:9999', send_ident='54c6755b-9628-40a4-9a2d-cc82a816345e',
+               recv_spec='tcp://127.0.0.1:9998', recv_ident='')
+routes = {
+    '/demo': demo
+}
+main = Server(
+    uuid="2f62bd5-9e59-49cd-993c-3b6013c28f05",
+    access_log="/logs/access.log",
+    error_log="/logs/error.log",
+    chroot="./",
+    pid_file="/run/mongrel2.pid",
+    default_host="localhost",
+    name="main",
+    port=6767,
+    hosts=[ Host(name="localhost", routes=routes) ]
+)
+settings = {"zeromq.threads": 1}
+servers = [main]
+</code></pre></div></div>
+
+<p>Assuming you have Mongrel2 installed and working you can copy the above into a file called m2.conf and then run the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>m2sh load --db config.sqlite -config m2.conf
+</code></pre></div></div>
+
+<p>This configuration sets up a route at /demo that maps to the example handler. The handler is expected to use TCP to communicate with Mongrel2 on localhost ports 9999 and 9998.</p>
+
+<p>With all that out of the way it is finally time for the handler. The following is the outer shell of the handler. It creates a thread that will handle the incoming messages and the response. It then sets up an interrupt trap on the main thread and waits for the handler thread to end:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>handler_thread = Thread.new do
+# This is where the zeromq interface will go
+  stopped = false
+  until stopped do
+# This is where messages will be processed
+  end
+end
+trap('INT') do # Send a message to shutdown on SIGINT
+# This is where the interrupt signal will be handled
+end
+handler_thread.join
+</code></pre></div></div>
+
+<p>With the shell in place the next part to go in is the communication with Mongrel2. Here we open two ZeroMQ sockets to Mongrel2. The first is a “PULL” socket that will have incoming request messages. The second is a “PUB” socket that will be used to push responses back. The incoming messages are parsed and the response is sent back containing “Hello world!”:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'zmq'
+require 'json'
+handler_thread = Thread.new do
+  handler_ctx = ZMQ::Context.new(1)
+  receive_queue = handler_ctx.socket(ZMQ::PULL)
+  receive_queue.connect("tcp://127.0.0.1:9999")
+  response_publisher = handler_ctx.socket(ZMQ::PUB)
+  response_publisher.connect("tcp://127.0.0.1:9998")
+  response_publisher.setsockopt(ZMQ::IDENTITY, "82209006-86FF-4982-B5EA-D1E29E55D481")
+  stopped = false
+  until stopped do
+    # Request comes in as "UUID ID PATH SIZE:HEADERS,SIZE:BODY,"
+    sender_uuid, client_id, request_path, request_message = receive_queue.recv(0).split(' ', 4)
+    len, rest = request_message.split(':', 2)
+    headers = JSON.parse(rest[0...len.to_i])
+    len, rest = rest[(len.to_i+1)..-1].split(':', 2)
+    body = rest[0...len.to_i]
+    if headers['METHOD'] == 'JSON' and JSON.parse(body)['type'] == 'disconnect'
+      next # A client has disconnected, might want to do something here...
+    end
+    # Response goes out as "UUID SIZE:ID ID ID, BODY"
+    content_body = "Hello world!"
+    response_value = "#{sender_uuid} 1:#{client_id}, HTTP/1.1 200 OK\r\nContent-Length: #{content_body.size}\r\n\r\n#{content_body}"
+    response_publisher.send(response_value, 0)
+  end
+end
+trap('INT') do # Send a message to shutdown on SIGINT
+# This is where the interrupt signal will be handled
+end
+handler_thread.join
+</code></pre></div></div>
+
+<p>At this point the handler will work just fine but it won’t die without a kill -9. Fixing that is where the trap(‘INT’) and handler thread come in to play. The following version is the final version and uses a third internal queue called the “shutdown_queue” to signal that the handler thread should stop. One change you should note from the above example is the use of the select call that watches multiple sockets:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'zmq'
+require 'json'
+handler_thread = Thread.new do
+  handler_ctx = ZMQ::Context.new(1)
+  receive_queue = handler_ctx.socket(ZMQ::PULL)
+  receive_queue.connect("tcp://127.0.0.1:9999")
+  response_publisher = handler_ctx.socket(ZMQ::PUB)
+  response_publisher.connect("tcp://127.0.0.1:9998")
+  response_publisher.setsockopt(ZMQ::IDENTITY, "82209006-86FF-4982-B5EA-D1E29E55D481")
+  stop_queue = handler_ctx.socket(ZMQ::PULL)
+  stop_queue.connect("ipc://shutdown_queue")
+  stopped = false
+  until stopped do
+    selected_queue = ZMQ.select([receive_queue, stop_queue])
+    if selected_queue[0][0] == stop_queue # Anything on the stop_queue ends processing
+      stop_queue.close
+      receive_queue.close
+      response_publisher.close
+      handler_ctx.close
+      stopped = true
+    else
+      # Request comes in as "UUID ID PATH SIZE:HEADERS,SIZE:BODY,"
+      sender_uuid, client_id, request_path, request_message = receive_queue.recv(0).split(' ', 4)
+      len, rest = request_message.split(':', 2)
+      headers = JSON.parse(rest[0...len.to_i])
+      len, rest = rest[(len.to_i+1)..-1].split(':', 2)
+      body = rest[0...len.to_i]
+      if headers['METHOD'] == 'JSON' and JSON.parse(body)['type'] == 'disconnect'
+        next # A client has disconnected, might want to do something here...
+      end
+      # Response goes out as "UUID SIZE:ID ID ID, BODY"
+      content_body = "Hello world!"
+      response_value = "#{sender_uuid} 1:#{client_id}, HTTP/1.1 200 OK\r\nContent-Length: #{content_body.size}\r\n\r\n#{content_body}"
+      response_publisher.send(response_value, 0)
+    end
+  end
+end
+ctx = ZMQ::Context.new(1)
+stop_push_queue = ctx.socket(ZMQ::PUSH)
+trap('INT') do # Send a message to shutdown on SIGINT
+  stop_push_queue.bind("ipc://shutdown_queue")
+  stop_push_queue.send("shutdown")
+end
+handler_thread.join
+stop_push_queue.close
+</code></pre></div></div>
+
+<p>This is the bare minimum handler and doesn’t use all the features that Mongrel2 has. One of the most interesting features of Mongrel2 is the ability to have the handler respond to multiple client requests with a single response message. I hope to use this feature in the near future to test out server side event push with Javascript using <a href="http://dev.w3.org/html5/eventsource/">EventSource</a>.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<html>
+<head>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+  <title>Test GEO location</title>
+
+  <script type="text/javascript">
+    function initialize()
+    {
+      if(navigator.geolocation) 
+      {
+        setInterval(function()
+        {
+        navigator.geolocation.getCurrentPosition(function(position) 
+        {
+          document.getElementById("location").innerHTML = 'Test: ' + position.coords.latitude + ", " + position.coords.longitude;
+        }, 
+        function(error) 
+        {
+          document.getElementById("location").innerHTML = 'Error: ' + error.message;
+        });
+        }, 10000);
+      }
+    } 
+  </script>
+</head>
+
+<body onload="initialize()">
+  <div id="location">None</div>
+</body>
+</html>

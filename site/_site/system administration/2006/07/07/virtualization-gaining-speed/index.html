@@ -1,0 +1,277 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Virtualization gaining speed - IONCANNON</title>
+<meta name="description" content="At work we jumped on the virtualization wagon some time ago first when User Mode Linux and then later with Xen. UML was pretty good but Xen has been great. We had a few reasons for moving from physical machines to virtual ones:">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Virtualization gaining speed">
+<meta property="og:url" content="http://localhost:4000/system%20administration/2006/07/07/virtualization-gaining-speed/">
+
+
+  <meta property="og:description" content="At work we jumped on the virtualization wagon some time ago first when User Mode Linux and then later with Xen. UML was pretty good but Xen has been great. We had a few reasons for moving from physical machines to virtual ones:">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-07-07T09:42:17-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/2006/07/07/virtualization-gaining-speed/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Virtualization gaining speed</h1>
+    
+    <p>At work we jumped on the virtualization wagon some time ago first when <a href="http://user-mode-linux.sourceforge.net/">User Mode Linux</a> and then later with <a href="http://www.cl.cam.ac.uk/Research/SRG/netos/xen/">Xen</a>. UML was pretty good but Xen has been great. We had a few reasons for moving from physical machines to virtual ones:</p>
+
+<ul>
+<li>Rack space is a recurring cost so maximizing the use of space is important. I have a philosophy of breaking up a lot of functions into their own servers. That is web servers shouldn't be also doing email for 1000 people.</li>
+<li>Lots of people don't need the full power of a physical machine.</li>
+<li>You can get a console for a virtual machine without having to visit the datacenter.</li>
+<li>There is hope that at some point you may never <b>need</b> downtime since Xen and VMWare have the ability to do live migrations from one set of hardware to another. Upgrading a machine couldn't be easier.</li>
+</ul>
+<p>Now it seems that more people are starting to <a href="http://www.infoworld.com/article/06/07/03/79352_27FEvirtyear_1.html">move towards virtualization</a> and Xen seems to have <a href="http://www.infoworld.com/article/06/07/03/79393_27FEvirtyearxen_1.html?s=feature">pushed things over the edge</a>. I think a lot of that was interest generated because Xen was free and people could get their feet wet. That is probably what also drove VMWare to make part of their suite free. Xen is still not VMWare but it is gaining ground. There is support coming for <a href="http://www.planetjoel.com/viewarticle/568/HOWTO%3A+Windows+XP+running+under+Xen+3.0+on+Ubuntu+Dapper+Drake">Windows</a> and <a href="http://news.com.com/2061-10808_3-5813779.html">Solaris</a> with support for <a href="http://www.netbsd.org/Ports/xen/">NetBSD</a> already. The main gap I see in Xen’s support is in the storage area. Before they can compete with VMWare at the highest levels they need to add better support for SANs or other distributed disk setups.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

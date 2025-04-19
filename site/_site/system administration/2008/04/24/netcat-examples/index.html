@@ -1,0 +1,303 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Examples of why netcat is still useful - IONCANNON</title>
+<meta name="description" content="I recently got a new work PC and was worried that stuck somewhere in the 40G hard drive of the old PC was something I would one day need. The new PC had 300G of space so I figured I would just copy the entire drive over and keep it forever. This isn’t the most difficult task in the world and I actually started out using ssh to transfer the image.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Examples of why netcat is still useful">
+<meta property="og:url" content="http://localhost:4000/system%20administration/2008/04/24/netcat-examples/">
+
+
+  <meta property="og:description" content="I recently got a new work PC and was worried that stuck somewhere in the 40G hard drive of the old PC was something I would one day need. The new PC had 300G of space so I figured I would just copy the entire drive over and keep it forever. This isn’t the most difficult task in the world and I actually started out using ssh to transfer the image.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2008-04-24T08:18:41-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/2008/04/24/netcat-examples/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Examples of why netcat is still useful</h1>
+    
+    <p>I recently got a new work PC and was worried that stuck somewhere in the 40G hard drive of the old PC was something I would one day need. The new PC had 300G of space so I figured I would just copy the entire drive over and keep it forever. This isn’t the most difficult task in the world and I actually started out using ssh to transfer the image.</p>
+
+<p>To transfer the drive using ssh I was using the following command from the new PC:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh -c blowfish old-pc-ip "dd if=/dev/hda" &gt; dd of=old-pc.hda
+</code></pre></div></div>
+<p>This worked fine but the old PC seemed to be having a hard time keeping up. I did some adjusting to the block size of the transfers using dd but that didn’t seem to help. That is when I decided to give netcat a try.</p>
+
+<p>On the old PC side I ran:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>dd if=/dev/hda | nc -l 10001
+</code></pre></div></div>
+<p>and on the new PC side I ran:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nc old-pc-ip 10001 | dd of=old-pc.hda
+</code></pre></div></div>
+<p>This worked like a charm and transfered the drive about twice as fast as ssh using blowfish encryption.</p>
+
+<p>Just for reference I was using dd here to give myself more control over block sizes, skip any read errors, and at times I was actually trying to just transfer parts of the drive instead of the entire thing using the seek and count options. Another useful trick with dd is that you can find out the current amount transfered and rate by sending it a USR1 signal with kill. After poking around I actually found another nice utility that you can stick in the stream call <a href="http://www.ivarch.com/programs/pv.shtml">pipe viewer</a> that is able to give you a nice display of the count instead of having to send signals to dd.</p>
+
+<p>Another great use for netcat that I ran into recently was setting up a ppp tunnel between two machines. Again at first I started by using ssh:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pppd updetach noauth passive pty "ssh remote-host-ip -lroot -o Batchmode=yes pppd nodetach notty noauth" ipparam vpn 192.168.77.1:192.168.77.2
+</code></pre></div></div>
+<p>This worked between two machines that were already connected by a network but my real goal was build the tunnel over a device that wouldn’t work with ssh traffic. I turned to netcat again.</p>
+
+<p>On the initiating side I ran this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/sbin/pppd connect-delay 30000 updetach noauth passive pty "echo connect-585 | nc device-ip 2000" ipparam root 192.168.77.1:192.168.77.2
+</code></pre></div></div>
+<p>Here I send the traffic to a device in between that forms a connection over a non-network link to the end point machine. I don’t need netcat on the endpoint because the communication channel is not a network. On the end point I run this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/usr/sbin/pppd nodetach notty noauth
+</code></pre></div></div>
+<p>In this case netcat saved me from having to write some intermediate code that would communicate with the device and just pipe the bits through.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

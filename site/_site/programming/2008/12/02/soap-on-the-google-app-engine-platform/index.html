@@ -1,0 +1,426 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>SOAP on the Google App Engine platform - IONCANNON</title>
+<meta name="description" content="I generally don’t recomend using SOAP instead of REST but I have been required to use SOAP so much now that I think it is inevitably going to be a requirement for a long time for certain projects. So when I noticed a question on stack overflow about using SOAP on the Google App Engine I thought it might be a nice exercise to see how easy it is to get fringe toolsets to work in the GAE.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="SOAP on the Google App Engine platform">
+<meta property="og:url" content="http://localhost:4000/programming/2008/12/02/soap-on-the-google-app-engine-platform/">
+
+
+  <meta property="og:description" content="I generally don’t recomend using SOAP instead of REST but I have been required to use SOAP so much now that I think it is inevitably going to be a requirement for a long time for certain projects. So when I noticed a question on stack overflow about using SOAP on the Google App Engine I thought it might be a nice exercise to see how easy it is to get fringe toolsets to work in the GAE.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2008-12-02T22:35:25-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2008/12/02/soap-on-the-google-app-engine-platform/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">SOAP on the Google App Engine platform</h1>
+    
+    <p>I generally don’t recomend using <a href="http://www.ioncannon.net/web-services/117/soap-vs-rest/">SOAP instead of REST</a> but I have been required to use SOAP so much now that I think it is inevitably going to be a requirement for a long time for certain projects. So when I noticed a question on <a href="http://stackoverflow.com/questions/331600/how-to-write-a-web-service-for-google-app-engine">stack overflow</a> about using SOAP on the <a href="http://code.google.com/appengine/">Google App Engine</a> I thought it might be a nice exercise to see how easy it is to get fringe toolsets to work in the GAE.</p>
+
+<p>I’m going to assume basic knowledge of the GAE system. If you haven’t already tried it out you should read the <a href="http://code.google.com/appengine/docs/gettingstarted/">getting started guide</a>. You shouldn’t need to know any more than what is in that guide to work through this example. I also assume knowledge of creating <a href="http://www.w3.org/TR/wsdl">WSDL</a> files by hand. You will need to be able to do this to generate the SOAP server and client. You can find a <a href="http://www.w3schools.com/WSDL/default.asp">WSDL tutorial here</a> that may help. I also recommend creating an empty directory that will house your project for this example.</p>
+
+<p>The first step involves getting a library from the <a href="http://pywebsvcs.sourceforge.net/">Python Web Services</a> project. You will want to download the <a href="http://sourceforge.net/project/showfiles.php?group_id=26590&amp;package_id=30660&amp;release_id=551193">ZSI 2.1a1</a> package (grab the the tgz file: ZSI-2.1-a1.tar.gz). This is the current alpha release of ZSI but the current stable release won’t work. The stable release has a problem with the expat library but the problem is fixed in 2.1. It is also worth stating that ZSI 2.1 seems to be better put together. Extract the files into a temp directory and then copy only the directory named “ZSI” into your project directory.</p>
+
+<p>Next you will need to get <a href="http://pypi.python.org/pypi/zope.interface">zope.interface</a>. Go to the <a href="http://pypi.python.org/pypi/zope.interface#download">zope.interface download page</a> and find the file named: zope.interface-3.5.0.zip. Unzip this file in a temp directory and then copy the directory named “zope” into your project.</p>
+
+<p>These two external libraries are all you need to create a Python SOAP service. The next step in creating the service involves using the <a href="http://code.google.com/appengine/docs/gettingstarted/usingwebapp.html">GAE webapp framework</a> so it would help to read up on that. This framework works with <a href="http://www.wsgi.org/wsgi/">WSGI</a> and it may also help to <a href="http://www.wsgi.org/wsgi/Learn_WSGI">learn about WSGI</a> as well. I referenced the <a href="http://code.google.com/appengine/articles/django.html">django example</a> and <a href="http://appengine-cookbook.appspot.com/recipe/match-webapp-urls-using-routes/">example of using routes</a> to get an idea of what needed to be done to connect the GAE WSGI up to the ZSI SOAP service. They both use the  <a href="http://code.google.com/appengine/docs/webapp/wsgiapplicationclass.html">WSGIApplication</a> webapp call to tie in their output with the WSGI framework and that is common to all applications that use the webapp framework.</p>
+
+<p>Now that all the libraries are in place and the WSGI and GAE webapp interface make some sense it is time to move on to creating a WSDL file. Here is a simple one that I used for the test:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;definitions
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:tns="urn:ZSI"
+  targetNamespace="urn:ZSI" &gt;
+  &lt;types&gt;
+  &lt;xsd:schema elementFormDefault="qualified" targetNamespace="urn:ZSI"&gt;
+      &lt;xsd:element name="Echo"&gt;
+          &lt;xsd:complexType&gt;
+              &lt;xsd:sequence&gt;
+                  &lt;xsd:element name="value" type="xsd:anyType"/&gt;
+              &lt;/xsd:sequence&gt;
+          &lt;/xsd:complexType&gt;
+      &lt;/xsd:element&gt;
+  &lt;/xsd:schema&gt;
+  &lt;/types&gt;
+
+  &lt;message name="EchoRequest"&gt;
+
+&lt;part name="parameters" element="tns:Echo" /&gt;
+  &lt;/message&gt;
+
+  &lt;message name="EchoResponse"&gt;
+
+&lt;part name="parameters" element="tns:Echo"/&gt;
+  &lt;/message&gt;
+
+&lt;portType name="EchoServer"&gt;
+    &lt;operation name="Echo"&gt;
+      &lt;input message="tns:EchoRequest"/&gt;
+      &lt;output message="tns:EchoResponse"/&gt;
+    &lt;/operation&gt;
+  &lt;/portType&gt;
+  &lt;binding name="EchoServer" type="tns:EchoServer"&gt;
+    &lt;soap:binding style="document"
+                  transport="http://schemas.xmlsoap.org/soap/http"/&gt;
+    &lt;operation name="Echo"&gt;
+      &lt;soap:operation soapAction="Echo"/&gt;
+        &lt;input&gt;
+          &lt;soap:body use="literal"/&gt;
+        &lt;/input&gt;
+        &lt;output&gt;
+          &lt;soap:body use="literal"/&gt;
+        &lt;/output&gt;
+    &lt;/operation&gt;
+  &lt;/binding&gt;
+
+  &lt;service name="EchoServer"&gt;
+
+&lt;port name="EchoServer" binding="tns:EchoServer"&gt;
+      &lt;soap:address location="http://gae.ioncannon.net/echo"/&gt;
+    &lt;/port&gt;
+  &lt;/service&gt;
+
+&lt;/definitions&gt;
+</code></pre></div></div>
+<p>Notice at the bottom I set the address to the location of my test service along with the application domain name. This is where the application will end up in production. If you want to test first you can stick your localhost information in there instead.</p>
+
+<p>Next you will need to run the wsdl2py application that comes with ZSI on your WSDL file to generate the classes needed for the server. To do this I simply copied the wsdl2py application into the project and ran the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>python wsdl2py SimpleEcho.wsdl
+</code></pre></div></div>
+<p>After you do this you will find a couple new files in your project directory. I then removed the wsdl2py application so it didn’t get uploaded later.</p>
+
+<p>Next create the test endpoint application itself. For this example I named the file echo.py and added the hooks that connect the service to the WSGI interface:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import sys
+from google.appengine.ext import webapp
+from google.appengine.ext.webapp.util import run_wsgi_app
+from EchoServer_server import *
+from ZSI.twisted.wsgi import SOAPApplication, soapmethod, SOAPHandlerChainFactory, WSGIApplication
+
+class EchoService(SOAPApplication):
+    factory = SOAPHandlerChainFactory
+    wsdl_content = dict(name='Echo', targetNamespace='urn:echo', imports=(), portType='')
+
+    @soapmethod(EchoRequest.typecode, EchoResponse.typecode, operation='Echo', soapaction='Echo')
+    def soap_Echo(self, request, response, **kw):
+        response = request
+        return request,response
+
+application = WSGIApplication()
+application['echo'] = EchoService()
+
+def main():
+  run_wsgi_app(application)
+
+if __name__ == "__main__":
+  main()
+</code></pre></div></div>
+<p>Next create the application description file app.yaml that is needed to upload and install the application in the GAE. For simplicity I just map everything to the main program:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>application: iechotest
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /.*
+  script: echo.py
+</code></pre></div></div>
+<p>At this point my project directory looked like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>soaptest/
+    ZSI/&lt;zsi files&gt;
+    zope/&lt;zope interface files&gt;
+    app.yaml
+    EchoServer_client.py
+    EchoServer_types.py
+    EchoServer_server.py
+    echo.py
+    SimpleEcho.wsdl
+</code></pre></div></div>
+<p>The application is ready to be uploaded to GAE at this point. After uploading you can stick the endpoint URL into a browser and you should see a message saying “NO RESOURCE FOR GET”.  If you get some type of error use the logs in your application console to look at the application stack trace. If there are no errors you are ready to build a client to test the SOAP service.</p>
+
+<p>To create the client you use the same WSDL file with wsdl2py again. This actually generates the same class files and you need the same libraries in place to run it. The following example client will test the service:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from EchoServer_client import *
+import sys, time
+
+TRACE=None
+loc = EchoServerLocator()
+port = loc.getEchoServer()
+
+msg = EchoRequest()
+msg._value = 1
+rsp = port.Echo(msg)
+print "INTEGER: ", rsp._value
+
+msg._value = "HI"
+rsp = port.Echo(msg)
+print "STRING: ", rsp._value
+
+msg._value = 1.10000
+rsp = port.Echo(msg)
+print "FLOAT: ", rsp._value
+
+msg._value = dict(milk=dict(cost=3.15, unit="gal"))
+</code></pre></div></div>
+<p>As long as the service is in the same place as the WSDL location setting you don’t need to specify an endpoint for the getServer call.</p>
+
+<p>And that is all there is to it. It is fairly involved but if you already understand some of the concepts here it seems fairly strait forward. Along the way I found a <a href="http://www.lokad.com/web-services-time-series-forecasting-tutorial-python.ashx">SOAP tutorial</a> for Python that may be helpful as well.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

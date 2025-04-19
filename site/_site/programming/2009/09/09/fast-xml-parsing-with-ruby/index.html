@@ -1,0 +1,354 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Fast XML parsing with Ruby - IONCANNON</title>
+<meta name="description" content="One of the first things I needed to do while building the GeeQE iPhone application was process the CC data dump from Stack Overflow. The dump contains XML files representing tables from Stack Overflow with the largest file being posts.xml weighing in at 1.2G as of September. I decided it would be pretty easy to use Ruby to parse the XML and load the data into MySQL so I went about finding the right parser for the job.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Fast XML parsing with Ruby">
+<meta property="og:url" content="http://localhost:4000/programming/2009/09/09/fast-xml-parsing-with-ruby/">
+
+
+  <meta property="og:description" content="One of the first things I needed to do while building the GeeQE iPhone application was process the CC data dump from Stack Overflow. The dump contains XML files representing tables from Stack Overflow with the largest file being posts.xml weighing in at 1.2G as of September. I decided it would be pretty easy to use Ruby to parse the XML and load the data into MySQL so I went about finding the right parser for the job.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2009-09-09T08:54:47-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2009/09/09/fast-xml-parsing-with-ruby/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Fast XML parsing with Ruby</h1>
+    
+    <p>One of the first things I needed to do while building the <a href="http://www.ioncannon.net/projects/geeqe/">GeeQE iPhone application</a> was process the <a href="http://blog.stackoverflow.com/2009/06/stack-overflow-creative-commons-data-dump/">CC data dump from Stack Overflow</a>. The dump contains XML files representing tables from Stack Overflow with the largest file being posts.xml weighing in at 1.2G as of September. I decided it would be pretty easy to use Ruby to parse the XML and load the data into MySQL so I went about finding the right parser for the job.</p>
+
+<p>If you haven’t processed large amounts of XML before one thing to realize is that you don’t want to use a DOM parser because it is going to load the entire XML structure into memory. What you want is a SAX parser that can work on the XML stream as it comes in. With this in mind I started looking around and quickly found an <a href="http://depixelate.com/2008/4/23/ruby-xml-parsing-benchmarks">older benchmark</a> post that gave me an educated guess that the <a href="http://libxml.rubyforge.org/">LibXML</a> library was going to be the fastest parser for Ruby. After figuring out how to use it I decided to also give a couple other libraries a shot to see how they stacked up, the other two I looked at were <a href="http://www.germane-software.com/software/rexml/">REXML</a> and <a href="http://nokogiri.rubyforge.org/nokogiri/">Nokogiri</a>.</p>
+
+<p>The following is a set of example using each library in streaming SAX mode. Each processes the 1.2G posts.xml file from the dump and does nothing more than check that the element represents a “row”. I have also included a sample runtime for each:</p>
+
+<h2>REXML SAX example</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'rubygems'
+require 'rexml/document'
+require "rexml/streamlistener"
+
+include REXML
+
+class PostCallbacks
+  include StreamListener
+
+  def tag_start(element, attributes)
+    if element == 'row'
+      # Process row of data here
+    end
+  end
+end
+
+source = File.new "posts.xml"
+Document.parse_stream(source, PostCallbacks.new)
+</code></pre></div></div>
+<p><b>REXML runtime</b></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>time ruby rexmltest.rb
+real    47m22.871s
+user    42m0.711s
+sys     3m31.943s
+</code></pre></div></div>
+<h2>Nokogiri SAX example</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'rubygems'
+require 'nokogiri'
+
+include Nokogiri
+
+class PostCallbacks &lt; XML::SAX::Document
+  def start_element(element, attributes)
+    if element == 'row'
+      # Process row of data here
+    end
+  end
+end
+
+parser = XML::SAX::Parser.new(PostCallbacks.new)
+parser.parse_file("posts.xml")
+</code></pre></div></div>
+<p><b>Nokogiri runtime</b></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>time ruby nokogiri.rb
+real    4m45.347s
+user    4m7.504s
+sys     0m19.332s
+</code></pre></div></div>
+<h2>LibXML SAX example</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'rubygems'
+require 'libxml'
+
+include LibXML
+
+class PostCallbacks
+  include XML::SaxParser::Callbacks
+
+  def on_start_element(element, attributes)
+    if element == 'row'
+      # Process row of data here
+    end
+  end
+end
+
+parser = XML::SaxParser.file("posts.xml")
+parser.callbacks = PostCallbacks.new
+parser.parse
+</code></pre></div></div>
+<p><b>LibXML runtime</b></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>time ruby libxmltest.rb
+real    1m55.657s
+user    1m41.938s
+sys     0m5.718s
+</code></pre></div></div>
+<p><br />
+From the above you can see that LibXML is the fastest. I thought that Nokogiri would be a lot closer in execution time given that it uses libxml2 but it is still 2 times slower. The slowest by far was REXML clocking in more than 20 times slower than LibXML. Nokogiri seemed easier to debug when things went wrong than LibXML so had I needed to construct a more complex application to load the data I would have probably used it instead.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

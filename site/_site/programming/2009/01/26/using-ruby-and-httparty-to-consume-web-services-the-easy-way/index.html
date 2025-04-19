@@ -1,0 +1,462 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Using Ruby and HTTParty to consume web services the easy way - IONCANNON</title>
+<meta name="description" content="Web services seem to be multiplying like rabbits these days. For a good sampling of just how many there are check out the Programmable Web API list. In general it is pretty easy to consume basic REST web services but after you have done it enough it starts getting old. Thankfully for those of us who like to tinker with a lot of the new APIs there is HTTParty to make it quick and easy.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Using Ruby and HTTParty to consume web services the easy way">
+<meta property="og:url" content="http://localhost:4000/programming/2009/01/26/using-ruby-and-httparty-to-consume-web-services-the-easy-way/">
+
+
+  <meta property="og:description" content="Web services seem to be multiplying like rabbits these days. For a good sampling of just how many there are check out the Programmable Web API list. In general it is pretty easy to consume basic REST web services but after you have done it enough it starts getting old. Thankfully for those of us who like to tinker with a lot of the new APIs there is HTTParty to make it quick and easy.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2009-01-26T07:54:17-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2009/01/26/using-ruby-and-httparty-to-consume-web-services-the-easy-way/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Using Ruby and HTTParty to consume web services the easy way</h1>
+    
+    <p>Web services seem to be multiplying like rabbits these days. For a good sampling of just how many there are check out the <a href="http://www.programmableweb.com/apis">Programmable Web API list</a>. In general it is pretty easy to consume basic REST web services but after you have done it enough it starts getting old. Thankfully for those of us who like to tinker with a lot of the new APIs there is <a href="http://httparty.rubyforge.org/">HTTParty</a> to make it quick and easy.</p>
+
+<p>The author of HTTParty has a few <a href="http://railstips.org/2008/7/29/it-s-an-httparty-and-everyone-is-invited">examples</a> that show all the features but I figured I would toss a couple more out there for good measure. To get started you will need to install HTTParty with gem:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gem install httparty
+</code></pre></div></div>
+<p>The first example uses the new <a href="http://remix.bestbuy.com/">BestBuy Remix API</a>. The site has all the information on the web service they offer. You can search stores, products and determine if a product is available in a given area/store. In the following example I have implemented store search and a couple different ways of doing product search just to show how easy it is. I even tossed in a very hacked up <a href="http://weblog.jamisbuck.org/2006/1/1/under-the-hood-activerecord-base-find-part-3">method missing example</a>. One thing to note in the following code is the URI escaping that goes on for some of the searches that allow free form input.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'rubygems'
+require 'httparty'
+
+class BestBuy
+  include HTTParty
+  base_uri 'api.remix.bestbuy.com'
+  default_params :apiKey =&gt; 'put your key here'
+
+  def self.get_all_stores
+    get("/v1/stores")
+  end
+
+  def self.get_stores_by_zip(zip)
+    get("/v1/stores(postalCode=#{zip})")
+  end
+
+  def self.get_stores_by_zip_and_distance(zip, distance)
+    get("/v1/stores(area(#{zip},#{distance}))")
+  end
+
+  def self.get_product_by_sku(sku)
+    get("/v1/products/#{sku}.xml")
+  end
+
+  def self.get_products(filter)
+    response = get(URI.escape("/v1/products(#{filter})"))
+    response["products"]["product"]
+  end
+
+  def self.method_missing(method_id, *args)
+    if match = /get_products_by_([_a-zA-Z]\w*)/.match(method_id.to_s)
+      attribute_names = match.captures.last.split('_and_')
+
+      request = ""
+      attribute_names.each_with_index { |name, idx| request = request + name + "=" + args[idx] + (attribute_names.length-1 == idx ? "" : "") }
+
+      get_products(request)
+    else
+      super
+    end
+  end
+end
+</code></pre></div></div>
+<p>Here is the above in action:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pp BestBuy.get_stores_by_zip_and_distance(40299, 10)
+pp BestBuy.get_product_by_sku(8880044)
+pp BestBuy.get_products_by_manufacturer('canon')
+pp BestBuy.get_products("manufacturer='canon'&amp;salePrice&lt;33")
+pp BestBuy.get_products_by_manufacturer_and_department('canon','video')
+pp BestBuy.get_products_by_manufacturer_and_department('canon','accessories')
+
+products = BestBuy.get_products_by_manufacturer_and_department('canon','accessories')
+products.each do |product|
+  print "------------------------------------------------\n"
+  print product["name"] + "\n"
+  print product["longDescription"] + "\n"
+end
+</code></pre></div></div>
+<p>The second example I have uses the <a href="http://developer.nytimes.com/docs/congress_api/">Congressional API</a> that was just put out by the <a href="http://developer.nytimes.com/">NY Times developer</a> program. To get started it may help to look at the blog post <a href="http://open.blogs.nytimes.com/2009/01/08/introducing-the-congress-api/">introducing the congressional API</a>. I’ve created this class in a different way than the above BestBuy just for diversity’s sake. You may notice that I had to define the format specifically here otherwise HTTParty can not figure out how to parse the return.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require 'rubygems'
+require 'httparty'
+
+class NYTimesCongress
+  include HTTParty
+  base_uri 'http://api.nytimes.com/svc/politics/v2/us/legislative/congress'
+  format :xml
+
+  def initialize(apikey)
+    @apikey = apikey
+  end
+
+  # Roll-Call Votes
+  def rollCallVotes(congressNumber, sessionNumber, rollCallNumber)
+    NYTimesCongress.get("/#{congressNumber}/house/sessions/#{sessionNumber}/votes/#{rollCallNumber}", :query =&gt; {"api-key" =&gt; @apikey})
+  end
+
+  # Member Positions
+  def memberPositions(memberId)
+    NYTimesCongress.get("/members/#{memberId}/votes", :query =&gt; {"api-key" =&gt; @apikey})
+  end
+
+  # Members of Congress
+  def membersOfCongress(congressNumber)
+    NYTimesCongress.get("/#{congressNumber}/house/members", :query =&gt; {"api-key" =&gt; @apikey})
+  end
+
+  # Member Bio and Role
+  def memberBioAndRoles(memberId)
+    NYTimesCongress.get("/members/#{memberId}", :query =&gt; {"api-key" =&gt; @apikey})
+  end
+end
+</code></pre></div></div>
+<p>Here it is in action:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nyTimesCongress = NYTimesCongress.new("your api key")
+pp nyTimesCongress.rollCallVotes(111, 1, 9)
+pp nyTimesCongress.membersOfCongress(111)
+pp nyTimesCongress.memberBioAndRoles("Y000062")
+pp nyTimesCongress.memberPositions("Y000062")
+</code></pre></div></div>
+<p>Just recently HTTParty got a <a href="http://railstips.org/2009/1/5/httparty-goes-commando">command line interface</a> that makes it even easier to fiddle with a new service. Here is an example of how easy it is to use the command line version with the Congressional API:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>httparty -f xml -a get "http://api.nytimes.com/svc/politics/v2/us/legislative/congress/members/Y000062?api-key=your api key"
+&lt;?xml version='1.0'?&gt;
+&lt;result_set&gt;
+  &lt;status&gt;
+    OK
+  &lt;/status&gt;
+  &lt;copyright&gt;
+    Copyright (c) 2009 The New York Times Company. All Rights Reserved.
+  &lt;/copyright&gt;
+  &lt;results&gt;
+    &lt;member&gt;
+      &lt;id&gt;
+        Y000062
+      &lt;/id&gt;
+      &lt;name&gt;
+        John Yarmuth
+      &lt;/name&gt;
+      &lt;date_of_birth&gt;
+        1947-11-04
+      &lt;/date_of_birth&gt;
+      &lt;gender&gt;
+        M
+      &lt;/gender&gt;
+      &lt;url&gt;
+        http://yarmuth.house.gov
+      &lt;/url&gt;
+      &lt;govtrack_id&gt;
+        412211
+      &lt;/govtrack_id&gt;
+      &lt;roles&gt;
+        &lt;role&gt;
+          &lt;congress&gt;
+            111
+          &lt;/congress&gt;
+          &lt;chamber&gt;
+            House
+          &lt;/chamber&gt;
+          &lt;title&gt;
+            Representative
+          &lt;/title&gt;
+          &lt;state&gt;
+            KY
+          &lt;/state&gt;
+
+&lt;party&gt;
+            D
+          &lt;/party&gt;
+          &lt;start_date&gt;
+            2009-01-06
+          &lt;/start_date&gt;
+          &lt;end_date&gt;
+            2011-01-04
+          &lt;/end_date&gt;
+        &lt;/role&gt;
+        &lt;role&gt;
+          &lt;congress&gt;
+            110
+          &lt;/congress&gt;
+          &lt;chamber&gt;
+            House
+          &lt;/chamber&gt;
+          &lt;title&gt;
+            Representative
+          &lt;/title&gt;
+          &lt;state&gt;
+            KY
+          &lt;/state&gt;
+
+&lt;party&gt;
+            D
+          &lt;/party&gt;
+          &lt;start_date&gt;
+            2007-01-04
+          &lt;/start_date&gt;
+          &lt;end_date&gt;
+            2009-01-03
+          &lt;/end_date&gt;
+        &lt;/role&gt;
+      &lt;/roles&gt;
+    &lt;/member&gt;
+  &lt;/results&gt;
+&lt;/result_set&gt;
+</code></pre></div></div>
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,397 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>How to create and use Flash video metadata to add cue-points with flvtool2 - IONCANNON</title>
+<meta name="description" content="Adding cue-points allows you to spice up your flash videos created with FFMpeg. Adding metadata to a FLV will allow you to introduce cue-points that have their own metadata that can be display when the cue-point is reached or let you jump to that cue-point. In the following tutorial you will learn how to add metadata to your FLV files using flvtool2 and how it is useful for adding cue-points.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="How to create and use Flash video metadata to add cue-points with flvtool2">
+<meta property="og:url" content="http://localhost:4000/web%20design/linux/utilities/2006/12/08/metadata-cuepoint-flash-video-flvtool/">
+
+
+  <meta property="og:description" content="Adding cue-points allows you to spice up your flash videos created with FFMpeg. Adding metadata to a FLV will allow you to introduce cue-points that have their own metadata that can be display when the cue-point is reached or let you jump to that cue-point. In the following tutorial you will learn how to add metadata to your FLV files using flvtool2 and how it is useful for adding cue-points.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-12-08T09:31:09-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/web%20design/linux/utilities/2006/12/08/metadata-cuepoint-flash-video-flvtool/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">How to create and use Flash video metadata to add cue-points with flvtool2</h1>
+    
+    <p>Adding cue-points allows you to spice up your <a href="http://www.ioncannon.net/linux/105/create-flash-videos-ffmpeg/">flash videos created with FFMpeg</a>. Adding metadata to a FLV will allow you to introduce cue-points that have their own metadata that can be display when the cue-point is reached or let you jump to that cue-point. In the following tutorial you will learn how to add metadata to your FLV files using <a href="http://inlet-media.de/flvtool2">flvtool2</a> and how it is useful for adding cue-points.
+<!--more--></p>
+
+<p>Metadata is added to a FLV file with flvtool2 using the following XML format:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;tags&gt;
+    &lt;metatag event="onCuePoint" overwrite="true"&gt;
+        &lt;name&gt;Cue Point 1&lt;/name&gt;
+        &lt;timestamp&gt;2000&lt;/timestamp&gt;&lt;parameters&gt;&lt;textinfo&gt;This is some text 1&lt;/textinfo&gt;
+
+&lt;thumb&gt;test1.jpg&lt;/thumb&gt;
+        &lt;/parameters&gt;
+        &lt;type&gt;navigation&lt;/type&gt;
+    &lt;/metatag&gt;
+    &lt;metatag event="onCuePoint" overwrite="true"&gt;
+        &lt;name&gt;Cue Point 2&lt;/name&gt;
+        &lt;timestamp&gt;4000&lt;/timestamp&gt;&lt;parameters&gt;&lt;textinfo&gt;This is some text 2&lt;/textinfo&gt;
+
+&lt;thumb&gt;test2.jpg&lt;/thumb&gt;
+        &lt;/parameters&gt;
+        &lt;type&gt;navigation&lt;/type&gt;
+    &lt;/metatag&gt;
+&lt;/tags&gt;
+</code></pre></div></div>
+<p>Most of the tags are obvious but the following tags are important to point out:</p>
+
+<ul>
+<li>metatag - When the overwrite flag is set to true the metadata is overwritten at the given timestamp</li>
+<li>timestamp - This is where to put the metadata in milliseconds from the start of the FLV</li>
+<li>parameters - This is the metadata for the given metadata. It allows you to specify any named parameter that will then be turned into a map available to your actionscript in the flash player playing your FLV file.</li>
+<li>type - This specifies what this metadata is used for. The options are: navigation, event</li>
+</ul>
+<p>The following syntax is used when running flvtool2:</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Usage: flvtool2 [-ACDPUVaciklnoprstvx]… [-key:value]… in-path</td>
+      <td>stdin [out-path</td>
+      <td>stdout]</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Note that you can add any key-value pair by specifying them here. From the help the key-value pair: key:value - Key-value-pair for onMetaData tag (overwrites generated values).</p>
+
+<p>After building your metadata xml file with the above syntax you would run a command like the following:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>flvtool2 -AUtP mymeta.xml -thumbLocation:http://localhost/thumb test.flv
+</code></pre></div></div>
+<p>Now that you know how to create metadata and cue-points we can talk about one of the things you can do with them. With FFMpeg you can generate thumbnails of your FLV using the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffmpeg -i test.flv -an -ss 00:00:06 -r 1 -vframes 1 %d.jpg
+</code></pre></div></div>
+<p>That command tells FFMpeg to open the file test.flv with no audio support then seek to the 6th second. After seeking to the 6th second it records 1 frame at a framerate of 1. Here are the description of each option from the FFMpeg help:</p>
+
+<ul>
+<li>-i = input video</li>
+<li>-an = disable audio</li>
+<li>-ss = set the start time offset</li>
+<li>-r = set frame rate</li>
+<li>-vframes = number of frames to record</li>
+</ul>
+<p>Now we need to put these two things together with a flash video player that will use the cue-point metadata. One such player is the open source flash video player <a href="http://flowplayer.sourceforge.net/">FlowPlayer</a>. To get the following to work you will need to have a streaming video server to stream the FLV from.</p>
+
+<p>I started with the public domain video from the following page: <a href="http://www.archive.org/details/merry_melodies_fresh_hare">Archive.org - Merry Melodies Fresh Hare</a>. I encoded 17 seconds, starting at the 3rd second and ending at the 20th, of the video with ffmpeg.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget http://www.archive.org/download/merry_melodies_fresh_hare/merry_melodies_fresh_hare.mpg
+ffmpeg -ss 00:03:00 -t 00:00:20 -i merry_melodies_fresh_hare.mpg -s 320x240 -ar 22050 -r 12 test.flv
+</code></pre></div></div>
+<p>Next I created 4 thumbnails at 4 second intervals using ffmpeg at a size of 110x80 each:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffmpeg -i test.flv -an -ss 00:00:04 -r 1 -vframes 1 -s 110x80 %d.jpg
+mv 1.jpg test1.jpg
+ffmpeg -i test.flv -an -ss 00:00:08 -r 1 -vframes 1 -s 110x80 %d.jpg
+mv 1.jpg test2.jpg
+ffmpeg -i test.flv -an -ss 00:00:12 -r 1 -vframes 1 -s 110x80 %d.jpg
+mv 1.jpg test3.jpg
+ffmpeg -i test.flv -an -ss 00:00:16 -r 1 -vframes 1 -s 110x80 %d.jpg
+mv 1.jpg test4.jpg
+</code></pre></div></div>
+<p>The results are shown here:</p>
+
+<p><img src="/assets/cfvm-thumb/test1.jpg" /><img src="/assets/cfvm-thumb/test2.jpg" /><img src="/assets/cfvm-thumb/test3.jpg" /><img src="/assets/cfvm-thumb/test4.jpg" /></p>
+
+<p>I then created the following metadata xml file to specify the cue-points and the thumbnails for each:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;tags&gt;
+    &lt;metatag event="onCuePoint" overwrite="true"&gt;
+        &lt;name&gt;Cue Point 1&lt;/name&gt;
+        &lt;timestamp&gt;4000&lt;/timestamp&gt;&lt;parameters&gt;&lt;textinfo&gt;This is some text 1&lt;/textinfo&gt;
+
+&lt;thumb&gt;test1.jpg&lt;/thumb&gt;
+        &lt;/parameters&gt;
+        &lt;type&gt;navigation&lt;/type&gt;
+    &lt;/metatag&gt;
+    &lt;metatag event="onCuePoint" overwrite="true"&gt;
+        &lt;name&gt;Cue Point 2&lt;/name&gt;
+        &lt;timestamp&gt;8000&lt;/timestamp&gt;&lt;parameters&gt;&lt;textinfo&gt;This is some text 2&lt;/textinfo&gt;
+
+&lt;thumb&gt;test2.jpg&lt;/thumb&gt;
+        &lt;/parameters&gt;
+        &lt;type&gt;navigation&lt;/type&gt;
+    &lt;/metatag&gt;
+    &lt;metatag event="onCuePoint" overwrite="true"&gt;
+        &lt;name&gt;Cue Point 3&lt;/name&gt;
+        &lt;timestamp&gt;8000&lt;/timestamp&gt;&lt;parameters&gt;&lt;textinfo&gt;This is some text 3&lt;/textinfo&gt;
+
+&lt;thumb&gt;test3.jpg&lt;/thumb&gt;
+        &lt;/parameters&gt;
+        &lt;type&gt;navigation&lt;/type&gt;
+    &lt;/metatag&gt;
+    &lt;metatag event="onCuePoint" overwrite="true"&gt;
+        &lt;name&gt;Cue Point 4&lt;/name&gt;
+        &lt;timestamp&gt;8000&lt;/timestamp&gt;&lt;parameters&gt;&lt;textinfo&gt;This is some text 3&lt;/textinfo&gt;
+
+&lt;thumb&gt;test4.jpg&lt;/thumb&gt;
+        &lt;/parameters&gt;
+        &lt;type&gt;navigation&lt;/type&gt;
+    &lt;/metatag&gt;
+&lt;/tags&gt;
+</code></pre></div></div>
+<p>And then I added it to the FLV file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>flvtool2 -AUtP test-meta.xml -thumbLocation:/assets/cfvm-thumb test.flv
+</code></pre></div></div>
+<p>And here is the result (you need to hit play to get things started and clicking on the images will jump to the cue-points):</p>
+
+<object type="application/x-shockwave-flash" width="450" height="500" data="/assets/FlowPlayerLP.swf" id="FlowPlayerLP"><param name="allowScriptAccess" value="sameDomain" /><param name="movie" value="/assets/FlowPlayerLP.swf" /><param name="quality" value="high" /><param name="scale" value="noScale" /><param name="wmode" value="transparent" /><param name="flashvars" value="configFileName=/assets/cfvm-thumb/fp.js" /></object>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

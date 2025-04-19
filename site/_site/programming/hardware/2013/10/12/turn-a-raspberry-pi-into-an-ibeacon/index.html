@@ -1,0 +1,332 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Turn a Raspberry Pi into an iBeacon - IONCANNON</title>
+<meta name="description" content="Earlier this year Apple added the concept of beacon region monitoring into Core Location. This is more widely known as iBeacon. Right now there isn’t a large amount of information on how to take advantage of it outside of iOS and Macs but it is actually pretty easy to implement. The following instructions will get you to a point where a Raspberry Pi can function as an iBeacon (any Linux box should actually work).">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Turn a Raspberry Pi into an iBeacon">
+<meta property="og:url" content="http://localhost:4000/programming/hardware/2013/10/12/turn-a-raspberry-pi-into-an-ibeacon/">
+
+
+  <meta property="og:description" content="Earlier this year Apple added the concept of beacon region monitoring into Core Location. This is more widely known as iBeacon. Right now there isn’t a large amount of information on how to take advantage of it outside of iOS and Macs but it is actually pretty easy to implement. The following instructions will get you to a point where a Raspberry Pi can function as an iBeacon (any Linux box should actually work).">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2013-10-12T08:54:21-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/hardware/2013/10/12/turn-a-raspberry-pi-into-an-ibeacon/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Turn a Raspberry Pi into an iBeacon</h1>
+    
+    <p>Earlier this year Apple added the concept of <a href="https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/LocationAwarenessPG/RegionMonitoring/RegionMonitoring.html#//apple_ref/doc/uid/TP40009497-CH9-SW7">beacon region monitoring</a> into Core Location. This is more widely known as iBeacon. Right now there isn’t a large amount of information on how to take advantage of it outside of iOS and Macs but it is actually pretty easy to implement. The following instructions will get you to a point where a Raspberry Pi can function as an iBeacon (any Linux box should actually work).</p>
+
+<p>Before diving into the technical details I think it is worth noting a few things. There are a few hardware based iBeacons already available in various “beta” states, to name a few: <a href="http://www.kstechnologies.com/collections/all">KST’s iBeacon</a>, <a href="http://blog.onlycoin.com/posts/2013/10/3/coin-arduino-ble-dev-kit">coin for arduino</a> and <a href="http://redbearlab.com/ibeacon/">ReadBearLab’s iBeacon</a>. These dedicated devices are going to have a power and most likely a price advantage over the Raspberry Pi so that is something to keep in mind. The setup I used cost around $70 for example and that is around the cost of the KST device but more than the others and the more that are made the more the price will probably decrease. The main advantage of the Raspberry Pi is flexibility and included in that $70 is a wifi dongle that the other devices don’t have.</p>
+
+<p>My configuration for this post:</p>
+
+<ul>
+  <li><a href="http://www.newark.com/jsp/search/productdetail.jsp?sku=43W5302&amp;COM=embedded-link_RaspberryPi">Raspberry Pi</a> Model B. The Model A would work as well but currently you wouldn’t be able to run both wifi and bluetooth at the same time. You also need <a href="http://www.newark.com/jsp/search/productdetail.jsp?sku=53W8467">power</a>, <a href="http://www.amazon.com/Transcend-Class-Flash-Memory-TS8GSDHC10E/dp/B003VNKNEG/">storage</a> and maybe a <a href="http://www.newark.com/jsp/search/productdetail.jsp?sku=07W8936">case</a>.</li>
+  <li>I’ve used both the <a href="http://www.amazon.com/dp/B007GFX0PY">IOGEAR Bluetooth 4.0 USB Micro Adapter (GBU521)</a> and the <a href="http://www.amazon.com/dp/B0090I9NRE">Cirago Bluetooth 4.0 USB Mini Adapter (BTA8000)</a> adapters successfully.</li>
+  <li>For wifi I’ve been using the <a href="http://www.amazon.com/EW-7811UN-IEEE-802-11n-draft-USB/dp/B005CLMJLU">Edimax</a> device.</li>
+</ul>
+
+<p>Assuming you have your Pi hardware ready the first step is to install the <a href="http://www.raspberrypi.org/downloads">Raspbian distro</a>. I tested on the 2013-09-25-wheezy-raspbian version. Make sure it boots and then run the following commands as root to get the dependancies ready:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt-get update
+apt-get install libglib2.0-dev libdbus-1-dev libudev-dev libical-dev libreadline6-dev
+</code></pre></div></div>
+
+<p>Next you will need to download and compile a more recent version of <a href="http://www.bluez.org/">Bluez</a> than what is available for the Raspbain distro. I’ve been able to use a number of versions in the Bluez 5.X family but for this I’ll assume <a href="http://www.bluez.org/release-of-bluez-5-9/">Bluez 5.9</a>. Use the following to get it installed and compiled (make sure to do the install part here as root):</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://www.kernel.org/pub/linux/bluetooth/bluez-5.9.tar.xz
+tar xvJf bluez-5.9.tar.xz
+cd bluez-5.9
+./configure --disable-systemd --enable-library
+make
+make install
+</code></pre></div></div>
+
+<p>Now you have Bluez installed with bluetooth library support. There are also a number of tools available at this point. The first one you want to run is hciconfig to configure your bluetooth device. It works a lot like ifconfig if you are familiar with setting up network interface. If you run it without any command line arguments you will get a list of bluetooth devices:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hciconfig
+# hci0:   Type: BR/EDR  Bus: USB
+#         BD Address: 00:02:72:32:CA:23  ACL MTU: 1021:8  SCO MTU: 64:1
+#         DOWN
+#         RX bytes:340 acl:0 sco:0 events:7 errors:0
+#         TX bytes:54 acl:0 sco:0 commands:12 errors:0
+</code></pre></div></div>
+
+<p>You want to bring the bluetooth device up so it is available:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>hciconfig hci0 up
+hciconfig
+# hci0:   Type: BR/EDR  Bus: USB
+#         BD Address: 00:02:72:32:CA:23  ACL MTU: 1021:8  SCO MTU: 64:1
+#         UP RUNNING
+#         RX bytes:813 acl:0 sco:0 events:26 errors:0
+#         TX bytes:374 acl:0 sco:0 commands:31 errors:0
+</code></pre></div></div>
+
+<p>Make sure you see “UP RUNNING” before proceeding. You will probably want to add the command to bring the bluetooth device up to the startup script. Next you will want to grab my <a href="https://github.com/carsonmcdonald/bluez-ibeacon">bluez-ibeacon</a> repo from github and build it:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/carsonmcdonald/bluez-ibeacon.git
+bluez-ibeacon/bluez-beacon/
+make
+
+</code></pre></div></div>
+<p>Now you have a binary named ibeacon that you can run and that will turn the Pi into an iBeacon:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./ibeacon 200 e2c56db5dffb48d2b060d0f5a71096e0 1 1 -29
+</code></pre></div></div>
+
+<p>You can read more about what the above means in the README for the bluez-ibeacon project.</p>
+
+<p>There is a demo iOS app in the same bluez-ibeacon project that you can use to then detect the beacon now that it is running.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

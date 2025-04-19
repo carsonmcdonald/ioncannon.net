@@ -1,0 +1,305 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>iPhone Windowed HTTP Live Streaming Server - IONCANNON</title>
+<meta name="description" content="After some more work I have enhanced the HTTP segmenter and uploading script from my iPhone streaming using AWS S3 and Cloudfront post. I added a number of features and tried to pull together some of the ideas from the comments. I’ll go over some of the features here and there is a full list of configuration options on the HTTP Live Video Streaming server project page and the source is available at the github repo.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="iPhone Windowed HTTP Live Streaming Server">
+<meta property="og:url" content="http://localhost:4000/meta/2009/07/27/iphone-windowed-http-live-streaming-server/">
+
+
+  <meta property="og:description" content="After some more work I have enhanced the HTTP segmenter and uploading script from my iPhone streaming using AWS S3 and Cloudfront post. I added a number of features and tried to pull together some of the ideas from the comments. I’ll go over some of the features here and there is a full list of configuration options on the HTTP Live Video Streaming server project page and the source is available at the github repo.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2009-07-27T06:22:54-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/meta/2009/07/27/iphone-windowed-http-live-streaming-server/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">iPhone Windowed HTTP Live Streaming Server</h1>
+    
+    <p>After some more work I have enhanced the HTTP segmenter and uploading script from my <a href="http://www.ioncannon.net/programming/475/iphone-windowed-http-live-streaming-using-amazon-s3-and-cloudfront-proof-of-concept/">iPhone streaming using AWS S3 and Cloudfront</a> post. I added a number of features and tried to pull together some of the ideas from the comments. I’ll go over some of the features here and there is a full list of configuration options on the <a href="http://www.ioncannon.net/projects/http-live-video-stream-segmenter-and-distributor/">HTTP Live Video Streaming server</a> project page and the source is available at the <a href="http://github.com/carsonmcdonald/HTTP-Live-Video-Stream-Segmenter-and-Distributor/tree/master">github repo</a>.</p>
+
+<p>So the major changes I have added are:</p>
+
+<ul>
+<li>Yaml based configuration file. See the project page for a complete list of options.</li>
+<li>Ability to transfer segments via copy, ftp, scp and s3.</li>
+<li>Added the ability to do variable bitrate streams.</li>
+<li>Added re-streaming support.</li>
+<li>Added logging to a file and better debug output.</li>
+</ul>
+<p>The variable bitrate streams where done by using pipes. I have done a large amount of testing <a href="http://www.ittsystems.com/best-free-tftp-servers-windows/">via ITT Systems</a> and it seems to work fairly well. I am able to stream a live HD video source into 3 different bitrates on a fairly old PC. Here are a couple clips I created to show the progressive enhancement in action, you probably want to switch to the HD version of the video and watch it full screen to get the bet view:</p>
+
+<center>
+<object width="480" height="295"><param name="movie" value="http://www.youtube.com/v/teKAyN0qZVY&amp;rel=0&amp;color1=0xb1b1b1&amp;color2=0xcfcfcf&amp;feature=player_profilepage&amp;fs=1" />&lt;/param&gt;<param name="allowFullScreen" value="true" />&lt;/param&gt;<param name="allowScriptAccess" value="always" />&lt;/param&gt;<embed src="http://www.youtube.com/v/teKAyN0qZVY&amp;rel=0&amp;color1=0xb1b1b1&amp;color2=0xcfcfcf&amp;feature=player_profilepage&amp;fs=1" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="480" height="295" />&lt;/embed&gt;</object></center>
+
+<p>The configuration file will allow for any number of encoding options or transfer options and they can be put together in a number of different ways. Here are a couple examples of both, see the example configuration files for more.</p>
+
+<p>An encoder example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ep_128k:
+  ffmpeg_command: "ffmpeg -er 4 -y -i %s -f mpegts -acodec libmp3lame -ar 48000 -ab 64k -s 320x240 -vcodec libx264 -b 128k -flags +loop -cmp +chroma -partitions +parti4x4+partp8x8+partb8x8 -subq 5 -trellis 1 -refs 1 -coder 0 -me_range 16 -keyint_min 25 -sc_threshold 40 -i_qfactor 0.71 -bt 128k -maxrate 128k -bufsize 128k -rc_eq 'blurCplx^(1-qComp)' -qcomp 0.6 -qmin 10 -qmax 51 -qdiff 4 -level 30 -aspect 320:240 -g 30 -async 2 - | %s %s %s %s %s"
+  bandwidth: 128000
+</code></pre></div></div>
+
+<p>Transfer configuration example:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ftp_dev:
+  transfer_type: 'ftp'
+  remote_host: '192.168.1.1'
+  user_name: 'user'
+  password: 'pass'
+  directory: 'html/streamingvideo'
+</code></pre></div></div>
+<p>As a final note on changes, you are no longer able to use the segmenter without the script now really. If you want to do that you should use the original version of the <a href="http://svn.assembla.com/svn/legend/segmenter/">segmenter source</a>.</p>
+
+<p>Please note that there is still some work to be done on the script to be complete. If I have time my next enhancement will be to add encryption and I will probably try to test builds on other distributions (maybe attempt to create segmenter binaries).</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

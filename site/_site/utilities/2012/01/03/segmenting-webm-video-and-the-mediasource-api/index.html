@@ -1,0 +1,442 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Segmenting WebM Video and the MediaSource API - IONCANNON</title>
+<meta name="description" content="For a while now I’ve seen people ask when support for Apple’s Pantos HTTP live streaming would make it past Safari and iOS. The answer seems to have been that it wasn’t clear that Pantos streaming was the best option and something else would come about eventually that would be more flexible. There have been other options but they involve either Flash or Silverlight and most people want something that works with html5 video. After a long wait it seems like the time is getting close now with the MediaSource API.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Segmenting WebM Video and the MediaSource API">
+<meta property="og:url" content="http://localhost:4000/utilities/2012/01/03/segmenting-webm-video-and-the-mediasource-api/">
+
+
+  <meta property="og:description" content="For a while now I’ve seen people ask when support for Apple’s Pantos HTTP live streaming would make it past Safari and iOS. The answer seems to have been that it wasn’t clear that Pantos streaming was the best option and something else would come about eventually that would be more flexible. There have been other options but they involve either Flash or Silverlight and most people want something that works with html5 video. After a long wait it seems like the time is getting close now with the MediaSource API.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2012-01-03T08:59:08-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/utilities/2012/01/03/segmenting-webm-video-and-the-mediasource-api/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Segmenting WebM Video and the MediaSource API</h1>
+    
+    <p>For a while now I’ve seen people ask when support for Apple’s <a href="http://tools.ietf.org/html/draft-pantos-http-live-streaming-07">Pantos HTTP live streaming</a> would make it past Safari and iOS. The answer seems to have been that it wasn’t clear that Pantos streaming was the best option and something else would come about eventually that would be more flexible. There have been other options but they involve either Flash or Silverlight and most people want something that works with html5 video. After a long wait it seems like the time is getting close now with the <a href="http://html5-mediasource-api.googlecode.com/svn/trunk/draft-spec/mediasource-draft-spec.html">MediaSource API</a>.</p>
+
+<p>The MediaSource API has experimental support in Chrome and can be enabled by using the chrome://flags option. To see it in action you can go to the <a href="/assets/MediaSourceAPIDemo/demo.html">MediaSource demo page</a>. You can also read a litte more about it <a href="http://updates.html5rocks.com/2011/11/Stream-video-using-the-MediaSource-API">here</a> although the spec linked to above is probably a better place to learn about it.</p>
+
+<p>A while ago I created a tool for <a href="http://www.ioncannon.net/projects/http-live-video-stream-segmenter-and-distributor/">segmenting H264 video</a> in a Pantos compliant way. When I saw the MediaSource API I wondered how the same type of tool might fit in. The first thing to note is that the Pantos draft describes a complete technique for video streaming while the MediaSource API gives you the tools to stream video and leaves the technique. What follows is a simple technique for segmenting a WebM video in a way that allows standard streaming with the MediaSource API in the same fasion as the Pantos draft technique. While this example will not support variable rate streams it could be expanded to do so and would be the next logical step.</p>
+
+<p>The basics of how the Pantos technique works are simple. A video is broken down into chunks and each of those chunks is downloaded, buffered and played. In older drafts this ment splitting a video file into multiple files but in later drafts support was added for range requests allowing the large file to remain intact. With that understanding there are two major parts that need to be addressed:</p>
+
+<ul>
+<li>Segmenting a WebM video - This will require some understanding of the container format for WebM and the result will be something like a playlist for the video.</li>
+<li>Javascript to play the video - This will use the playlist created by segmenting the WebM video to drive the MediaSource API.</li>
+</ul>
+
+<h2>Segmenting a WebM Video</h2>
+
+<p>Before reading on take a second to read the <a href="http://www.webmproject.org/about/">about WebM</a> page. It describes that WebM specifies a video/audio codec and a container format. We are only interested in the format of the container. If you want all the details you can read the <a href="http://www.webmproject.org/code/specs/container/">WebM container</a> format specs. It is enough to know that the WebM container is a modified version of the <a href="http://matroska.org/">Matroska Container</a> format and both containers use <a href="http://ebml.sourceforge.net/specs/">EBML</a> to specify their structure.</p>
+
+<p>EBML is basically a binary XML format. There are a number of tools available for readin EBML and for my perposes I found the Python <a href="https://github.com/jspiros/python-ebml">python-ebml</a> implementation to be the easiest to get working.</p>
+
+<p>The MediaSource API wants to be fed chunks of video data in a specific way. First it wants header information and then it wants what are called <a href="http://www.webmproject.org/code/specs/container/#cluster">clusters</a> from the WebM container. Each cluster contains various information but the most likely reason for wanting a cluster as input is that each cluster starts with a keyframe. A keyframe is an important reference point in the video stream and one that gets built on until the next keyframe.</p>
+
+<p>The following code will take as input a WebM file and output a playlist for that file in JSON format. The playlist will contain the offsets of each cluster in the given WebM video and we will use it later to fetch the header and each cluster as chunks and feed those to a video element:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from ebml.schema import EBMLDocument, UnknownElement, CONTAINER, BINARY
+def fill_video_info(element, offset, video_info):
+  if element.name == 'Duration':
+    video_info['duration'] = element.value
+  if element.name == 'DisplayWidth':
+    video_info['width'] = element.value
+  if element.name == 'DisplayHeight':
+    video_info['height'] = element.value
+  if element.name == 'Cluster':
+    video_info['clusters'].append({'offset': offset})
+  if element.name == 'Timecode':
+    video_info['clusters'][-1]['timecode'] = element.value
+  if element.type == CONTAINER:
+    for sub_el in element.value:
+      fill_video_info(sub_el, offset + element.head_size, video_info)
+      offset += sub_el.size
+if __name__ == '__main__':
+  import sys
+  import json
+  import os
+  mod_name, _, cls_name = 'ebml.schema.matroska.MatroskaDocument'.rpartition('.')
+  try:
+    doc_mod = __import__(mod_name, fromlist=[cls_name])
+    doc_cls = getattr(doc_mod, cls_name)
+  except ImportError:
+    parser.error('unable to import module %s' % mod_name)
+  except AttributeError:
+    parser.error('unable to import class %s from %s' % (cls_name, mod_name))
+  video_info = {}
+  video_info['filename'] = sys.argv[1]
+  video_info['total_size'] = os.stat(sys.argv[1]).st_size
+  video_info['clusters'] = []
+  with open(sys.argv[1], 'rb') as stream:
+    doc = doc_cls(stream)
+    offset = 0
+    for el in doc.roots:
+      fill_video_info(el, offset, video_info)
+      offset += el.size
+  print json.dumps(video_info)
+</code></pre></div></div>
+
+<p>To run the script you will want to save the above script and install the module then do something like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/jspiros/python-ebml.git
+PYTHONPATH=python-ebml python create_playlist.py test.webm
+</code></pre></div></div>
+
+<p>Running the script will result in JSON output that can be piped to a file and used as a playlist.</p>
+
+<h2>Javascript to Play the WebM Segmented Playlist</h2>
+
+<p>Feeding data to the MediaSource API is done with Javascript. The first thing to do is read in the JSON playlist file created by the Python script when the page is finished loading. To do that I’m using the Snack JS framework, it is micro-framework that has some of the features of JQuery. After reading in the playlist chunks of the WebM file need to be read in with range requests.</p>
+
+<p>A while ago I made created a post about <a href="http://www.ioncannon.net/programming/1506/range-requests-with-ajax/">range requests with ajax</a> and that comes in handy here. The main difference between that post and what we need here is that the MediaSource API expects a typed array as input so we need to use <a href="http://www.w3.org/TR/XMLHttpRequest2/">XHR2</a>.</p>
+
+<p>The following Javascript code is bare bones. One of the most obvious limitations is that it doesn’t have the ability to seek to a portion of the stream, it will only play the stream start to finish or if the player has the content buffered it should allow for seeking in the buffered portion. It demonstrates that the API works and should be a good starting point for experimenting more with multi-rate streaming which is my short term goal.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  /**
+   * This fetches a chunk of video using a range request.
+   *   video_name - The relative filename of the video to fetch
+   *   start_bytes - The start byte of the chunk to fetch
+   *   end_bytes - The last byte of the chunk to fetch
+   *   is_last - True if this is the last chunk to fetch
+   */
+  function fetch_chunk(video, video_name, start_bytes, end_bytes, is_last)
+  {
+    var range_req = 'bytes=' + start_bytes + '-' + end_bytes;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', video_name, true);
+    xhr.setRequestHeader("Range", range_req);
+    xhr.responseType = 'arraybuffer';
+    xhr.onload = function(e)
+    {
+      video.webkitSourceAppend(new Uint8Array(this.response));
+      if(is_last)
+      {
+        video.webkitSourceEndOfStream(HTMLMediaElement.EOS_NO_ERROR);
+      }
+    };
+    xhr.send();
+  }
+  /**
+   * Fetch the header portion of the video file.
+   */
+  function fetch_header(video, video_info)
+  {
+    fetch_chunk(video, video_info.filename, 0, video_info.clusters[0].offset-1, video_info.clusters.length == 1);
+  }
+  var current_cluster = 0;
+  /**
+   * Fetch the next cluster of the video file.
+   */
+  function fetch_next_cluster(video, video_info)
+  {
+    if(video_info.clusters.length == current_cluster+1)
+    {
+      fetch_chunk(video, video_info.filename, video_info.clusters[current_cluster].offset, video_info.total_size, true);
+    }
+    else
+    {
+      fetch_chunk(video, video_info.filename, video_info.clusters[current_cluster].offset, video_info.clusters[current_cluster+1].offset-1, false);
+    }
+    current_cluster++;
+  }
+  /**
+   * Enable the video for MediaSource and attach event listeners to drive the fetching of video chunks.
+   */
+  function video_setup(video_info)
+  {
+    current_cluster = 0;
+    video.src = video.webkitMediaSourceURL;
+    video.addEventListener('webkitsourceopen', function(e)
+    {
+      var video = this;
+      fetch_header(video, video_info);
+      fetch_next_cluster(video, video_info);
+    }, false);
+    video.addEventListener('progress', function(e)
+    {
+      var video = this;
+      if( video.webkitSourceState != HTMLMediaElement.SOURCE_ENDED )
+      {
+        fetch_next_cluster(video, video_info);
+      }
+    });
+  }
+  /**
+   * When the page is done loading read in the JSON playlist and get the video set up.
+   */
+  snack.ready(function()
+  {
+    if (!video.webkitMediaSourceURL)
+    {
+      alert('webkitMediaSourceURL is not available');
+      return;
+    }
+    snack.request({ method: 'get', url: 'test.json', }, function (err, res)
+    {
+      if (err)
+      {
+        alert(err);
+        return;
+      }
+      video_setup(snack.parseJSON(res));
+    });
+  });
+</code></pre></div></div>
+
+<p>Assuming you have enabled support in Chrome (currently the only browser to support the API) you can see everything in action by checking out my <a href="/assets/MediaSourceAPIDemo/demo.html">MediaSource API demo</a> page.</p>
+
+<p>I have glossed over a lot of details but the main take aways are that the MediaSource API gives you the interface to build a Pantos streaming system, segment WebM on clusters to feed to the MediaSource API and use XHR2 to fetch the WebM data with range requests. As one last point a lot of the best practices for encoding video for Pantos streaming will work here as well.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

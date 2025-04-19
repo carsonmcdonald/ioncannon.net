@@ -1,0 +1,297 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Developing Adobe Air Apps with Linux - IONCANNON</title>
+<meta name="description" content="I finally found a little project I wanted to do using Adobe Air and after some searching I found out you can use Linux to develop Air applications. At first I thought I would have to use Flex Builder which is still in alpha for Linux but it turns out there is a better option from Aptana.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Developing Adobe Air Apps with Linux">
+<meta property="og:url" content="http://localhost:4000/programming/2010/01/12/developing-adobe-air-apps-with-linux/">
+
+
+  <meta property="og:description" content="I finally found a little project I wanted to do using Adobe Air and after some searching I found out you can use Linux to develop Air applications. At first I thought I would have to use Flex Builder which is still in alpha for Linux but it turns out there is a better option from Aptana.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2010-01-12T07:21:24-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2010/01/12/developing-adobe-air-apps-with-linux/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Developing Adobe Air Apps with Linux</h1>
+    
+    <p>I finally found a little project I wanted to do using <a href="http://www.adobe.com/products/air/">Adobe Air</a> and after some searching I found out you can use Linux to develop Air applications. At first I thought I would have to use Flex Builder which is still in <a href="http://labs.adobe.com/technologies/flex/flexbuilder_linux/">alpha for Linux</a> but it turns out there is a better option from <a href="http://www.aptana.org/">Aptana</a>.</p>
+
+<p>The <a href="http://www.aptana.org/air/">Aptana Air</a> plugin supports developing Adobe Air applications using HTML and Javascript. It even support the 2.0 release of Air that is currently in beta. Aptana uses the Eclipse framework as an editor so if you are familure with Eclipse it will be even easier to use.</p>
+
+<p>I started by downloading and installing the latest version of the <a href="http://get.adobe.com/air/">Air runtime</a>. Next I grabbed the <a href="http://www.adobe.com/products/air/tools/sdk/">Air SDK</a>, the SDK doesn’t come with the plugin so it is something you have to get directly from the Air developers site. After getting the SDK unpacked I installed the latest Aptana core release. Once the core is installed there is a big plugin button on the startup screen that currently has Air listed.</p>
+
+<p>The install went smoothly except for a few issues. The first one I ran into was very noticeable since it kept any dialog buttons from working when they were clicked although they did work when I clicked them and then hit enter or navigated to them with the keyboard. Luckily someone has already figured out that there is an issue with <a href="http://mou.me.uk/2009/10/31/fixing-eclipse-in-ubuntu-9-10-karmic-koala/">Eclipse and GTK+</a> that is the cause (even though the post is for Ubuntu the same problem and solution worked for me on Fedora). The fix is to set the GDK_NATIVE_WINDOWS variable before running the Aptana binary:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>GDK_NATIVE_WINDOWS=true; AptanaStudio
+</code></pre></div></div>
+
+<p>The next thing I noticed was the application.xml descriptor that Aptana created didn’t generate correctly. It needs to start with the correct xmlns or the following error will be thrown on run: “invalid application descriptor: descriptor version does not match runtime version”. To fix this check the version of the Air SDK by running the following command:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./adt -version
+adt version "1.5.3.9120"
+</code></pre></div></div>
+
+<p>For the version of the Air SDK I downloaded the correct xmlns was http://ns.adobe.com/air/application/1.5 so I needed the following application tag:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;application xmlns="http://ns.adobe.com/air/application/1.5"&gt;
+</code></pre></div></div>
+
+<p>Once I had that working I was able to compile and execute a demo application. I was also able to create an Air application package from within Aptana using File &gt; Export &gt; Adobe AIR &gt; Adobe AIR Package. Before creating the Air package I had to create a signing certificate. Creating the certificate can be done within Aptana too but because I had not yet fixed the above button issue I created a cert on the command line with the Air SDK and then imported it. To create the Air signing certificate from the command line I used the adt command from the SDK:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>adt -certificate -cn SelfSigned 1024-RSA sampleCert.pfx samplePassword
+</code></pre></div></div>
+
+<p>Remember the password that gets used to generate the certificate because it will have to be used before a package is signed.</p>
+
+<p>Finally Adobe has a lot of information on developing Air applications on their <a href="http://www.adobe.com/devnet/air/">Air devnet site</a>. The <a href="http://www.adobe.com/devnet/air/ajax/">Air ajax section</a> is especially important.</p>
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

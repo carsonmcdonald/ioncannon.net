@@ -1,0 +1,301 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Azure CLI and ACR Docker Credential Helper on macOS 12 Monterey - IONCANNON</title>
+<meta name="description" content="After upgrading to macOS 12 Monterey I started getting the following error when using docker with the ACR Docker Credential Helper:">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Azure CLI and ACR Docker Credential Helper on macOS 12 Monterey">
+<meta property="og:url" content="http://localhost:4000/utilities/2022/01/27/azure-cli-and-acr-docker-credential-helper-on-macos-12-monterey/">
+
+
+  <meta property="og:description" content="After upgrading to macOS 12 Monterey I started getting the following error when using docker with the ACR Docker Credential Helper:">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-01-27T04:17:04-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/utilities/2022/01/27/azure-cli-and-acr-docker-credential-helper-on-macos-12-monterey/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Azure CLI and ACR Docker Credential Helper on macOS 12 Monterey</h1>
+    
+    <p>After upgrading to macOS 12 Monterey I started getting the following error when using docker with the ACR Docker <a href="https://docs.docker.com/engine/reference/commandline/login/#credential-helpers">Credential Helper</a>:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fatal error: runtime: bsdthread_register error
+</code></pre></div></div>
+
+<p>This error is caused when using a Golang binary that has been compiled with an older version of the Golang compiler, you can find out more in the <a href="https://github.com/golang/go/wiki/MacOS12BSDThreadRegisterIssue">MacOS12BSDThreadRegisterIssue</a> Golang wiki.</p>
+
+<p>You can run the command helper by hand to verify that it is generating the error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-credential-acr-darwin list
+</code></pre></div></div>
+
+<p>If you use the instructions provided by Microsoft to install the ACR Docker Credential Helper binary then you have installed a binary that is compiled with a fairly old version of Golang. The fix for the error is to recompile the ACR Docker Credential Helper using a newer version of Golang.</p>
+
+<p>To recompile using a newer version you will first need to clone the helper github repo:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/Azure/acr-docker-credential-helper
+</code></pre></div></div>
+
+<p>Then you will need to edit the Dockerfile so that the Golang version used is a supported version on macOS 12, I found that version 1.15 worked and the helper still compiled:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM golang:1.15-alpine
+RUN apk update &amp;&amp; apk add make bash zip
+ADD . /build-root
+WORKDIR /build-root
+CMD make
+</code></pre></div></div>
+
+<p>After modifying the Dockerfile you can build the binary by running the <b>build.sh</b> script. This script will build the helper for multiple platforms and put the results in the <b>artifacts</b> directory. The <b>artifacts/docker-credential-acr-darwin-amd64.tar.gz</b> file is the one with the new macOS binaries. The two binaries will need to be extracted from that file and put in the <b>/usr/local/bin/</b> directory.</p>
+
+<p>You can verify that the update has fixed the issue by running the helper by hand again:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-credential-acr-darwin list
+</code></pre></div></div>
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

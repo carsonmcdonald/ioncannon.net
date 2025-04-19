@@ -1,0 +1,323 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Smooth scrolling image list - IONCANNON</title>
+<meta name="description" content="I had someone ask me about fitting more images in a small area and the way flickr does their image scrolling came to mind. I wanted to see how hard it was to do and as it turns out it isn’t hard to do at all thanks to script.aculo.us.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Smooth scrolling image list">
+<meta property="og:url" content="http://localhost:4000/programming/2006/02/16/smooth-scrolling-image-list/">
+
+
+  <meta property="og:description" content="I had someone ask me about fitting more images in a small area and the way flickr does their image scrolling came to mind. I wanted to see how hard it was to do and as it turns out it isn’t hard to do at all thanks to script.aculo.us.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-02-16T02:26:03-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2006/02/16/smooth-scrolling-image-list/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Smooth scrolling image list</h1>
+    
+    <p>I had someone ask me about fitting more images in a small area and the way flickr does their image scrolling came to mind. I wanted to see how hard it was to do and as it turns out it isn’t hard to do at all thanks to <a href="http://script.aculo.us/">script.aculo.us</a>.</p>
+
+<p>I’m making this as simple as I can to illustrate just how nice the new tools like script.aculo.us are.</p>
+
+<p><strong>Step 1.</strong> You need a box and some images. You will also need to know the size of the images or at least the size of the largest one. In an attempt to keep this simple I’m going to assume all the images are the same size.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;div id="imageBox"&gt;
+  &lt;div id="imageBoxInside"&gt;
+    &lt;img src="http://www.ioncannon.net/examples/slide/images/turtle_sm_1.jpg" /&gt;
+    &lt;img src="http://www.ioncannon.net/examples/slide/images/elephants_sm_1.jpg" /&gt;
+    &lt;img src="http://www.ioncannon.net/examples/slide/images/turtle_sm_2.jpg" /&gt;
+    &lt;img src="http://www.ioncannon.net/examples/slide/images/elephants_sm_2.jpg" /&gt;
+    &lt;img src="http://www.ioncannon.net/examples/slide/mages/turtle_sm_3.jpg" /&gt;
+    &lt;img src="http://www.ioncannon.net/examples/slide/images/elephants_sm_3.jpg" /&gt;
+    &lt;img src="http://www.ioncannon.net/examples/slide/images/turtle_sm_4.jpg" /&gt;
+    &lt;img src="http://www.ioncannon.net/examples/slide/images/elephants_sm_4.jpg" /&gt;
+    &lt;br/&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre></div></div>
+
+<p>Notice from this code that we have an outer box and an inner box. We will next want to make the outer box smaller than the inner box so that only a few of the images can be seen at one time.</p>
+
+<p><strong>Step 2.</strong> To hide the extra images we give the outer box a set width, in this case I want to show only 2 images at a time and each image is 180px wide so I make the outer box 360px wide. Notice that the overflow is hidden. The hidden overflow is what keeps the images that are in the inner box but not within the outer box’s width hidden.</p>
+
+<p>I’m using floats to lay the images out one next to the other. Because of this we need to give the inside box a large width so that it will not wrap the floated images.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;style type="text/css"&gt;
+#imageBox { margin: auto; width: 360px; border: 1px #000 solid; overflow: hidden; }
+#imageBoxInside { width: 10000px; }  #imageBox img { float: left; padding: 0px; margin: 0px; }
+#imageBox br { clear: both; }
+&lt;/style&gt;
+</code></pre></div></div>
+
+<p><strong>Step 3.</strong> Now for the magic. You need the latest version of script.aculo.us because I use the Effects.Move function and they have changed Effects.MoveBy to Effects.Move only recently.</p>
+
+<p>We now create two functions to move the images either one step to the right or one step to the left. To refine our transitions even further, we decided to <a href="https://bitcoinist.com/us-betting-sites-without-verification-no-id-withdrawal/">find different options</a> for adjusting the animation and ensuring smoother movement. Each step is the size of a single image so that when one is triggered, it moves one image out of view and brings another image into view. As you can see from the following code, this is extremely easy using the script.aculo.us library.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>function moveToPrevious()
+{
+  new Effect.Move('imageBoxInside', { x: 180, y: 0, transition: Effect.Transitions.sinoidal });
+}
+function moveToNext()
+{
+  new Effect.Move('imageBoxInside', { x: -180, y: 0, transition: Effect.Transitions.sinoidal });
+}
+</code></pre></div></div>
+
+<p><strong>Step 4.</strong> The only thing that remains is to connect everything together. We add a couple links to move call the next and previous functions defined above.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;a href="javascript:void(0);" href="javascript:void(0);" onclick="moveToPrevious(); return true;"&gt;&lt;img src="previous.png" /&gt;&lt;/a&gt;
+&lt;a href="javascript:void(0);" href="javascript:void(0);" onclick="moveToNext(); return true;"&gt;&lt;img src="next.png" /&gt;&lt;/a&gt;
+</code></pre></div></div>
+
+<p>And that is all there is to it. See it in <a href="http://www.ioncannon.net/examples/slide/example1.html">action</a>!</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

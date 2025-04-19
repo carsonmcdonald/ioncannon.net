@@ -1,0 +1,302 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>How I Used Hpricot and Mechanize in GeeQE - IONCANNON</title>
+<meta name="description" content="While building GeeQE I wanted to enhance the CC dump of Stack Overflow’s data. The main reason I wanted to do this was to capture Gravatar hashes and user badges. To do this I decided to continue using Ruby as I did with the XML loading (see  my previous post on XML parsing with Ruby).  The easy choice was of course Hpricot to parse the HTML from the users page and Mechanize to move from one page to the next.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="How I Used Hpricot and Mechanize in GeeQE">
+<meta property="og:url" content="http://localhost:4000/programming/2009/09/27/using-hpricot-and-mechanize/">
+
+
+  <meta property="og:description" content="While building GeeQE I wanted to enhance the CC dump of Stack Overflow’s data. The main reason I wanted to do this was to capture Gravatar hashes and user badges. To do this I decided to continue using Ruby as I did with the XML loading (see  my previous post on XML parsing with Ruby).  The easy choice was of course Hpricot to parse the HTML from the users page and Mechanize to move from one page to the next.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2009-09-27T19:50:46-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2009/09/27/using-hpricot-and-mechanize/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">How I Used Hpricot and Mechanize in GeeQE</h1>
+    
+    <p>While building <a href="http://www.ioncannon.net/projects/geeqe/">GeeQE</a> I wanted to enhance the <a href="http://blog.stackoverflow.com/2009/06/stack-overflow-creative-commons-data-dump/">CC dump of Stack Overflow’s data</a>. The main reason I wanted to do this was to capture <a href="http://www.gravatar.com/">Gravatar</a> hashes and user badges. To do this I decided to continue using Ruby as I did with the XML loading (see  my previous post on <a href="http://www.ioncannon.net/programming/643/fast-xml-parsing-with-ruby/">XML parsing with Ruby</a>).  The easy choice was of course <a href="http://github.com/hpricot">Hpricot</a> to parse the HTML from the <a href="http://stackoverflow.com/users">users page</a> and <a href="http://mechanize.rubyforge.org/mechanize/">Mechanize</a> to move from one page to the next.</p>
+
+<p>The first thing I wanted to make sure to do was to scrape this data as efficiently as possible. That is why I use the users page instead of going over every single user’s profile page. This approach is not optimal since the users pages most likely update as the script moves through them so users could be missed but I’m not looking for 100% here so that limitation was acceptable.</p>
+
+<p>To run the <a href="http://code.google.com/p/geeqe/source/browse/trunk/scripts/useroverviewpuller.rb">user profile script</a> that is described here you will first need to load the database <a href="http://code.google.com/p/geeqe/source/browse/trunk/scripts/schema.sql">schema</a> and then load the CC data dump with the <a href="http://code.google.com/p/geeqe/source/browse/trunk/scripts/load.rb">XML loader script</a>.</p>
+
+<p>Two good sources of information about using Hpricot can be found in the <a href="http://wiki.github.com/hpricot/hpricot/an-hpricot-showcase">Hpricot showcase</a> and the <a href="http://wiki.github.com/hpricot/hpricot/hpricot-challenge">Hpricot challenge</a> wiki pages.</p>
+
+<p>The only tricky thing that I needed to do with Hpricot was associated with parsing badge counts since the outer spans have a title with the name of the badge type in them:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;div class="user-details"&gt;
+  &lt;a href="/users/256/example-user" &gt;Example User&lt;/a&gt;&lt;br&gt;
+  &lt;span class="reputation-score" title="reputation score"&gt;22k&lt;/span&gt;
+  &lt;span title="8 gold badges"&gt;&lt;span class="badge1"&gt;&amp;#9679;&lt;/span&gt;&lt;span class="badgecount"&gt;8&lt;/span&gt;&lt;/span&gt;
+  &lt;span title="5 silver badges"&gt;&lt;span class="badge2"&gt;&amp;#9679;&lt;/span&gt;&lt;span class="badgecount"&gt;5&lt;/span&gt;&lt;/span&gt;
+  &lt;span title="7 bronze badges"&gt;&lt;span class="badge3"&gt;&amp;#9679;&lt;/span&gt;&lt;span class="badgecount"&gt;7&lt;/span&gt;&lt;/span&gt;
+&lt;/div&gt;
+</code></pre></div></div>
+
+<p>I could have probably used the class of the inner span but I decided since it wasn’t named that I couldn’t be completely sure those would stay the same.</p>
+
+<p>I used the ability of Hpricot to match attribute values based on <a href="http://trac.edgewall.org/wiki/TracQuery#QueryLanguage">Trac Query</a> syntax. Here you can see that with the “@title~=badge type” where ~= matches when the value of the title attribute contains the corrisponding badge type name:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  user_bc = (user_info/"div[@class='user-details']/span[@title~=gold]/span[@class='badgecount']")
+  user_gold = user_bc != nil &amp;&amp; user_bc[0] != nil ? user_bc[0].inner_html : 0
+
+  user_bc = (user_info/"div[@class='user-details']/span[@title~=silver]/span[@class='badgecount']")
+  user_silver = user_bc != nil &amp;&amp; user_bc[0] != nil ? user_bc[0].inner_html : 0
+
+  user_bc = (user_info/"div[@class='user-details']/span[@title~=bronze]/span[@class='badgecount']")
+  user_bronze = user_bc != nil &amp;&amp; user_bc[0] != nil ? user_bc[0].inner_html : 0
+</code></pre></div></div>
+
+<p>After parsing the page for user information the script then looks for the next page URL to parse then sleeps for a random amount of time before using Mechanize to pull down the page.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

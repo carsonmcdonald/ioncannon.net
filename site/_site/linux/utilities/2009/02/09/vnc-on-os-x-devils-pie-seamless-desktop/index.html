@@ -1,0 +1,284 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>VNC on OS X + Devil’s Pie = seamless desktop - IONCANNON</title>
+<meta name="description" content="I’ve been doing iPhone development lately using a mac mini. When we first started looking at developing for the iPhone it seemed like overkill to go out and buy multiple macbooks or one macbook to share between developers so instead we got a mac mini to share using Vine VNC.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="VNC on OS X + Devil’s Pie = seamless desktop">
+<meta property="og:url" content="http://localhost:4000/linux/utilities/2009/02/09/vnc-on-os-x-devils-pie-seamless-desktop/">
+
+
+  <meta property="og:description" content="I’ve been doing iPhone development lately using a mac mini. When we first started looking at developing for the iPhone it seemed like overkill to go out and buy multiple macbooks or one macbook to share between developers so instead we got a mac mini to share using Vine VNC.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2009-02-09T07:28:34-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/linux/utilities/2009/02/09/vnc-on-os-x-devils-pie-seamless-desktop/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">VNC on OS X + Devil's Pie = seamless desktop</h1>
+    
+    <p>I’ve been doing iPhone development lately using a mac mini. When we first started looking at developing for the iPhone it seemed like overkill to go out and buy multiple macbooks or one macbook to share between developers so instead we got a mac mini to share using <a href="http://www.testplant.com/products/vine_viewer">Vine VNC</a>.</p>
+
+<p>For reference we are able to share the mac mini by taking advantage of <a href="http://en.wikipedia.org/wiki/Fast_user_switching">fast user switching</a> for more information see this guide on using <a href="http://www.testplant.com/products/vine_viewer/multidesktop">Multiple Desktop Sessions on Mac OS X</a>.</p>
+
+<p>The VNC part is pretty easy once you have the multiple desktop sessions working. I’ve been doing development on a linux box that has two monitors connected so I will open the desktop in one window and all the non-mac stuff in the other. After using the VNC desktop like that for a while I started to get annoyed by the window decorations so I looked to see what I could do to remove them and that is when I ran into <a href="http://burtonini.com/blog/computers/devilspie">Devil’s Pie</a>.</p>
+
+<p>Devil’s Pie runs as an application in the background and watches for window events that you set up in a configuration file. When it sees the events it can do all kinds of fancy things to the window like remove decorations and set position. It turns out there isn’t a lot of documentation on the configuration language but I did find a <a href="http://live.gnome.org/DevilsPie">configuration language reference</a>, a <a href="http://code.google.com/p/gdevilspie/">gnome configuration file editor</a> that kind of works depending on what you need it to do, a <a href="https://help.ubuntu.com/community/Devilspie">decent reference</a>, some <a href="http://foosel.org/linux/devilspie">configuration examples</a>, and best of all an <a href="http://ubuntu-tutorials.com/2007/07/25/how-to-set-default-workspace-size-and-window-effects-in-gnome/">example of how to remove window effects</a>. With all that I was able to cobble together the following configuration file:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(if (contains (window_name) "VNC:") (begin (undecorate) (maximize) (geometry "+1280+0")))
+</code></pre></div></div>
+
+<p>This says to undecorate, maximize, and set the geometry of any window that contains the value “VNC:”. The undecorate will strip the title bar and any border from the window, the maximize does what it says to the window, and the geometry in my case puts the window on the right hand screen. I tweaked the background for my account in OS X and the resulting combination of it all looks like this:</p>
+
+<p><img width="520" src="/assets/remotemac/macdesktop-800.png" /></p>
+
+<p>So now I have what feels like an OS X box integrated right into my normal desktop.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

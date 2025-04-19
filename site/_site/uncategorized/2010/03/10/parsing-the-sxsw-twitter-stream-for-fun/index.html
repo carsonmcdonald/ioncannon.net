@@ -1,0 +1,297 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Parsing the SXSW Twitter Stream for Fun - IONCANNON</title>
+<meta name="description" content="Over the weekend I decided to toss together a simple twitter stream monitoring app that would capture SXSW tweets. I wanted to build on some of what I learned while hacking together the stuff for code2009 and it was also an excuse to play with node.js and a few other things. I figured I would put together a quick post with all the different parts and as I have time I’ll pull together some of the more important sections into larger posts. Be warned that the site may stop functioning since it was only a few hours work and mostly put together with bailing wire and gum.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Parsing the SXSW Twitter Stream for Fun">
+<meta property="og:url" content="http://localhost:4000/uncategorized/2010/03/10/parsing-the-sxsw-twitter-stream-for-fun/">
+
+
+  <meta property="og:description" content="Over the weekend I decided to toss together a simple twitter stream monitoring app that would capture SXSW tweets. I wanted to build on some of what I learned while hacking together the stuff for code2009 and it was also an excuse to play with node.js and a few other things. I figured I would put together a quick post with all the different parts and as I have time I’ll pull together some of the more important sections into larger posts. Be warned that the site may stop functioning since it was only a few hours work and mostly put together with bailing wire and gum.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2010-03-10T18:26:24-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/uncategorized/2010/03/10/parsing-the-sxsw-twitter-stream-for-fun/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Parsing the SXSW Twitter Stream for Fun</h1>
+    
+    <p>Over the weekend I decided to toss together a simple twitter stream monitoring app that would <a href="http://www.ioncannon.net/projects/watchsxsw2010/">capture SXSW tweets</a>. I wanted to build on some of what I learned while hacking together the stuff for <a href="http://www.ioncannon.net/projects/code2009/">code2009</a> and it was also an excuse to play with <a href="http://nodejs.org/">node.js</a> and a few other things. I figured I would put together a quick post with all the different parts and as I have time I’ll pull together some of the more important sections into larger posts. Be warned that the site may stop functioning since it was only a few hours work and mostly put together with bailing wire and gum.</p>
+
+<p>Server side:</p>
+
+<ul>
+  <li><a href="http://nodejs.org/">node.js</a> - Used to process the long polling requests</li>
+  <li><a href="http://nginx.org/">ngnix</a> - Front for multiple nodejs instances and serving some static files</li>
+  <li><a href="http://documentcloud.github.com/underscore/">underscore.js</a></li>
+  <li><a href="http://www.rabbitmq.com/">rabbitmq</a> - Used to monitor the realtime feed</li>
+  <li><a href="http://code.google.com/p/redis/">Redis</a> - Used as a datastore for everything</li>
+  <li><a href="http://www.ruby-lang.org/">ruby</a> - Used to glue a bunch of things together, tons of gems used</li>
+  <li><a href="http://github.com/blog/542-introducing-resque">Resque</a> - Used to handle the screen captures</li>
+</ul>
+
+<p>Browser side:</p>
+
+<ul>
+  <li><a href="http://jquery.com/">jQuery</a></li>
+  <li><a href="http://code.google.com/p/flot/">jQuery flot</a></li>
+  <li><a href="http://omnipotent.net/jquery.sparkline/">jQuery sparklines</a></li>
+</ul>
+
+<p>Hosting:</p>
+
+<ul>
+  <li><a href="http://aws.amazon.com/ec2/">AWS EC2</a> - Used for processing browser snapshots</li>
+  <li><a href="http://aws.amazon.com/cloudfront/">AWS Cloudfront</a> - Used for storing CSS, etc</li>
+  <li><a href="http://www.rackspacecloud.com/">Rackspace Cloud Servers</a> - Used to run the node servers</li>
+  <li><a href="http://www.linode.com/">Linode</a> - Used to run the main web server</li>
+</ul>
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

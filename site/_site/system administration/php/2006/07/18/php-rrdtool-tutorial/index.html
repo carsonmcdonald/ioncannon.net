@@ -1,0 +1,408 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>PHP RRDTool tutorial - IONCANNON</title>
+<meta name="description" content="On a number of occasions I’ve used RRDTool to graph network traffic and the like. A few years ago when I started using cacti I started wondering how to make the graphs myself. Creating the graphs on the command line isn’t that hard once you know how to set things up and it turns out doing the same in PHP is just as easy.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="PHP RRDTool tutorial">
+<meta property="og:url" content="http://localhost:4000/system%20administration/php/2006/07/18/php-rrdtool-tutorial/">
+
+
+  <meta property="og:description" content="On a number of occasions I’ve used RRDTool to graph network traffic and the like. A few years ago when I started using cacti I started wondering how to make the graphs myself. Creating the graphs on the command line isn’t that hard once you know how to set things up and it turns out doing the same in PHP is just as easy.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-07-18T18:03:47-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/php/2006/07/18/php-rrdtool-tutorial/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">PHP RRDTool tutorial</h1>
+    
+    <p>On a number of occasions I’ve used RRDTool to graph network traffic and the like. A few years ago when I started using <a href="http://www.cacti.net/">cacti</a> I started wondering how to make the graphs myself. Creating the graphs on the command line isn’t that hard once you know how to set things up and it turns out doing the same in PHP is just as easy.</p>
+
+<p>For this tutorial I’m going to assume you understand how to get RRDTool installed and working from the command line. If not you should take a look at <a href="http://oss.oetiker.ch/rrdtool/tut/rrdtutorial.en.html">this tutorial</a> (if you are in a hurry look at the “A Real World Example” section) or any of the <a href="http://oss.oetiker.ch/rrdtool/tut/">tutorials on this page</a>.</p>
+
+<p><b>Setup and introduction</b></p>
+
+<p>You need to have PHP compiled with RRDTool support to run the following PHP examples. If you compile PHP by hand then see: <a href="http://www.ioncannon.net/system-administration/25/how-to-build-the-php-rrdtool-extension-by-hand/">how to build the php rrdtool extension by hand</a>. If you are using a distribution’s pre-compiled PHP binary you should be able to install a second package with RRDTool support. You can verify that your PHP install is ready to go by running this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php
+phpinfo(INFO_MODULES);
+?&gt;
+</code></pre></div></div>
+<p>Then search for “rrdtool” in the output and make sure that “rrdtool support” is enabled.</p>
+
+<p>While going through each of the following steps you will notice that each call takes a couple of parameters and then one parameter that is just a string of options. The string of options is exactly how it is for generating/updating/graphing RRDs from the command line. This makes for a consistent interface for the different languages that have RRDTool support.</p>
+
+<p><b>Creating a RRD</b></p>
+
+<p>We first need to create a database for our data. For these examples I will be creating a database that could be used for generating network graphs. This database is created for updates every 5 minutes (300 seconds), has input and output counters that store data for the average and max counts and stores enough samples for hourly, daily, monthly and yearly graphs of both average and max.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php
+
+  $fname = "net.rrd";
+
+  $opts = array( "--step", "300", "--start", 0,
+           "DS:input:COUNTER:600:U:U",
+           "DS:output:COUNTER:600:U:U",
+           "RRA:AVERAGE:0.5:1:600",
+           "RRA:AVERAGE:0.5:6:700",
+           "RRA:AVERAGE:0.5:24:775",
+           "RRA:AVERAGE:0.5:288:797",
+           "RRA:MAX:0.5:1:600",
+           "RRA:MAX:0.5:6:700",
+           "RRA:MAX:0.5:24:775",
+           "RRA:MAX:0.5:288:797"
+        );
+
+  $ret = rrd_create($fname, $opts, count($opts));
+
+  if( $ret == 0 )
+  {
+    $err = rrd_error();
+    echo "Create error: $err\n";
+  }
+?&gt;
+</code></pre></div></div>
+
+<p>After running you will have a file called net.rrd in the current directory. This is your RRD and will contain all the samples for your graphs.</p>
+
+<p>For more information on the options to rrd_create see: <a href="http://oss.oetiker.ch/rrdtool/doc/rrdcreate.en.html">rrdcreate</a></p>
+
+<p><b>Updating a RRD</b></p>
+
+<p>The next step is to update your RRD on the frequency you set when you created it. In the case above the frequency was set to 5 minutes (300 seconds). The following script generates random input and output values as input to the update function, sleeps for 300 seconds and then loops.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php
+
+  $fname = "net.rrd";
+
+  $total_input_traffic = 0;
+  $total_output_traffic = 0;
+
+  while(true)
+  {
+    $total_input_traffic += rand(10000, 15000);
+    $total_output_traffic += rand(10000, 30000);
+
+    echo time() . ": " . $total_input_traffic . " and " . $total_output_traffic . "\n";
+
+    $ret = rrd_update($fname, "N:$total_input_traffic:$total_output_traffic");
+
+    if( $ret == 0 )
+    {
+      $err = rrd_error();
+      echo "ERROR occurred: $err\n";
+    }
+
+    sleep(300);
+  }
+?&gt;
+</code></pre></div></div>
+
+<p>Your input and output values could be pulled from anywhere here, I just wanted to have a source that would work for anyone who wanted to try the script.</p>
+
+<p>After letting this script run for a few hours you can run the following shell script to see what type of data you have collected so far:</p>
+
+<p>For more information on the options to rrd_update here: <a href="http://oss.oetiker.ch/rrdtool/doc/rrdupdate.en.html">rrdupdate</a></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#!/bin/sh
+END=`date +%s`
+START=`echo $END-3600|bc` # over the hour
+rrdtool fetch net.rrd AVERAGE --start $START --end $END
+</code></pre></div></div>
+
+<p>That should display the average sample values for the last hour.</p>
+
+<p><b>Displaying RRD data as a graph</b></p>
+
+<p>Now that you have data in your RRD you will want to graph it. The following code will graph the average input and output for 1 day as well as the max for that day.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;?php
+
+  $opts = array( "--start", "-1d", "--vertical-label=B/s",
+                 "DEF:inoctets=net.rrd:input:AVERAGE",
+                 "DEF:outoctets=net.rrd:output:AVERAGE",
+                 "AREA:inoctets#00FF00:In traffic",
+                 "LINE1:outoctets#0000FF:Out traffic\\r",
+                 "CDEF:inbits=inoctets,8,*",
+                 "CDEF:outbits=outoctets,8,*",
+                 "COMMENT:\\n",
+                 "GPRINT:inbits:AVERAGE:Avg In traffic\: %6.2lf %Sbps",
+                 "COMMENT:  ",
+                 "GPRINT:inbits:MAX:Max In traffic\: %6.2lf %Sbps\\r",
+                 "GPRINT:outbits:AVERAGE:Avg Out traffic\: %6.2lf %Sbps",
+                 "COMMENT: ",
+                 "GPRINT:outbits:MAX:Max Out traffic\: %6.2lf %Sbps\\r"
+               );
+
+  $ret = rrd_graph("net_1d.gif", $opts, count($opts));
+
+  if( !is_array($ret) )
+  {
+    $err = rrd_error();
+    echo "rrd_graph() ERROR: $err\n";
+  }
+?&gt;
+</code></pre></div></div>
+
+<p>You should end up with a file named net_1d.gif in your working directory that looks something like: <br />
+<img src="/assets/rrd-php/img/net_1d.gif" /></p>
+
+<p>You can also do weekly and monthly graphs by changing the start parameter to -1w or -1m: <br />
+<img src="/assets/rrd-php/img/net_1w.gif" /> <br />
+<img src="/assets/rrd-php/img/net_1m.gif" /> <br /></p>
+
+<p>For the impatient you can download my <a href="/assets/rrd-php/net.rrd">net.rrd</a> file and try the graphs for yourself.</p>
+
+<p>See the other tutorials for more information on the options you have for graphing.</p>
+
+<p>For more information on the options to rrd_graph see: <a href="http://oss.oetiker.ch/rrdtool/doc/rrdgraph.en.html">rrdgraph</a></p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

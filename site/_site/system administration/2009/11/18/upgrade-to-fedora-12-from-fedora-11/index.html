@@ -1,0 +1,316 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Upgrade to Fedora 12 from Fedora 11 - IONCANNON</title>
+<meta name="description" content="Fedora 12 was just released and it is time to upgrade again of course. I almost thought this was going to be a version to yawn at but then I saw that there was going to be a new version of Fedora based on Moblin and it seemed exciting again. Of course that isn’t the only thing being upgraded in the latest version of Fedora. Some of the more notable changes in this version:">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Upgrade to Fedora 12 from Fedora 11">
+<meta property="og:url" content="http://localhost:4000/system%20administration/2009/11/18/upgrade-to-fedora-12-from-fedora-11/">
+
+
+  <meta property="og:description" content="Fedora 12 was just released and it is time to upgrade again of course. I almost thought this was going to be a version to yawn at but then I saw that there was going to be a new version of Fedora based on Moblin and it seemed exciting again. Of course that isn’t the only thing being upgraded in the latest version of Fedora. Some of the more notable changes in this version:">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2009-11-18T06:56:18-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/2009/11/18/upgrade-to-fedora-12-from-fedora-11/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Upgrade to Fedora 12 from Fedora 11</h1>
+    
+    <p><a href="http://docs.fedoraproject.org/release-notes/f12/en-US/html/">Fedora 12</a> was just released and it is time to upgrade again of course. I almost thought this was going to be a version to yawn at but then I saw that there was going to be a new version of Fedora based on <a href="http://moblin.org/">Moblin</a> and it seemed exciting again. Of course that isn’t the only thing being upgraded in the latest version of Fedora. Some of the more notable changes in this version:</p>
+
+<ul>
+  <li>Updated window managers <a href="http://www.fedoraproject.org/wiki/Features/Gnome2.28">Gnome 2.28</a>, <a href="http://www.fedoraproject.org/wiki/Features/KDE43">KDE 4.3</a> and <a href="http://www.fedoraproject.org/wiki/Features/FedoraMoblin">Fedora Moblin</a></li>
+  <li><a href="http://fedoraproject.org/wiki/Features/Presto">Delta RPM support</a></li>
+  <li><a href="http://www.fedoraproject.org/wiki/Features/F12X86Support">i686 as the base architecture</a></li>
+  <li>Lots of virtualization changes: <a href="http://www.fedoraproject.org/wiki/Features/KSM">KSM</a>, <a href="http://www.fedoraproject.org/wiki/Features/KVM_Huge_Page_Backed_Memory">KVM huge page support</a>, <a href="http://www.fedoraproject.org/wiki/Features/KVM_NIC_Hotplug">KVM NIC hotplug</a>, <a href="http://www.fedoraproject.org/wiki/Features/KVM_qcow2_Performance">KVM QCow2 performance improvements</a>, <a href="http://www.fedoraproject.org/wiki/Features/KVM_Stable_Guest_ABI">KVM Stable Guest ABI</a>, <a href="http://www.fedoraproject.org/wiki/Features/libguestfs">libguestfs</a>, <a href="http://www.fedoraproject.org/wiki/Features/Network_Interface_Management">Virtual network management</a> and <a href="http://www.fedoraproject.org/wiki/Features/VirtPrivileges">improved virtual privileges</a> to name a few</li>
+  <li>An easier to use bug reporting interface <a href="http://www.fedoraproject.org/wiki/Features/ABRTF12">Abrt 1.0</a></li>
+  <li><a href="http://www.fedoraproject.org/wiki/Features/BetterWebcamSupportF12">Better Webcam Support</a></li>
+</ul>
+
+<p>You can find the complete list of <a href="http://www.fedoraproject.org/wiki/Releases/12/FeatureList">Fedora 12 enhancements</a> as well if you want more details.</p>
+
+<p>I’m again starting with <a href="http://fedoraproject.org/wiki/Features/PreUpgrade">PreUpdate</a> since it worked well last time. The steps are pretty much the same as last time but I did have more problems after the upgrade:</p>
+
+<ol>
+  <li>You have to be at Fedora11 before you try this. If you aren't there follow the <a href="http://www.ioncannon.net/system-administration/358/upgrading-to-fedora-11-from-fedora-10/">steps to get to Fedora11</a>.</li>
+  <li>yum clean all</li>
+  <li>yum udpate</li>
+  <li>Make sure to back up your xorg.conf since it can disappear with the upgrade.</li>
+  <li>preupgrade-cli "Fedora 12 (Constantine)" The total download for the upgrade from Fedora 11 to Fedora 12 was 1.1GB for me</li>
+  <li>After I rebooted the first time I got an error that the /boot directory didn't have enough space. It turns out I needed about 27M of free space so I ended up having to delete old kernels until I had 28M of free space.</li>
+  <li>reboot and wait</li>
+</ol>
+
+<p>I lucked out again and didn’t have to remove anything to fix dependency issues. I recompiled my existing NVIDIA driver but I ran into an issue with the nouveau NVIDIA driver that comes with Fedora 12. I needed to remove the nouveau package, rebuild initrd and reboot before I could build the NVIDIA driver:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum remove xorg-x11-drv-nouveau.i686
+rm /boot/initramfs-2.6.31.5-127.fc12.i686.img
+mkinitrd /boot/initramfs-2.6.31.5-127.fc12.i686.img 2.6.31.5-127.fc12.i686
+</code></pre></div></div>
+
+<p>If that is too much work you can also get the NVIDIA driver from <a href="http://www.atrpms.net/">atrpms</a> but you will still need to remove the nouveau driver first. I also needed to pull down the Fedora 12 version of <a href="http://www.virtualbox.org/wiki/Linux_Downloads">Virtualbox</a> but so far that was all.</p>
+
+<p>If you prefer the yum upgrade option here are the steps for that as well:</p>
+
+<ol>
+  <li>yum clean all</li>
+  <li>yum update</li>
+  <li>rpm -Uvh http://mirrors.kernel.org/fedora/releases/12/Fedora/i386/os/Packages/fedora-release-notes-12.0.0-4.fc12.noarch.rpm http://mirrors.kernel.org/fedora/releases/12/Fedora/i386/os/Packages/fedora-release-12-1.noarch.rpm</li>
+  <li>yum clean all</li>
+  <li>yum -y update</li>
+  <li>You may need to resolve dependencies and then do another yum -y update</li>
+  <li>reboot</li>
+</ol>
+
+<p>I had to resolve dependencies to get this to work. I had to remove tigervnc-server-1.0.0-2.fc11.i586 and VirtualBox-3.0.10_54097_fedora11-1.i586. The resulting update was about 1.4G so it took a little while to apply.</p>
+
+<p>I’ve also put together a few <a href="http://www.ioncannon.net/projects/miscellaneous-projects/fedora-12-screenshots-and-videos/">videos and screenshots</a> if you want to get a quick preview of what the different versions available look like. You can also view the videos on Youtube: <a href="http://www.youtube.com/watch?v=W6rTVTyjQ1Q&amp;feature=player_embedded">Moblin</a>, <a href="http://www.youtube.com/watch?v=F0UlVnoUtbw&amp;feature=player_embedded">KDE</a> and <a href="http://www.youtube.com/watch?v=GZ8tSxMJTr8&amp;feature=player_embedded">Gnome</a></p>
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

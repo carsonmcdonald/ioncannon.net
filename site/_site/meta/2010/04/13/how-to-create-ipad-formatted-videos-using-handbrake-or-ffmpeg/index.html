@@ -1,0 +1,291 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>How to Create iPad Formatted Videos Using HandBrake or FFMpeg - IONCANNON</title>
+<meta name="description" content="This is for those who may want to load a video onto their iPad with iTunes that isn’t in the correct format. I needed to do this because I was trying to put an iTunes University video on my iPad a couple days ago and iTunes complained that it wasn’t in the correct format for the iPad. I’m not sure exactly how that could be but I decided to take the opportunity to see if I could use HandBrake to easily convert it to an iPad friendly format. There is currently no pre-loaded iPad configuration for HandBrake like there is for the iPhone and iPod Touch so I created a few profiles that can easily be imported into HandBrake to output different sizes for the iPad:">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="How to Create iPad Formatted Videos Using HandBrake or FFMpeg">
+<meta property="og:url" content="http://localhost:4000/meta/2010/04/13/how-to-create-ipad-formatted-videos-using-handbrake-or-ffmpeg/">
+
+
+  <meta property="og:description" content="This is for those who may want to load a video onto their iPad with iTunes that isn’t in the correct format. I needed to do this because I was trying to put an iTunes University video on my iPad a couple days ago and iTunes complained that it wasn’t in the correct format for the iPad. I’m not sure exactly how that could be but I decided to take the opportunity to see if I could use HandBrake to easily convert it to an iPad friendly format. There is currently no pre-loaded iPad configuration for HandBrake like there is for the iPhone and iPod Touch so I created a few profiles that can easily be imported into HandBrake to output different sizes for the iPad:">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2010-04-13T05:56:19-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/meta/2010/04/13/how-to-create-ipad-formatted-videos-using-handbrake-or-ffmpeg/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">How to Create iPad Formatted Videos Using HandBrake or FFMpeg</h1>
+    
+    <p>This is for those who may want to load a video onto their iPad with iTunes that isn’t in the correct format. I needed to do this because I was trying to put an iTunes University video on my iPad a couple days ago and iTunes complained that it wasn’t in the correct format for the iPad. I’m not sure exactly how that could be but I decided to take the opportunity to see if I could use <a href="http://handbrake.fr/">HandBrake</a> to easily convert it to an iPad friendly format. There is currently no pre-loaded iPad configuration for HandBrake like there is for the iPhone and iPod Touch so I created a few profiles that can easily be imported into HandBrake to output different sizes for the iPad:</p>
+
+<ul>
+  <li><a href="/projects/ipadhandbrake/iPad-4x3.plist">iPad-4x3.plist</a> - A 4x3 aspect ratio at 640x480</li>
+  <li><a href="/projects/ipadhandbrake/iPad-16x9.plist">iPad-16x9.plist</a> - A 16x9 aspect ratio at 640x360</li>
+  <li><a href="/projects/ipadhandbrake/iPad-Full.plist">iPad-Full.plist</a> - A 4x3 aspect ratio at 1024x576</li>
+</ul>
+
+<p>Note that when you import videos using iTunes the iPad puts them in their own Videos app unlike the iPhone where they show up under the iPod app. You will want to find the Videos icon if you don’t already know where it is:</p>
+
+<p><a href="/assets/2010_04_Screenshot-iPad-Videos.jpg"><img src="/assets/2010_04_Screenshot-iPad-Videos.jpg" alt="iPad Videos Screenshot" title="iPad Videos Screenshot" width="300" height="163" class="alignnone size-medium wp-image-1043" /></a></p>
+
+<p>After verifying that the above 4×3 version worked for the iTunes University video, I went about testing it on a couple of other video formats. I tested the Big Buck Bunny video that I also used for my post on iPad video streaming in both 640×360 and 1024×576 output formats. Both resolutions looked great. In between these tests, I took a short break to play <a href="https://www.business2community.com/kr/gambling/casino-holdem-sites">?? ??</a>, which provided a nice distraction. I also tried converting a DVD. If you decide to convert a DVD, you will probably want to turn on de-interlacing in HandBrake. You do that by first selecting the “Picture Settings” option:</p>
+
+<p><a href="/assets/2010_04_Screenshot-HandBrake-PictureSettings.png"><img src="/assets/2010_04_Screenshot-HandBrake-PictureSettings.png" alt="HandBrake Picture Settings Screenshot" title="HandBrake Picture Settings Screenshot" width="300" height="81" class="alignnone size-medium wp-image-1042" /></a></p>
+
+<p>Then the filters tab and then select the type of de-interlace you want (fast, slow, slowest):</p>
+
+<p><a href="/assets/2010_04_Screenshot-HandBrake-DeInterlaceSettings.png"><img src="/assets/2010_04_Screenshot-HandBrake-DeInterlaceSettings.png" alt="HandBrake DeInterlace Settings Screenshot" title="HandBrake DeInterlace Settings Screenshot" width="300" height="103" class="alignnone size-medium wp-image-1041" /></a></p>
+
+<p>If you want to use FFMpeg to do all this you can. The following is a slightly modified version of the streaming command I’m using that will output a high bitrate version of the input video:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffmpeg -y -i input.avi -acodec aac -ar 48000 -ab 128k -ac 2 -s 1024x768 -vcodec libx264 -b 1200k -flags +loop+mv4 -cmp 256 -partitions +parti4x4+partp8x8+partb8x8 -subq 7 -trellis 1 -refs 5 -coder 0 -me_range 16 -keyint_min 25 -sc_threshold 40 -i_qfactor 0.71 -bt 1200k -maxrate 1200k -bufsize 1200k -rc_eq 'blurCplx^(1-qComp)' -qcomp 0.6 -qmin 10 -qmax 51 -qdiff 4 -level 30 -aspect 16:9 -r 30 -g 90 -async 2 output.mp4
+</code></pre></div></div>
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

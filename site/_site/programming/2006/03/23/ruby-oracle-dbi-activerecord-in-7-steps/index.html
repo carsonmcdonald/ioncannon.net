@@ -1,0 +1,401 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Ruby Oracle DBI ActiveRecord in 7 steps - IONCANNON</title>
+<meta name="description" content="Setting up ruby to work with Oracle seems to be a pain for a lot of people. Here are the steps I follow to set it up on a linux box from nothing to Active Record or DBI in 7 steps.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Ruby Oracle DBI ActiveRecord in 7 steps">
+<meta property="og:url" content="http://localhost:4000/programming/2006/03/23/ruby-oracle-dbi-activerecord-in-7-steps/">
+
+
+  <meta property="og:description" content="Setting up ruby to work with Oracle seems to be a pain for a lot of people. Here are the steps I follow to set it up on a linux box from nothing to Active Record or DBI in 7 steps.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-03-23T00:35:26-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/programming/2006/03/23/ruby-oracle-dbi-activerecord-in-7-steps/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Ruby Oracle DBI ActiveRecord in 7 steps</h1>
+    
+    <p>Setting up ruby to work with Oracle seems to be a pain for a lot of people. Here are the steps I follow to set it up on a linux box from nothing to Active Record or DBI in 7 steps.</p>
+
+<ol>
+  <li>
+    <p>Gather the installation sources you will need. You have to be registered with oracle to get their instant client packages.
+ Download the <a href="http://www.jiubao.org/ruby-oci8/">ruby oci8 drivers</a></p>
+
+    <p>Download the <a href="http://www.oracle.com/technology/software/tech/oci/instantclient/htdocs/linuxsoft.html">oracle instant client</a></p>
+
+    <p>You want the following packages (these examples assume the zip format):</p>
+
+    <ul>
+      <li>Instant Client Package - Basic or Instant Client Package - Basic Lite</li>
+      <li>Instant Client Package - SDK</li>
+      <li>Instant Client Package - SQL*Plus (optional but nice to have)</li>
+    </ul>
+  </li>
+  <li>
+    <p>Install oracle instant client packages</p>
+
+    <p>I unzip them in the /opt directory and assume that for the examples. It doesn’t matter where you put them as long as you know where they are.</p>
+
+    <p>The zip packages have one problem that needs to be solved after they are expanded. You must create a symlink in the install directory for a shared library: ln -s libclntsh.so.10.1 libclntsh.so</p>
+  </li>
+  <li>
+    <p>Set up the oracle environment:</p>
+
+    <p>I created a script called oracleenv.sh with the following lines in it:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     export ORACLE_HOME=/opt/instantclient_10_2/
+     export LD_LIBRARY_PATH=/opt/instantclient_10_2/
+     export PATH=/opt/instantclient_10_2/:$PATH
+     export SQLPATH=/opt/instantclient_10_2/
+     export TNS_ADMIN=/etc/
+</code></pre></div>    </div>
+    <p>and then I source it when I want to use something oracle related  ‘. oracleenv.sh’. You may want to just put it in your profile.</p>
+
+    <p>You also need to create a /etc/tnsnames.ora file. This can be tricky. The best option is probably to ask your DBA to create it for you. Here is an example:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> DEVDB.WORLD =
+   (DESCRIPTION =
+     (ADDRESS_LIST =
+         (ADDRESS =
+           (COMMUNITY = tcp.world )
+           (PROTOCOL = TCP)
+           (Host = 192.168.1.125)
+           (Port = 1546)
+         )
+     )
+     (CONNECT_DATA = (SID = DEVDB)
+     )
+   )
+</code></pre></div>    </div>
+    <p>The main thing you need for ruby later is the SID. At this point you may want to try to use sqlplus to see if you can connect to the database.</p>
+  </li>
+  <li>Build the ruby oci8 package
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   # untar
+   ruby setup.rb config -- --with-instant-client=/opt/instantclient_10_2/
+   make
+   make install
+</code></pre></div>    </div>
+  </li>
+  <li>Give the low level API a test
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ruby -r oci8 -e "OCI8.new('username', 'password', 'DEVDB.WORLD').exec('select sysdate from dual') do |r| puts r.join(','); end"
+</code></pre></div>    </div>
+    <p>Here you provide the username, password and tns name. If this returns the current date and time then the driver is installed correctly.</p>
+  </li>
+  <li>
+    <p>Install DBI</p>
+
+    <p>download the <a href="http://rubyforge.org/projects/ruby-dbi/">dbi tar file</a></p>
+
+    <p>The current version is: dbi-0.1.0.tar.gz</p>
+
+    <p>untar the archive</p>
+
+    <p>configure it (for this example only dbi itself is included): ruby setup.rb config –with=dbi</p>
+
+    <p>build: ruby setup.rb setup</p>
+
+    <p>install: ruby setup.rb install</p>
+
+    <p>test:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> require 'dbi'
+ dbh = DBI.connect('DBI:OCI8:DEVDB.WORLD', 'username', 'password')
+ dbh.select_all('select sysdate from dual') do | row |
+   p row
+ end
+ dbh.disconnect
+</code></pre></div>    </div>
+    <p>If this returns the current date and time then DBI is installed correctly.</p>
+  </li>
+  <li>
+    <p>Install ActiveRecord</p>
+
+    <p>I use gem to install active record: gem install activerecord</p>
+
+    <p>After installing you should be able to use active record. Here is an example use:</p>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> require 'rubygems'
+ require 'active_record'
+
+ ActiveRecord::Base.establish_connection(
+     :adapter =&gt; "oci",
+     :username =&gt; "username",
+     :password =&gt; "password",
+     :host =&gt; "DEVDB.WORLD")
+
+ class TestTable &lt; ActiveRecord::Base
+   set_table_name "test_table"
+   set_primary_key "some_id"
+ end
+ TestTable.find(:all).each do |tt|
+   p tt
+ end
+ nac = TestTable.new()
+ nac.id = 1001
+ nac.some_column = "test"
+ nac.save()
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>One thing I learned that is someone confusing is that active record turns your primary key into a variable named ‘id’. So if you don’t use auto generated primary keys for some reason you can’t just assign the primary key based on the name of the column as you can any other column in the table. Instead you need to use the id field of the model.</p>
+
+<p>For more information check out the following links:</p>
+
+<ul>
+  <li>Info on <a href="http://www.oracle.com/technology/docs/tech/sql_plus/10103/readme_ic.htm">oracle’s instant client</a></li>
+  <li>Info on <a href="http://www.kitebird.com/articles/ruby-dbi.html">using dbi</a></li>
+  <li>Info on <a href="http://ruby-dbi.rubyforge.org/">dbi</a></li>
+  <li>Info on <a href="http://wiki.rubyonrails.org/rails/pages/Oracle">rails with oracle</a></li>
+</ul>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

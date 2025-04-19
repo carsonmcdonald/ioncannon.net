@@ -1,0 +1,384 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>How to Build and Compile a Custom Linux Kernel for EC2 - IONCANNON</title>
+<meta name="description" content="I have a long running goal that I’m trying to reach with all these pv-grub for EC2 posts. That goal is to find the smallest/tightest usable node that can be created for EC2. The next step in that path requires a custom Linux kernel. What follows is how to build the latest Linux kernel so that it works on EC2 using pv-grub.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="How to Build and Compile a Custom Linux Kernel for EC2">
+<meta property="og:url" content="http://localhost:4000/system%20administration/2010/09/09/how-to-build-compile-a-custom-linux-kernel-for-ec2/">
+
+
+  <meta property="og:description" content="I have a long running goal that I’m trying to reach with all these pv-grub for EC2 posts. That goal is to find the smallest/tightest usable node that can be created for EC2. The next step in that path requires a custom Linux kernel. What follows is how to build the latest Linux kernel so that it works on EC2 using pv-grub.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2010-09-09T09:55:58-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/2010/09/09/how-to-build-compile-a-custom-linux-kernel-for-ec2/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">How to Build and Compile a Custom Linux Kernel for EC2</h1>
+    
+    <p>I have a long running goal that I’m trying to reach with all these <a href="http://aws.typepad.com/aws/2010/07/use-your-own-kernel-with-amazon-ec2.html">pv-grub for EC2</a> posts. That goal is to find the smallest/tightest usable node that can be created for EC2. The next step in that path requires a custom Linux kernel. What follows is how to build the latest Linux kernel so that it works on EC2 using pv-grub.</p>
+
+<p>It is important to have a recent kernel since most of what is needed to get a kernel to work on EC2 is now incorporated into the source. These instructions assume the latest kernel is 2.6.35.4 and I’ve used them with 2.6.35 as well but keep that in mind since the one patch that is required could eventually be merged in. Before getting started it may help to read over how to <a href="http://www.faqs.org/docs/Linux-HOWTO/Kernel-HOWTO.html">compile the Linux kernel</a> normally and then my post on <a href="http://www.ioncannon.net/system-administration/1205/installing-cent-os-5-5-on-ec2-with-the-cent-os-5-5-kernel/">running CentOS 5.5 on EC2 using pv-grub</a>.</p>
+
+<p>Before you begin you will need a place to build the kernel. For these instructions I used an EC2 instance to build the kernel but you don’t have to. I also installed the kernel on the same EC2 instance when I was done. The AMI I used was Amazon’s EBS boot starter ( ami-b232d0db : amazon/getting-started-with-ebs-boot ).</p>
+
+<p>The following steps go over building and installing the kernel in detail:</p>
+
+<ol>
+  <li>
+    <p>Download the latest <a href="http://www.kernel.org/">Linux kernel</a> or the version I’m using:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> wget http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.35.4.tar.bz2
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Configure the source to run on EC2:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> make menuconfig
+</code></pre></div>    </div>
+
+    <p>You will need to make sure the following options are set in the configuration:</p>
+
+    <ul>
+   <li>"Processor type and features" -&gt; "High Memory Support" -&gt; Make sure it is set to 64GB</li>
+   <li>"Processor type and features" -&gt; "PAE (Physical Address Extension) Support" -&gt; enable</li>
+   <li>"Processor type and features" -&gt; "Paravirtualized guest support" -&gt; enable</li>
+   <li>"Processor type and features" -&gt; "Paravirtualized guest support" -&gt; "Xen guest support" -&gt; enable</li>
+   <li>"Device Drivers" -&gt; "Block devices" -&gt; "Xen virtual block device support" -&gt; enable either as a module or built in</li>
+   <li>"Device Drivers" -&gt; "Network device support" -&gt; "Xen network device frontend driver" -&gt; enable either as a module or built in</li>
+ </ul>
+
+    <p>If you want you can make the device drivers modules but you have to have them so it is probably best to just compile them into the kernel itself. If you want to compare your config file with the one I used you can download mine here: <a href="/examples/ec2kernel/kernel-2.6.35.4-i686.config">kernel-2.6.35.4-i686.config</a>.</p>
+
+    <p>The starter AMI I used needed ncurses development libraries and gcc installed for menuconfig to work:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> yum install ncurses-devel gcc
+</code></pre></div>    </div>
+
+    <p>If you want to know a little more about what is being enabled in this step see the “Building with domU support” section of <a href="http://wiki.xensource.com/xenwiki/XenParavirtOps">XenParavirtOps</a>.</p>
+  </li>
+  <li>
+    <p>Apply the following patch to disable XSAVE:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> --- a/arch/x86/xen/enlighten.c	2010-08-05 20:35:13.000000000 -0400
+ +++ b/arch/x86/xen/enlighten.c	2010-08-05 20:35:22.000000000 -0400
+ @@ -776,6 +776,7 @@
+ {
+   cr4 &amp;= ~X86_CR4_PGE;
+   cr4 &amp;= ~X86_CR4_PSE;
+ +	cr4 &amp;= ~X86_CR4_OSXSAVE;
+   native_write_cr4(cr4);
+ }
+ cd /path/to/root/of/kernel/source
+ patch -p1 &lt; /tmp/kernel.patch
+</code></pre></div>    </div>
+
+    <p>Note that the above patch file has tabs in it. Make sure there is a tab before each cr4 line and the native_write_cr4 line. If you want to you can download a copy of the <a href="/examples/ec2kernel/kernel.patch">patch with the tabs in it</a> to be sure.</p>
+  </li>
+  <li>
+    <p>Build the kernel and install it if you are on the same machine you want to install it on. If you need help compiling the kernel refer to the kernel compile howto. <br /><br />
+ After this step you have a kernel, modules and initrd that you can use. The remaining steps go over using it.</p>
+  </li>
+  <li>Configure the /boot/grub/menu.lst file on the target AMI to use the new kernel, the following is an example of the contents of the file:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> default 0
+ timeout 1
+ title Test
+     root (hd0)
+     kernel /boot/vmlinuz-2.6.35.4 root=/dev/xvda1
+     initrd /boot/initrd-2.6.35.4.img
+</code></pre></div>    </div>
+
+    <p>Note that the root device here is /dev/xvda1 instead of /dev/sda1. This is caused by the XSAVE patch.</p>
+  </li>
+  <li>
+    <p>Verify that your /etc/fstab file is correct. If your previous root device was /dev/sda1 it is going to be /dev/xvda1 now. The contents of the fstab file I used follow:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> /dev/xvda1                              /                       ext3    defaults 1 1
+ /dev/mapper/swapVG-swapFS               swap                    swap    defaults 0 0
+ /dev/mapper/storageVG-storageFS         /mnt                    ext3    defaults 0 0
+ none                                    /dev/pts                devpts  gid=5,mode=620 0 0
+ none                                    /dev/shm                tmpfs   defaults 0 0
+ none                                    /proc                   proc    defaults 0 0
+ none                                    /sys                    sysfs   defaults 0 0
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Make a snapshot of the volume and register it as an AMI:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ec2-create-snapshot -d "Snapshot Description" volume-id
+ ec2-register -n "CustomKernel" -d "Custom kernel AMI" --root-device-name /dev/sda1 -b /dev/sda1=snap-id:15:true
+</code></pre></div>    </div>
+
+    <p>Note that the devices here are /dev/sda1 and not /dev/xvda1. That is a little confusing but the AWS system doesn’t see the devices in the same way your AMI will once it is booted.</p>
+  </li>
+  <li>
+    <p>Start the instance. In my case using the hd0 pv-grub kernel:</p>
+
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ec2-run-instances -z us-east-1a -g your-group -k your-keypair -n 1 --kernel aki ami-from-step-7
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<p>If all goes well you should be able to run dmesg and see a boot message something like the following at the top:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Reserving virtual address space above 0xf5800000
+Linux version 2.6.35.4 (root@domU) (gcc version 4.1.2 20070925 (Red Hat 4.1.2-33)) #2 SMP Mon Aug 23 20:00:01 EDT 2010
+BIOS-provided physical RAM map:
+ Xen: 0000000000000000 - 00000000000a0000 (usable)
+ Xen: 00000000000a0000 - 0000000000100000 (reserved)
+ Xen: 0000000000100000 - 000000006a400000 (usable)
+NX (Execute Disable) protection: active
+...
+</code></pre></div></div>
+
+<p>With the ability to create a custom kernel for EC2 the next step is to prune the OS itself down to the bare minimum.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

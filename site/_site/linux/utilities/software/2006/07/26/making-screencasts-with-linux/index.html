@@ -1,0 +1,299 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Making screencasts with Linux - IONCANNON</title>
+<meta name="description" content="After my post about capturing full page screenshots with firefox I started wondering if there was a way to do screencasts using Linux. It just so happens that you can. There are a couple different options if you want a pure movie of your desktop but I was more interested in a flash version. I found what I was looking for with this tutorial on how to record videos of your desktop that uses vnc2swf.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Making screencasts with Linux">
+<meta property="og:url" content="http://localhost:4000/linux/utilities/software/2006/07/26/making-screencasts-with-linux/">
+
+
+  <meta property="og:description" content="After my post about capturing full page screenshots with firefox I started wondering if there was a way to do screencasts using Linux. It just so happens that you can. There are a couple different options if you want a pure movie of your desktop but I was more interested in a flash version. I found what I was looking for with this tutorial on how to record videos of your desktop that uses vnc2swf.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2006-07-26T06:44:35-04:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/linux/utilities/software/2006/07/26/making-screencasts-with-linux/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Making screencasts with Linux</h1>
+    
+    <p>After my post about <a href="http://www.ioncannon.net/web-design/70/capture-full-page-screenshots-with-firefox/">capturing full page screenshots with firefox</a> I started wondering if there was a way to do screencasts using Linux. It just so happens that you can. There are a couple different options if you want a pure movie of your desktop but I was more interested in a flash version. I found what I was looking for with this tutorial on <a on="" href="http://wolphination.com/linux/2006/06/30/how-to-record-videos-of-your-desktop/">how to record videos of your desktop</a> that uses <a href="http://www.unixuser.org/~euske/vnc2swf/">vnc2swf</a>.</p>
+
+<p>I tried the instructions on a fedora core 5 box and found that vnc2swf requires tkinter and pygame be installed but they are both packages that are easy to install with yum. You will also need some type of vnc server running on your box. If you want to do a screencast of your current desktop you will need to use <a href="http://www.karlrunge.com/x11vnc/">x11vnc</a>. It will allow you to let a vnc viewer connect to your current desktop. I found that using x11vnc didn’t work that well. I’m not sure if it was the desktop I was using or what but the screencasts came out very choppy and for the most part unusable. I switched to using <a href="http://www.ioncannon.net/system-administration/90/how-to-set-up-different-window-managers-with-vnc/">vncserver with a lightweight window manager</a> and that fixed the issue. I think I like doing that better anyway because it gives me a fresh desktop to work from without all the normal extras. When you are doing a screencast it probably makes more sense to have less to look at anyway.</p>
+
+<ol>
+<li>Start the vnc server (here I set the size too): vncserver :1 -geometry 640x480</li>
+<li>Then you will want to start the viewer: vncviewer :1</li>
+<li>Start the recorder: python vnc2swf.py -t video -o test.swf :1</li>
+<li>Select a filename to save the screencast as</li>
+<li>Select SWF(Video) from the dropdown on the left</li>
+<li>Hit start and make your screencast using the viewer</li>
+</ol>
+<p>Here is an example of the final product: <br /></p>
+
+<center>
+<object id="flash1" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="640" height="480" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0"><param name="movie" value="/assets/screencast0723/test.swf" /><param name="play" value="true" /><param name="loop" value="True" /><param name="quality" value="low" /><embed name="flash1" src="/assets/screencast0723/test.swf" width="640" height="480" play="true" loop="True" quality="low" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />&lt;/embed&gt;</object>
+</center>
+
+<p>You may also only want to capture one window of your desktop. To do that you will need to run xwininfo in you vnc session and click on the window you want to capture. After clicking the window xwininfo will return the location of that window in absolute terms as well as the width and height of the window. With that information you add -C widthxheight+x+y to the recording command. For example the xterm in my previous example is at 11x29 on the screen and is 517 wide and 355 tall so the command would be:</p>
+
+<p>python vnc2swf.py -t video -o test2.swf -C 517x355+11+29 :1</p>
+
+<p>And that produces this:</p>
+
+<center>
+<object id="flash2" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="517" height="355" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,0,0"><param name="movie" value="/assets/screencast0723/test2.swf" /><param name="play" value="true" /><param name="loop" value="True" /><param name="quality" value="low" /><embed name="flash2" src="/assets/screencast0723/test2.swf" width="517" height="355" play="true" loop="True" quality="low" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />&lt;/embed&gt;</object>
+</center>
+
+<p>There are a couple other utilities that come with the package. One is a player that you can use to play your screencast and the other is an editor. The editor lets you remove frames, change the framerate and shrink the screencast .I found that shrinking the screencast was mostly useless since it became unreadable quickly.</p>
+
+<p>A few other options you have if you want a pure video of your desktop are: <a href="http://www.debugmode.com/wink/">wink for linux</a>, <a href="http://live.gnome.org/Istanbul">Istanbul for gnome</a> and <a href="http://sourceforge.net/projects/screenkast">screenkast</a>.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>

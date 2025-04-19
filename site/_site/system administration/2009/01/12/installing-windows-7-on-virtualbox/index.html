@@ -1,0 +1,356 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.26.2 by Michael Rose
+  Copyright 2013-2024 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Installing Windows 7 on VirtualBox - IONCANNON</title>
+<meta name="description" content="I have been seeing people talk about the Windows 7 Beta being available to download so I went to see how hard it was to sign up. It turns out that it actually pretty easy so I decided I would give it a try under VirtualBox just to see if it would work. The following is a list of steps I took.">
+
+
+  <meta name="author" content="Carson McDonald">
+  
+  <meta property="article:author" content="Carson McDonald">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="IONCANNON">
+<meta property="og:title" content="Installing Windows 7 on VirtualBox">
+<meta property="og:url" content="http://localhost:4000/system%20administration/2009/01/12/installing-windows-7-on-virtualbox/">
+
+
+  <meta property="og:description" content="I have been seeing people talk about the Windows 7 Beta being available to download so I went to see how hard it was to sign up. It turns out that it actually pretty easy so I decided I would give it a try under VirtualBox just to see if it would work. The following is a list of steps I took.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2009-01-12T07:28:44-05:00">
+
+
+
+
+
+
+<link rel="canonical" href="http://localhost:4000/system%20administration/2009/01/12/installing-windows-7-on-virtualbox/">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="IONCANNON Feed">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript">
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@latest/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--archive" dir="ltr">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          IONCANNON
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a
+                href="/about/"
+                
+                
+              >About</a>
+            </li><li class="masthead__menu-item">
+              <a
+                href="/contact/"
+                
+                
+              >Contact</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person" class="h-card">
+
+  
+
+  <div class="author__content">
+    <h3 class="author__name p-name" itemprop="name">
+      <a class="u-url" rel="me" href="http://localhost:4000/" itemprop="url">Carson McDonald</a>
+    </h3>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+
+      
+        
+          
+            <li><a href="https://github.com/carsonmcdonald" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-github" aria-hidden="true"></i><span class="label">Github</span></a></li>
+          
+        
+          
+            <li><a href="https://linkedin.com/in/carsonmcdonald/" rel="nofollow noopener noreferrer me" itemprop="sameAs"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span class="label">LinkedIn</span></a></li>
+          
+        
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer me">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Installing Windows 7 on VirtualBox</h1>
+    
+    <p>I have been seeing people talk about the Windows 7 Beta being available to download so I went to see how hard it was to sign up. It turns out that it actually pretty easy so I decided I would give it a try under VirtualBox just to see if it would work. The following is a list of steps I took.</p>
+
+<p>To start with I’m using Fedora 10 as the host OS. I’ve had good luck with previous versions of Windows so I figured this wouldn’t be a problem and it turns out it isn’t. I am also using the 2.1.0 version of VirtualBox. I am not sure but it could be that the older versions won’t work as well since doing the install requires using the Vista support in VirtualBox and that may not be as good in older version.</p>
+
+<p>Now on to the steps you need to do the install:</p>
+
+<ol>
+  <li>
+    <p>Download the ISO from the <a href="http://technet.microsoft.com/en-us/evalcenter/dd353205.aspx">Windows 7 beta site</a>. At this time the ISO is named 7000.0.081212-1400_client_en-us_Ultimate-GB1CULFRE_EN_DVD.iso and is about 2.5G in size.<br /><br /></p>
+  </li>
+  <li>
+    <p>Now that you have the ISO you are ready to start the install using VirtualBox. Start by creating a new configuration and pick “Windows Vista” as the OS version.<br /><br /></p>
+
+    <p><a href="/assets/img/vbwin7/Screenshot-1-CreateNewVirtualMachine.png"><img title="VirtualBox create new virtual machine" alt="VirtualBox create new virtual machine" src="/assets/img/vbwin7/Screenshot-1-CreateNewVirtualMachine_small.png" /></a><br /><br /></p>
+  </li>
+  <li>
+    <p>The next step is to pick a decent amount of memory for the instance. I picked 896 MB of memory because that was all I could on the machine I was using but it turned out to be enough.<br /><br /></p>
+
+    <p><a href="/assets/img/vbwin7/Screenshot-2-CreateNewVirtualMachine.png"><img title="VirtualBox choose memory size" alt="VirtualBox choose memory size" src="/assets/img/vbwin7/Screenshot-2-CreateNewVirtualMachine_small.png" /></a><br /><br /></p>
+  </li>
+  <li>
+    <p>Defining the disk is where I ran into the only real trouble for the entire install. I started with a small 5 GB dynamic disk. Doing that got me the following error:<br /><br /></p>
+
+    <p><a href="/assets/img/vbwin7/Screenshot-8-Window7Base[Running]-SunxVMVirtualBox.png"><img title="Windows 7 disk too small" alt="Windows 7 disk too small" src="/assets/img/vbwin7/Screenshot-8-Window7Base[Running]-SunxVMVirtualBox_small.png" /></a><br /><br /></p>
+
+    <p>You need at least 5545 MB to just install. I then increased the size to 7 GB and got the following warning:<br /><br /></p>
+
+    <p><a href="/assets/img/vbwin7/Screenshot-9-Window7Base[Running]-SunxVMVirtualBox.png"><img title="Windows 7 recommended disk size" alt="Windows 7 recommended disk size" src="/assets/img/vbwin7/Screenshot-9-Window7Base[Running]-SunxVMVirtualBox_small.png" /></a><br /><br /></p>
+
+    <p>It turns out you get that if you allocate less than 7984 MB. So I finally settled on 9 GB:<br /><br /></p>
+
+    <p><a href="/assets/img/vbwin7/Screenshot-3-CreateNewVirtualMachine.png"><img title="Windows 7 correctly sized VDI" alt="Windows 7 correctly sized VDI" src="/assets/img/vbwin7/Screenshot-3-CreateNewVirtualMachine_small.png" /></a><br /><br /></p>
+  </li>
+  <li>
+    <p>You are now ready to map the ISO that was downloaded into the VM. Click the “CD/DVD-ROM” link on the configuration panel and select the 7000.0.081212-1400_client_en-us_Ultimate-GB1CULFRE_EN_DVD.iso as the CD/DVD-ROM.<br /><br /></p>
+
+    <p><a href="/assets/img/vbwin7/Screenshot-4-Window7Base-Settings.png"><img title="VirtualBox loaded Windows 7 ISO" alt="VirtualBox loaded Windows 7 ISO" src="/assets/img/vbwin7/Screenshot-4-Window7Base-Settings_small.png" /></a><br /><br /></p>
+
+    <p>Your main configuration screen should look something like this now:<br /><br /></p>
+
+    <p><a href="/assets/img/vbwin7/Screenshot-5-SunxVMVirtualBox.png"><img title="VirtualBox and Windows 7 settings" alt="VirtualBox and Windows 7 settings" src="/assets/img/vbwin7/Screenshot-5-SunxVMVirtualBox_small.png" /></a>  <br /><br /></p>
+  </li>
+  <li>
+    <p>Now it is time to power up the VM. The initial part of the install took about 3 minutes for me so it is fairly quick.<br /><br /></p>
+
+    <p><a href="/assets/img/vbwin7/Screenshot-6-Window7Base[Running]-SunxVMVirtualBox.png"><img title="Initial Windows 7 install screen" alt="Initial Windows 7 install screen" src="/assets/img/vbwin7/Screenshot-6-Window7Base[Running]-SunxVMVirtualBox_small.png" /></a>  <br /><br /></p>
+  </li>
+  <li>
+    <p>Because this is a fresh install you want to pick the “Install new” option when prompted. You will then get to pick what disk to use for the installation.<br /><br /></p>
+
+    <p><a href="/assets/img/vbwin7/Screenshot-7-Window7Base[Running]-SunxVMVirtualBox.png"><img title="Windows 7 install new" alt="Windows 7 install new" src="/assets/img/vbwin7/Screenshot-7-Window7Base[Running]-SunxVMVirtualBox_small.png" /></a>  <br /><br /></p>
+
+    <p>After selecting the disk to use the next part of the install takes about 10 minutes and when it is finished the VM will reboot. <br /></p>
+
+    <p>The final setup part of the install takes about another 10 minutes. It will finish with another reboot.<br /><br /></p>
+  </li>
+  <li>
+    <p>The VM will now boot up into a user login:<br /><br /></p>
+
+    <p><a href="/assets/img/vbwin7/Screenshot-10-Window7Base[Running]-SunxVMVirtualBox.png"><img title="Windows 7 first user screen" alt="Windows 7 first user screen" src="/assets/img/vbwin7/Screenshot-10-Window7Base[Running]-SunxVMVirtualBox_small.png " /></a>  <br /><br /></p>
+
+    <p>The license key entry will show up next:<br /><br /></p>
+
+    <p><a href="/assets/img/vbwin7/Screenshot-11-Window7Base[Running]-SunxVMVirtualBox.png"><img title="Windows 7 license key screen" alt="Windows 7 license key screen" src="/assets/img/vbwin7/Screenshot-11-Window7Base[Running]-SunxVMVirtualBox_small.png" /></a>  <br /><br /></p>
+
+    <p>You are then asked to set up a few things like your timezone. After another 5 minutes of churning in “setup” everything was finished. <br /></p>
+
+    <p>Right off the bat there was an indicator dialog that came up at first saying there was an update being downloaded and installed as well. After that everything was complete.<br /><br /></p>
+
+    <p><a href="/assets/img/vbwin7/Screenshot-12-Final.png"><img title="Windows 7 desktop" alt="Windows 7 desktop" src="/assets/img/vbwin7/Screenshot-12-Final_small.png" /></a>  <br /><br /></p>
+  </li>
+  <li>
+    <p>The next issue is a VirtualBox only issue and has to do with installing the guest utilities. They won’t install right out of the box but I found some <a href="http://www.ideaexcursion.com/2008/12/31/installing-windows-7-beta-1-in-virtualbox-210/">instructions for installing the guest utilties with Windows 7</a>. At some point Sun will fix this in the VirtualBox distribution but for now it is the only way to get them to work. Following the instruction worked like a charm for me.<br /><br /></p>
+  </li>
+  <li>
+    <p>After one last reboot the final product now has mouse integration and screen resizing.<br /><br /></p>
+
+    <p><a href="/assets/img/vbwin7/Screenshot-13-Window7Base[Running]-SunxVMVirtualBox.png"><img title="Windows 7 login screen" alt="Windows 7 login screen" src="/assets/img/vbwin7/Screenshot-13-Window7Base[Running]-SunxVMVirtualBox_small.png" /></a> <br /><br /></p>
+  </li>
+</ol>
+
+<p>After all was said and done it took up about 6.3 GB to install the base OS and that resulted in an external VDI image size of 5 GB.<br /><br /></p>
+
+<p><a href="/assets/img/vbwin7/Screenshot-14-Window7Base[Running]-SunxVMVirtualBox.png"><img title="Windows 7 disk explorer" alt="Windows 7 disk explorer" src="/assets/img/vbwin7/Screenshot-14-Window7Base[Running]-SunxVMVirtualBox_small.png" /></a> <br /><br /></p>
+
+<p>If I had more memory to allocate to the VM I would. It seems that Windows 7 has the same type of memory requirements as Vista and it is a little sluggish without more.</p>
+
+<p>I’m impressed with the ease of being able to install under VirtualBox. I would say that except for the guest utilities it is as easy as installing Window XP under VirtualBox.</p>
+
+
+  </div>
+</div>
+
+      
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-copyright">&copy; 2025 <a href="http://localhost:4000">IONCANNON</a>.</div>
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
